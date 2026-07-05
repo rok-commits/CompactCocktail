@@ -64,6 +64,33 @@ restart();
 panel.addEventListener('mouseenter', () => clearInterval(timer));
 panel.addEventListener('mouseleave', restart);
 
+/* ---------- "next flavour" cursor + click on the keg stage ---------- */
+const cursor = document.querySelector('.hero-cursor');
+if (matchMedia('(pointer:fine)').matches) {
+  stage.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top  = e.clientY + 'px';
+    cursor.classList.add('on');
+  });
+  stage.addEventListener('mouseleave', () => cursor.classList.remove('on'));
+}
+stage.addEventListener('click', () => { show((current + 1) % FLAVOURS.length); restart(); });
+
+/* ---------- swipe between flavours on touch ---------- */
+let tx = 0, ty = 0;
+panel.addEventListener('touchstart', e => {
+  tx = e.touches[0].clientX; ty = e.touches[0].clientY;
+}, { passive: true });
+panel.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - tx;
+  const dy = e.changedTouches[0].clientY - ty;
+  if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+    const n = FLAVOURS.length;
+    show(dx < 0 ? (current + 1) % n : (current - 1 + n) % n);
+    restart();
+  }
+}, { passive: true });
+
 /* ---------- shop cards ---------- */
 const grid = document.querySelector('.shop-grid');
 grid.innerHTML = FLAVOURS.map(f => `
