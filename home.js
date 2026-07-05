@@ -15,9 +15,11 @@ const FLAVOURS = [
 
 const css = getComputedStyle(document.documentElement);
 const colorOf = f => css.getPropertyValue(f.colorVar).trim();
+const darkOf  = f => css.getPropertyValue(f.colorVar + '-dark').trim();
 
 /* ---------- hero switcher ---------- */
 const panel   = document.querySelector('.hero-panel');
+const pattern = document.querySelector('.hero-pattern');
 const stage   = document.querySelector('.hero-stage');
 const kegImg  = document.querySelector('.hero-keg');
 const garnish = document.querySelector('.hero-garnish');
@@ -39,7 +41,11 @@ function show(i) {
   current = i;
   const f = FLAVOURS[i];
   panel.style.background = colorOf(f);
+  panel.style.setProperty('--fl-dark', darkOf(f));
   panel.dataset.flavour = f.id;
+  pattern.classList.remove('roll');
+  void pattern.offsetWidth; // restart the roll animation
+  pattern.classList.add('roll');
   stage.classList.add('switching');
   setTimeout(() => {
     kegImg.src  = `assets/keg-full-${f.id}.png`;
@@ -78,11 +84,26 @@ window.addEventListener('scroll', () => {
   mathPattern.style.transform = `translate(${-progress * 260}px, ${progress * 120}px)`;
 }, { passive: true });
 
+/* ---------- how steps: start aligned, separate as you scroll down ---------- */
+const howBox   = document.querySelector('.how-steps');
+const howSteps = [...howBox.children];
+const HOW_OFFSETS = [0, 52, 104]; // matches .how-step-mid / .how-step-last margins
+
+function howSeparate() {
+  const r = howBox.getBoundingClientRect();
+  const p = Math.min(Math.max((innerHeight - r.top) / (innerHeight * 0.9), 0), 1);
+  howSteps.forEach((el, i) => {
+    el.style.transform = `translateY(${-HOW_OFFSETS[i] * (1 - p)}px)`;
+  });
+}
+window.addEventListener('scroll', howSeparate, { passive: true });
+howSeparate();
+
 /* ---------- scroll reveal ---------- */
 const io = new IntersectionObserver(es => es.forEach(e => {
   if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
 }), { threshold: 0.12 });
 
 document.querySelectorAll(
-  '.shop-card,.how-step,.bubble,.makers-copy'
+  '.shop-card,.bubble,.makers-copy'
 ).forEach(el => { el.classList.add('reveal'); io.observe(el); });

@@ -19,12 +19,12 @@
   --co-grey-light:#7D7D7D;
   --co-white:#FFFFFF;
 
-  /* --- flavour palette --- */
-  --fl-spritz:#F15B42;        /* Aperol Spritz */
-  --fl-pornstar:#703E98;      /* Pornstar Martini */
-  --fl-mojito:#68963F;        /* Mojito */
-  --fl-paloma:#EF7868;        /* Paloma  (not in brand guide yet — from keg label) */
-  --fl-mango:#E9B735;         /* Mango Mule (not in brand guide yet — from keg label) */
+  /* --- flavour palette (light + dark, from the Figma design system) --- */
+  --fl-spritz:#EF6F40;        --fl-spritz-dark:#D15027;    /* Aperol Spritz */
+  --fl-pornstar:#703E97;      --fl-pornstar-dark:#492B66;  /* Pornstar Martini */
+  --fl-mojito:#68963F;        --fl-mojito-dark:#507335;    /* Mojito */
+  --fl-paloma:#F28577;        --fl-paloma-dark:#F26F5E;    /* Paloma */
+  --fl-mango:#FFD13D;         --fl-mango-dark:#D9A22C;     /* Mango Mule */
 
   /* --- type --- */
   --font-sans:"Outfit",system-ui,-apple-system,sans-serif;
