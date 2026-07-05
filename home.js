@@ -1,0 +1,88 @@
+/* B2C v5 — hero flavour switcher + shop cards + scroll reveal */
+
+const FLAVOURS = [
+  { id: 'spritz',   name: 'Spritz',           colorVar: '--fl-spritz',
+    ing: 'Aperol, sparkling wine, soda · 8%' },
+  { id: 'mojito',   name: 'Mojito',           colorVar: '--fl-mojito',
+    ing: 'Planteray rum, lime, fresh mint, soda · 9.5%' },
+  { id: 'paloma',   name: 'Paloma',           colorVar: '--fl-paloma',
+    ing: 'Tequila, lime, grapefruit, soda · 9.5%' },
+  { id: 'pornstar', name: 'Pornstar Martini', colorVar: '--fl-pornstar',
+    ing: 'Vodka, passion fruit, vanilla, lime · 9.5%' },
+  { id: 'mango',    name: 'Mango Mule',       colorVar: '--fl-mango',
+    ing: 'Vodka, mango purée, lime, ginger beer · 9.5%' },
+];
+
+const css = getComputedStyle(document.documentElement);
+const colorOf = f => css.getPropertyValue(f.colorVar).trim();
+
+/* ---------- hero switcher ---------- */
+const panel   = document.querySelector('.hero-panel');
+const stage   = document.querySelector('.hero-stage');
+const kegImg  = document.querySelector('.hero-keg');
+const garnish = document.querySelector('.hero-garnish');
+const fname   = document.querySelector('.hero-flavour-name');
+const dotsBox = document.querySelector('.hero-dots');
+
+let current = 0, timer;
+
+FLAVOURS.forEach((f, i) => {
+  const b = document.createElement('button');
+  b.className = 'hero-dot' + (i === 0 ? ' active' : '');
+  b.setAttribute('aria-label', f.name);
+  b.addEventListener('click', () => { show(i); restart(); });
+  dotsBox.appendChild(b);
+});
+const dots = [...dotsBox.children];
+
+function show(i) {
+  current = i;
+  const f = FLAVOURS[i];
+  panel.style.background = colorOf(f);
+  panel.dataset.flavour = f.id;
+  stage.classList.add('switching');
+  setTimeout(() => {
+    kegImg.src  = `assets/keg-full-${f.id}.png`;
+    garnish.src = `assets/garnish-${f.id}.png`;
+    fname.textContent = f.name;
+    stage.classList.remove('switching');
+  }, 320);
+  dots.forEach((d, j) => d.classList.toggle('active', j === i));
+}
+
+function restart() {
+  clearInterval(timer);
+  timer = setInterval(() => show((current + 1) % FLAVOURS.length), 4200);
+}
+restart();
+panel.addEventListener('mouseenter', () => clearInterval(timer));
+panel.addEventListener('mouseleave', restart);
+
+/* ---------- shop cards ---------- */
+const grid = document.querySelector('.shop-grid');
+grid.innerHTML = FLAVOURS.map(f => `
+  <div class="shop-card" style="--fl:${colorOf(f)}">
+    <img src="assets/keg-full-${f.id}.png" alt="${f.name} keg">
+    <h3>${f.name}</h3>
+    <p class="ing">${f.ing}</p>
+    <button class="btn btn-primary">Buy</button>
+  </div>`).join('');
+
+/* ---------- math pattern parallax (brand arch tile drifts on scroll) ---------- */
+const mathPattern = document.querySelector('.math-pattern');
+const mathSec = document.querySelector('.math');
+window.addEventListener('scroll', () => {
+  const r = mathSec.getBoundingClientRect();
+  if (r.bottom < 0 || r.top > innerHeight) return;
+  const progress = (innerHeight - r.top) / (innerHeight + r.height);
+  mathPattern.style.transform = `translate(${-progress * 260}px, ${progress * 120}px)`;
+}, { passive: true });
+
+/* ---------- scroll reveal ---------- */
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+}), { threshold: 0.12 });
+
+document.querySelectorAll(
+  '.shop-card,.how-step,.bubble,.makers-copy'
+).forEach(el => { el.classList.add('reveal'); io.observe(el); });
