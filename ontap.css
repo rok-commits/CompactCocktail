@@ -1,0 +1,167 @@
+/* =====================================================================
+   B2B "on tap" page — SKELETON pass (no animations yet).
+   Section order = "B2B Wireframes ALT": qualify in the first 3 sections,
+   capture contact right after, then let the rest inform. CTA repeats 4×.
+   Loads AFTER brand.css + home.css and reuses .nav/.btn/.wrap/.eyebrow/
+   .footer from home.css; everything page-specific is prefixed .ot-*.
+   ===================================================================== */
+
+/* ---------- 1 · HERO — deep blue, real tap-pour photo ---------- */
+.ot-hero{padding:0}
+.ot-hero-panel{position:relative;overflow:hidden;background:var(--co-blue-dark);min-height:calc(100svh - 110px);display:flex;flex-direction:column;justify-content:center}
+/* static CO tile in a lighter blue — same arch scale as the B2C hero */
+.ot-hero-pattern{position:absolute;inset:0;background:var(--co-blue);opacity:.5;pointer-events:none;-webkit-mask:url("assets/co-pattern-tile.svg") repeat;-webkit-mask-size:1996.5px 1062.44px;mask:url("assets/co-pattern-tile.svg") repeat;mask-size:1996.5px 1062.44px}
+.ot-hero-grid{position:relative;width:100%;display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;padding-top:72px;padding-bottom:72px}
+.ot-hero-copy h1{color:#fff;font-size:clamp(38px,4.6vw,58px);font-weight:700;line-height:1.1;letter-spacing:-.02em}
+.ot-hero-sub{color:rgba(248,235,214,.85);font-size:19px;line-height:1.5;margin:20px 0 30px}
+.ot-hero-btns{display:flex;gap:14px;flex-wrap:wrap}
+.ot-hero-photo{border-radius:32px;overflow:hidden;aspect-ratio:4/3;box-shadow:0 30px 60px rgba(0,0,0,.35);transform:rotate(1.5deg)}
+.ot-hero-photo img{width:100%;height:100%;object-fit:cover}
+
+/* ---------- 2 · WHY VENUES — 3 qualify cards ---------- */
+.ot-why{padding:96px 0 84px;text-align:center}
+.ot-why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:52px;text-align:left}
+.ot-card{background:#fff8ec;border-radius:var(--r-lg);overflow:hidden;display:flex;flex-direction:column}
+.ot-card-photo{aspect-ratio:3/2;overflow:hidden}
+.ot-card-photo img{width:100%;height:100%;object-fit:cover}
+.ot-card h3{color:var(--co-blue);font-size:23px;font-weight:700;padding:20px 24px 0}
+.ot-stat{margin:14px 24px 0}
+.ot-stat b{display:block;color:var(--co-orange);font-size:36px;font-weight:800;letter-spacing:-.02em;line-height:1}
+.ot-stat span{font-size:15px;color:var(--co-grey-light)}
+.ot-card ul{list-style:none;padding:18px 24px 26px;display:flex;flex-direction:column;gap:10px}
+.ot-card li{font-size:16.5px;color:var(--co-grey);padding-left:24px;position:relative}
+.ot-card li::before{content:"✓";position:absolute;left:0;color:var(--co-orange);font-weight:700}
+
+/* ---------- 3 · TRUSTED — black proof band ---------- */
+.ot-trusted{background:var(--co-black);padding:72px 0 64px;text-align:center}
+.ot-trusted-line{color:var(--co-cream)}
+.ot-venues{margin-top:32px;color:var(--co-cream);font-size:21px;font-weight:600;line-height:1.9;opacity:.9}
+.ot-venues i{color:var(--co-orange);font-style:normal;font-size:11px;margin:0 14px;vertical-align:middle}
+
+/* ---------- 3b · EARLY CTA BAND — orange ---------- */
+.ot-band{margin:24px 16px}
+.ot-band-grid{display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap}
+.ot-band-orange{background:var(--co-orange);border-radius:var(--r-lg);padding:44px 0}
+.ot-band-head{color:#fff;font-size:clamp(26px,3vw,36px)}
+.ot-band-sub{color:rgba(255,255,255,.9);font-size:18px;margin-top:8px}
+
+/* ---------- 4 · SYSTEM — Plug. Pour. Serve. + taste-it ---------- */
+.ot-system{background:var(--co-cream-deep);border-radius:64px;margin:24px 16px;padding:96px 0;text-align:center}
+.ot-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:52px}
+.ot-step-video{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:var(--r-lg);box-shadow:0 18px 40px rgba(43,43,43,.14);background:var(--co-cream)}
+.ot-step h3{color:var(--co-orange);font-size:27px;font-weight:800;margin-top:18px}
+.ot-step p{color:var(--co-grey);font-size:16.5px;margin-top:8px;line-height:1.5}
+
+/* ---------- 5 · TAP-READY WIZARD — one question at a time ---------- */
+.ot-quiz{padding:96px 0 84px;text-align:center}
+.ot-wizard{max-width:560px;margin:48px auto 0}
+.ot-wcard{background:#fff8ec;border-radius:var(--r-lg);padding:44px 40px;box-shadow:0 18px 40px rgba(43,43,43,.10);text-align:center}
+.ot-wstep{font-size:13.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--co-orange)}
+.ot-wq{color:var(--co-blue);font-size:26px;font-weight:700;line-height:1.25;margin-top:14px}
+.ot-whint{font-size:15px;color:var(--co-grey-light);margin-top:10px}
+.ot-wbtns{display:flex;gap:14px;justify-content:center;margin-top:28px}
+.ot-wbtns .btn{min-width:130px}
+.ot-btn-outline{background:transparent;color:var(--co-black);border:2px solid var(--co-black)}
+.ot-btn-outline:hover{background:var(--co-black);color:#fff}
+.ot-wback{display:inline-block;margin-top:22px;background:none;border:none;cursor:pointer;font-family:var(--font-sans);font-size:15px;font-weight:600;color:var(--co-grey-light)}
+.ot-wback:hover{color:var(--co-orange)}
+.ot-wtext{font-size:17px;color:var(--co-grey);line-height:1.55;margin-top:12px}
+.ot-wtrail{font-size:14px;color:var(--co-grey-light);margin-top:14px}
+.ot-wform{display:flex;flex-direction:column;gap:12px;margin-top:24px}
+.ot-wform input{padding:15px 24px;border-radius:var(--r-pill);border:1.5px solid var(--co-cream-deep);background:#fff;font-family:var(--font-sans);font-size:16px;color:var(--co-black);outline:none}
+.ot-wform input:focus{border-color:var(--co-orange)}
+.ot-wsent{font-size:17px;font-weight:600;color:var(--co-blue);margin-top:24px}
+
+/* ---------- 6 · RANGE — polykeg cards, 2 rows ---------- */
+.ot-range{background:var(--co-cream-deep);border-radius:64px;margin:24px 16px;padding:96px 0;text-align:center}
+.ot-kegs{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:48px}
+.ot-keg{background:#fff8ec;border-radius:var(--r-lg);padding:28px 20px 24px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px}
+.ot-keg img{height:200px;width:auto;margin-bottom:10px;filter:drop-shadow(0 12px 18px rgba(0,0,0,.16))}
+.ot-keg figcaption{font-size:19px;font-weight:700;color:var(--co-blue)}
+.ot-keg-ing{font-size:14.5px;color:var(--co-grey);line-height:1.45}
+.ot-keg-slot{height:200px;width:112px;margin-bottom:10px;border:2px dashed rgba(43,43,43,.25);border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:var(--co-grey-light);line-height:1.4}
+/* signature keg — its own category, on brand orange */
+.ot-keg-sig{background:var(--co-orange)}
+.ot-keg-sig figcaption{color:#fff}
+.ot-keg-sig .ot-keg-ing{color:rgba(255,255,255,.9)}
+.ot-keg-sig img{filter:drop-shadow(0 16px 24px rgba(0,0,0,.3))}
+
+/* ---------- 6 · GALLERY — full-bleed auto-scrolling marquee ---------- */
+.ot-gallery{padding:96px 0 84px;text-align:center;overflow:hidden}
+.ot-marquee{margin-top:52px;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent)}
+.ot-marquee-track{display:flex;width:max-content;animation:ot-marquee 55s linear infinite}
+.ot-marquee:hover .ot-marquee-track{animation-play-state:paused}
+/* each item owns its trailing gap via margin so one copy == exactly 50% of
+   the track — keeps the -50% loop seamless regardless of item count */
+.ot-marquee-item{flex:0 0 auto;width:380px;height:280px;margin-right:20px;border-radius:var(--r-lg);overflow:hidden;position:relative}
+.ot-marquee-item img{width:100%;height:100%;object-fit:cover;display:block}
+.ot-marquee-item figcaption{position:absolute;left:0;right:0;bottom:0;padding:26px 22px 16px;background:linear-gradient(to top,rgba(0,0,0,.68),transparent);color:#fff;font-weight:700;font-size:16px;text-align:left}
+@keyframes ot-marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){
+  .ot-marquee-track{animation:none;overflow-x:auto;padding-bottom:8px}
+}
+
+/* ---------- 7 · MAKERS — editorial split (mirrors B2C makers) ---------- */
+.ot-makers{padding:96px 0 60px}
+.ot-makers-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:64px;align-items:center}
+.ot-makers-photo{border-radius:32px;overflow:hidden;aspect-ratio:4/5;box-shadow:0 30px 60px rgba(43,43,43,.18);transform:rotate(-1.5deg)}
+.ot-makers-photo img{width:100%;height:100%;object-fit:cover}
+.ot-makers-line{font-size:22px;color:var(--co-orange);font-weight:600;margin-top:18px}
+
+/* ---------- 8 · EVERYTHING'S HANDLED — split with system photo ---------- */
+.ot-handled{padding:60px 0}
+.ot-handled-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:64px;align-items:center}
+.ot-handled-photo{border-radius:32px;overflow:hidden;aspect-ratio:4/3;box-shadow:0 24px 48px rgba(43,43,43,.16);transform:rotate(1.5deg)}
+.ot-handled-photo img{width:100%;height:100%;object-fit:cover}
+.ot-checks{list-style:none;display:flex;flex-direction:column;gap:14px;margin-top:32px}
+.ot-checks li{font-size:16.5px;color:var(--co-grey);padding-left:30px;position:relative}
+.ot-checks li::before{content:"✓";position:absolute;left:0;color:var(--co-orange);font-weight:700}
+
+/* ---------- 9 · DOCS — obvious downloads ---------- */
+.ot-docs{padding:60px 0 88px;text-align:center}
+.ot-docs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:44px}
+.ot-doc{background:#fff8ec;border-radius:var(--r-lg);padding:30px 26px;text-align:left;transition:transform .15s ease,box-shadow .15s ease}
+.ot-doc:hover{transform:translateY(-4px);box-shadow:0 14px 32px rgba(43,43,43,.10)}
+.ot-doc-ic{display:flex;align-items:center;justify-content:center;width:40px;height:40px;color:var(--co-orange);margin-bottom:18px}
+.ot-doc-ic svg{width:32px;height:32px}
+.ot-doc b{display:block;color:var(--co-blue);font-size:19px;font-weight:700}
+.ot-doc span{font-size:15px;color:var(--co-grey);margin-top:4px;display:block}
+.ot-doc em{display:inline-block;font-style:normal;font-size:15px;font-weight:700;color:var(--co-orange);margin-top:14px}
+.ot-doc:hover em{text-decoration:underline}
+
+/* ---------- 8 · FINAL CTA — blue band + form ---------- */
+.ot-contact{background:var(--co-blue);border-radius:64px;margin:0 16px;padding:88px 0}
+.ot-contact-inner{text-align:center;max-width:640px}
+.ot-contact-head{color:#fff}
+.ot-contact-sub{color:rgba(248,235,214,.85);font-size:18.5px;margin-top:14px;line-height:1.55}
+.ot-form{display:flex;flex-direction:column;gap:12px;margin-top:36px;text-align:left}
+.ot-form-row{display:flex;gap:12px}
+.ot-form-row input{flex:1}
+.ot-form input{padding:16px 22px;border-radius:var(--r-pill);border:1.5px solid transparent;background:#fff8ec;font-family:var(--font-sans);font-size:16px;color:var(--co-black);outline:none;width:100%}
+.ot-form input:focus{border-color:var(--co-orange)}
+.ot-form .btn{font-size:17px;padding:16px}
+
+/* ---------- 11 · FOR HOME — orange split panel (mirrors B2C's .b2b) ---------- */
+.ot-b2c{background:color-mix(in srgb,var(--co-orange) 78%,var(--co-grey) 22%);border-radius:64px;margin:24px 16px;padding:88px 0;overflow:hidden}
+.ot-b2c-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:64px;align-items:center}
+.ot-b2c-head{color:#fff}
+.ot-b2c-sub{color:rgba(255,255,255,.92);font-size:18px;line-height:1.6;margin:18px 0 32px}
+.ot-b2c-photo{border-radius:32px;overflow:hidden;aspect-ratio:4/3;box-shadow:0 30px 60px rgba(0,0,0,.25);transform:rotate(-1.5deg)}
+.ot-b2c-photo img{width:100%;height:100%;object-fit:cover}
+
+/* ---------- responsive ---------- */
+@media (max-width:1020px){
+  .ot-why-grid{grid-template-columns:1fr;max-width:420px;margin-left:auto;margin-right:auto}
+}
+@media (max-width:860px){
+  .ot-hero-grid{grid-template-columns:1fr;gap:36px;text-align:center;padding-top:56px;padding-bottom:56px}
+  .ot-hero-btns{justify-content:center}
+  .ot-steps{grid-template-columns:1fr;max-width:340px;margin-left:auto;margin-right:auto}
+  .ot-kegs{grid-template-columns:repeat(2,1fr)}
+  .ot-wcard{padding:32px 22px}
+  .ot-makers-grid,.ot-handled-grid,.ot-b2c-grid{grid-template-columns:1fr;gap:40px}
+  .ot-docs-grid{grid-template-columns:1fr}
+  .ot-form-row{flex-direction:column}
+  .ot-band-grid{justify-content:center;text-align:center}
+  .ot-marquee-item{width:280px;height:210px;margin-right:14px}
+}
