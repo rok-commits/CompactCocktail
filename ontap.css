@@ -172,6 +172,7 @@
 .ot-form textarea{padding:16px 22px;border-radius:var(--r-lg);border:1.5px solid transparent;background:#fff8ec;font-family:var(--font-sans);font-size:16px;color:var(--co-black);outline:none;width:100%;resize:vertical;min-height:88px}
 .ot-form textarea:focus{border-color:var(--co-orange)}
 .ot-form .btn{font-size:17px;padding:16px}
+.ot-sent{color:var(--co-cream);font-weight:600;font-size:17.5px;margin-top:30px}
 
 /* ---------- 11 · FOR HOME — orange split panel (mirrors B2C's .b2b) ---------- */
 .ot-b2c{background:color-mix(in srgb,var(--co-orange) 78%,var(--co-grey) 22%);border-radius:64px;margin:24px 16px;padding:88px 0;overflow:hidden}

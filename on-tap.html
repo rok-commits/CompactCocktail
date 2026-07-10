@@ -287,16 +287,17 @@
     <p class="eyebrow eyebrow-onblue">No commitment</p>
     <h2 class="ot-contact-head">How can we make it work for you?</h2>
     <p class="ot-contact-sub">Book a tasting &mdash; see how it cuts waste, saves time, and lifts your margins.</p>
-    <!-- TODO: wire to email / form backend -->
-    <form class="ot-form" onsubmit="return false">
-      <input type="text" placeholder="Venue or event" aria-label="Venue or event">
+    <!-- submits via ccSubmitForm (shared.js) — backend TODO -->
+    <form class="ot-form">
+      <input type="text" name="venue" placeholder="Venue or event" aria-label="Venue or event" required>
       <div class="ot-form-row">
-        <input type="email" placeholder="you@venue.hu" aria-label="Email">
-        <input type="tel" placeholder="Phone (optional)" aria-label="Phone">
+        <input type="email" name="email" placeholder="you@venue.hu" aria-label="Email" required>
+        <input type="tel" name="phone" placeholder="Phone (optional)" aria-label="Phone">
       </div>
       <textarea name="message" rows="3" placeholder="Anything we should know? (optional)" aria-label="Message"></textarea>
-      <button class="btn btn-primary">Send&nbsp;&rarr;</button>
+      <button class="btn btn-primary" type="submit">Send&nbsp;&rarr;</button>
     </form>
+    <p class="ot-sent" hidden>Thanks &mdash; we&rsquo;ll be in touch within a day.</p>
   </div>
 </section>
 

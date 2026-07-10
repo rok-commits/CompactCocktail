@@ -264,6 +264,8 @@ img.tk-logo{object-fit:contain;background:var(--co-cream);padding:6px}
 .footer-b2b:hover{color:var(--co-orange)}
 .footer-fine{font-size:13.5px;color:var(--co-grey-light)}
 
+.cta-sent{color:var(--co-blue);font-weight:600;font-size:17.5px;margin-top:30px}
+
 /* ---------- reveal on scroll ---------- */
 .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
 .reveal.in{opacity:1;transform:none}

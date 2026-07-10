@@ -245,10 +245,11 @@
   <div class="wrap">
     <h2>Pour yourself 10% off.</h2>
     <p class="section-sub">Drop your email, we send the code for your first keg — plus first dibs when a new flavour drops. No spam, just cocktails.</p>
-    <form class="cta-form" onsubmit="return false">
-      <input type="email" placeholder="you@email.hu" aria-label="Email">
-      <button class="btn btn-primary">Get the code</button>
+    <form class="cta-form">
+      <input type="email" name="email" placeholder="you@email.hu" aria-label="Email" required>
+      <button class="btn btn-primary" type="submit">Get the code</button>
     </form>
+    <p class="cta-sent" hidden>Done &mdash; your code is on its way. Check your inbox.</p>
   </div>
 </section>
 

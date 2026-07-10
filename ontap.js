@@ -121,9 +121,12 @@
 
     wizard.querySelector('.ot-wform').addEventListener('submit', function (e) {
       e.preventDefault();
-      e.target.hidden = true;
-      wizard.querySelector('.ot-wsent').hidden = false;
-      markContactGiven();
+      if (!e.target.reportValidity()) return;
+      ccSubmitForm(e.target).then(function () {
+        e.target.hidden = true;
+        wizard.querySelector('.ot-wsent').hidden = false;
+        markContactGiven();
+      });
     });
     wizard.querySelector('[data-restart]').addEventListener('click', function () {
       trail = [];
@@ -148,4 +151,18 @@
   if (alreadyGiven) hideContactSection();
 
   renderQuestion('q1');
+})();
+
+/* contact form — submits via ccSubmitForm (shared.js), backend TODO */
+(function () {
+  var form = document.querySelector('.ot-form');
+  if (!form) return;
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!form.reportValidity()) return;
+    ccSubmitForm(form).then(function () {
+      form.hidden = true;
+      document.querySelector('.ot-sent').hidden = false;
+    });
+  });
 })();

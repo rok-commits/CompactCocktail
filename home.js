@@ -236,6 +236,17 @@ function howSeparate() {
 window.addEventListener('scroll', howSeparate, { passive: true });
 howSeparate();
 
+/* ---------- newsletter form (backend via ccSubmitForm stub) ---------- */
+const ctaForm = document.querySelector('.cta-form');
+if (ctaForm) ctaForm.addEventListener('submit', e => {
+  e.preventDefault();
+  if (!ctaForm.reportValidity()) return;
+  ccSubmitForm(ctaForm).then(() => {
+    ctaForm.hidden = true;
+    document.querySelector('.cta-sent').hidden = false;
+  });
+});
+
 /* ---------- scroll reveal ---------- */
 const io = new IntersectionObserver(es => es.forEach(e => {
   if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }

@@ -40,6 +40,18 @@
     return back;
   };
 
+  /* ---------- form submission stub ----------
+     TODO: wire to the real backend (Formspree / Mailchimp / own endpoint —
+     decision pending with András). Swap the body of this ONE function and
+     every form on the site (newsletter, B2B contact, tap-ready wizard)
+     submits for real. */
+  window.ccSubmitForm = function (form) {
+    var data = { _page: location.pathname };
+    new FormData(form).forEach(function (v, k) { data[k] = v; });
+    console.info('[CoCo] form submission (backend TODO):', data);
+    return Promise.resolve({ ok: true });
+  };
+
   /* ---------- 18+ age gate ---------- */
   var AGE_KEY = 'cc_age_ok';
   var ageOk = false;
