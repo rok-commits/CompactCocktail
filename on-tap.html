@@ -36,6 +36,7 @@
         <p class="ot-hero-sub">Real cocktails on tap. Plug the keg, pull the tap, serve.</p>
         <div class="ot-hero-btns">
           <a href="#contact" class="btn btn-primary">Get in touch&nbsp;&rarr;</a>
+          <a href="#ready" class="btn ot-btn-ghost">Is your venue tap&#8209;ready?&nbsp;&rarr;</a>
         </div>
       </div>
       <div class="ot-hero-photo"><img src="assets/b2b-real-pour.jpg" alt="A Compact Cocktail poured from the tap at Sirály Bár"></div>
@@ -47,11 +48,12 @@
 <section class="ot-trusted">
   <div class="wrap">
     <p class="eyebrow eyebrow-onblack">Trusted across Hungary</p>
-    <h2 class="ot-trusted-line">Already on tap in bars, hotels &amp;&nbsp;events.</h2>
-    <!-- TODO: swap names for real venue logos once collected.
-         List = old prototype's B2B marquee; confirm these are the most
-         recognizable ones (full venue-logo sheet exists for B2C ticker). -->
-    <p class="ot-venues">Sirály Bár <i>&#9679;</i> Kempinski <i>&#9679;</i> Voilá <i>&#9679;</i> Fehér Nyúl <i>&#9679;</i> Whisky Show <i>&#9679;</i> Time Out Market</p>
+    <h2 class="ot-trusted-line">Trusted by Hungary&rsquo;s best venues.</h2>
+  </div>
+  <!-- same moving banner as B2C; venue logo+name pairs rendered from
+       OT_VENUES in ontap.js — initials chips until real logos arrive -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track"></div>
   </div>
 </section>
 
@@ -122,6 +124,22 @@
         </ul>
       </article>
     </div>
+
+    <!-- segment-agnostic operator pros (client feedback) — MOHU wording TBC -->
+    <div class="ot-pros">
+      <div class="ot-pro">
+        <b>No MOHU hassle</b>
+        <span>Returnable kegs, no deposit-return admin &mdash; and far less waste to manage.</span>
+      </div>
+      <div class="ot-pro">
+        <b>Fewer suppliers</b>
+        <span>One keg replaces the 5&ndash;6 ingredients you&rsquo;d order per drink.</span>
+      </div>
+      <div class="ot-pro">
+        <b>Long shelf life</b>
+        <span>Keeps your stock in order &mdash; nothing wilting, nothing going off.</span>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -131,6 +149,7 @@
     <div>
       <h2 class="ot-band-head">Sound like your venue?</h2>
       <p class="ot-band-sub">Get in touch &mdash; we&rsquo;ll set up a free tasting and walk you through the numbers.</p>
+      <a class="ot-band-link" href="#ready">First, check if you&rsquo;re tap-ready in a few clicks&nbsp;&darr;</a>
     </div>
     <a href="#contact" class="btn btn-light">Get in touch&nbsp;&rarr;</a>
   </div>
@@ -141,15 +160,17 @@
   <div class="wrap">
     <p class="eyebrow">What you&rsquo;d pour</p>
     <h2>The range.</h2>
-    <!-- polykeg product shots from the original website; Paloma + Mango
-         label renders don't exist there yet — Rok is locating the folders -->
+    <!-- center-sticker graphics per client feedback (stylized polykegs
+         read dull) — CSS circles stand in; TODO: swap each .ot-sticker
+         for the real retail-keg label artwork once exported from
+         WebDesign_2026_CompactCocktail.ai -->
     <div class="ot-kegs">
-      <figure class="ot-keg"><img src="assets/poly-spritz.png" alt="Spritz 12L keg"><figcaption>Spritz</figcaption><p class="ot-keg-ing">Aperol, sparkling wine, soda &middot; 8%</p></figure>
-      <figure class="ot-keg"><img src="assets/poly-pornstar.png" alt="Pornstar Martini 12L keg"><figcaption>Pornstar Martini</figcaption><p class="ot-keg-ing">Vodka, passion fruit, vanilla, lime &middot; 9.5%</p></figure>
-      <figure class="ot-keg"><img src="assets/poly-mojito.png" alt="Mojito 12L keg"><figcaption>Mojito</figcaption><p class="ot-keg-ing">Planteray rum, lime, fresh mint, soda &middot; 9.5%</p></figure>
-      <figure class="ot-keg ot-keg-todo"><div class="ot-keg-slot">keg shot<br>coming</div><figcaption>Paloma</figcaption><p class="ot-keg-ing">Tequila, lime, grapefruit, soda &middot; 9.5%</p></figure>
-      <figure class="ot-keg ot-keg-todo"><div class="ot-keg-slot">keg shot<br>coming</div><figcaption>Mango Mule</figcaption><p class="ot-keg-ing">Vodka, mango purée, lime, ginger beer &middot; 9.5%</p></figure>
-      <figure class="ot-keg ot-keg-sig"><img src="assets/poly-yourcocktail.png" alt="Your own cocktail keg"><figcaption>Your signature</figcaption><p class="ot-keg-ing">Your recipe, your keg, your label &middot; from 500&thinsp;L</p></figure>
+      <figure class="ot-keg"><div class="ot-sticker" style="--fl:var(--fl-spritz)"><span>Spritz</span></div><figcaption>Spritz</figcaption><p class="ot-keg-ing">Aperol, sparkling wine, soda &middot; 8%</p></figure>
+      <figure class="ot-keg"><div class="ot-sticker" style="--fl:var(--fl-pornstar)"><span>Pornstar Martini</span></div><figcaption>Pornstar Martini</figcaption><p class="ot-keg-ing">Vodka, passion fruit, vanilla, lime &middot; 9.5%</p></figure>
+      <figure class="ot-keg"><div class="ot-sticker" style="--fl:var(--fl-mojito)"><span>Mojito</span></div><figcaption>Mojito</figcaption><p class="ot-keg-ing">Planteray rum, lime, fresh mint, soda &middot; 9.5%</p></figure>
+      <figure class="ot-keg"><div class="ot-sticker" style="--fl:var(--fl-paloma)"><span>Paloma</span></div><figcaption>Paloma</figcaption><p class="ot-keg-ing">Tequila, lime, grapefruit, soda &middot; 9.5%</p></figure>
+      <figure class="ot-keg"><div class="ot-sticker" style="--fl:var(--fl-mango)"><span>Mango Mule</span></div><figcaption>Mango Mule</figcaption><p class="ot-keg-ing">Vodka, mango purée, lime, ginger beer &middot; 9.5%</p></figure>
+      <figure class="ot-keg ot-keg-sig"><div class="ot-sticker ot-sticker-sig"><span>Your label here</span></div><figcaption>Your signature</figcaption><p class="ot-keg-ing">Your recipe, your keg, your label &middot; from 500&thinsp;L</p></figure>
     </div>
   </div>
 </section>
@@ -196,10 +217,24 @@
 <!-- ===== 7 · THE PEOPLE — same credential line as B2C makers ===== -->
 <section class="ot-makers">
   <div class="wrap ot-makers-grid">
+    <!-- B2B keeps the closer-connection founders copy (client feedback);
+         image swap pending Noel's fresh photos -->
     <div class="ot-makers-photo"><img src="assets/founders-kegs.jpg" alt="The founders laughing over a stack of Compact Cocktail kegs"></div>
     <div class="ot-makers-copy">
       <p class="eyebrow">Who&rsquo;s behind it</p>
-      <h2>A Bartender of the Year. A Michelin chef. An award&#8209;winning brewery.</h2>
+      <h2>Built on real experience.</h2>
+      <ul class="ot-founders">
+        <li><b>László Pálffy</b> &mdash; co-owner of Mobilkoktél, Bartender of the Year.</li>
+        <li><b>Dávid Ruff</b> &mdash; Michelin-trained chef, a decade of top-level service.</li>
+        <li><b>Fehér Nyúl Brewery</b> &mdash; the facilities and technical know-how behind every batch.</li>
+      </ul>
+      <!-- TODO: drop in recent brewery photos (professional environment)
+           when the client sends them -->
+      <div class="ot-brewery-thumbs">
+        <div class="ot-thumb">brewery<br>photo</div>
+        <div class="ot-thumb">brewery<br>photo</div>
+        <div class="ot-thumb">brewery<br>photo</div>
+      </div>
       <p class="ot-makers-line">The dream team behind the perfect pour.</p>
     </div>
   </div>
@@ -259,6 +294,7 @@
         <input type="email" placeholder="you@venue.hu" aria-label="Email">
         <input type="tel" placeholder="Phone (optional)" aria-label="Phone">
       </div>
+      <textarea name="message" rows="3" placeholder="Anything we should know? (optional)" aria-label="Message"></textarea>
       <button class="btn btn-primary">Send&nbsp;&rarr;</button>
     </form>
   </div>

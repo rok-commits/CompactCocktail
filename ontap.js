@@ -2,6 +2,32 @@
    (Lackó). One question at a time; every path ends in a contact form
    pre-filled with the answer trail so the team knows what to prep. */
 
+/* Trusted ticker — same moving banner as B2C. TODO: real venue logos
+   (set logo per venue) once collected; initials chips until then. */
+(function () {
+  var OT_VENUES = [
+    { name: 'Sirály Bár',      logo: null },
+    { name: 'Kempinski',       logo: null },
+    { name: 'Voilá',           logo: null },
+    { name: 'Fehér Nyúl',      logo: null },
+    { name: 'Whisky Show',     logo: null },
+    { name: 'Time Out Market', logo: null }
+  ];
+  var track = document.querySelector('.ticker-track');
+  if (!track) return;
+  function initials(n) {
+    return n.split(/\s+/).map(function (w) { return w[0]; }).slice(0, 2).join('').toUpperCase();
+  }
+  function item(v) {
+    return '<span class="tk">' +
+      (v.logo ? '<img class="tk-logo" src="' + v.logo + '" alt="">'
+              : '<i class="tk-logo">' + initials(v.name) + '</i>') +
+      v.name + '</span>';
+  }
+  var set = OT_VENUES.map(item).join('');
+  track.innerHTML = set + set; // duplicate for the seamless loop
+})();
+
 (function () {
   var QUESTIONS = {
     q1: { label: 'built-in system', text: 'Does your venue have a built-in dispensing system?', yes: 'q2', no: 'q4' },
@@ -85,6 +111,7 @@
             '<input type="email" name="email" placeholder="you@venue.hu" aria-label="Email" required>' +
             '<input type="tel" name="phone" placeholder="Phone (optional)" aria-label="Phone">' +
           '</div>' +
+          '<textarea name="message" rows="3" placeholder="Anything we should know? (optional)" aria-label="Message"></textarea>' +
           '<input type="hidden" name="setup" value="' + id + ' | ' + trailText() + '">' +
           '<button class="btn btn-primary" type="submit">' + o.cta + '</button>' +
         '</form>' +
