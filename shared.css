@@ -1,0 +1,59 @@
+/* =====================================================================
+   Shared layer — loaded by BOTH pages, after brand.css + the page CSS.
+   Age gate, generic modal, mobile nav (hamburger), nav-link affordance,
+   footer message.
+   ===================================================================== */
+
+body.cc-noscroll{overflow:hidden}
+
+/* ---------- nav link affordance — pill hover + scroll-spy, no borders ---------- */
+.nav-links{gap:10px}
+.nav-links a{position:relative;padding:9px 16px;border-radius:var(--r-pill);font-weight:600;transition:background .18s ease,color .18s ease}
+.nav-links a:hover{background:rgba(229,100,56,.10);color:var(--co-orange)}
+.nav-links a:focus-visible{outline:2px solid var(--co-orange);outline-offset:2px}
+.nav-links a.active{color:var(--co-orange)}
+.nav-links a.active::after{content:"";position:absolute;left:50%;bottom:1px;transform:translateX(-50%);width:5px;height:5px;border-radius:50%;background:var(--co-orange)}
+
+/* ---------- mobile nav ---------- */
+.nav-burger{display:none;flex-direction:column;justify-content:center;align-items:stretch;gap:5px;width:44px;height:44px;padding:11px 9px;background:none;border:none;cursor:pointer}
+.nav-burger span{display:block;height:2.5px;border-radius:2px;background:var(--co-blue);transition:transform .25s ease,opacity .2s ease}
+.nav.nav-open .nav-burger span:nth-child(1){transform:translateY(7.5px) rotate(45deg)}
+.nav.nav-open .nav-burger span:nth-child(2){opacity:0}
+.nav.nav-open .nav-burger span:nth-child(3){transform:translateY(-7.5px) rotate(-45deg)}
+
+@media (max-width:860px){
+  .nav{flex-wrap:wrap}
+  .nav-burger{display:flex}
+  .nav-cta{padding:11px 20px;font-size:14.5px}
+  .nav.nav-open .nav-links{display:flex;flex-direction:column;align-items:stretch;order:10;width:100%;gap:4px;padding:16px 2px 8px;font-size:18px;animation:cc-menu-in .25s ease}
+  .nav.nav-open .nav-links a{padding:13px 14px}
+  .nav.nav-open .nav-links a.active::after{left:auto;right:14px;top:50%;bottom:auto;transform:translateY(-50%)}
+}
+@media (max-width:430px){
+  .nav-logo img{height:44px}
+}
+@keyframes cc-menu-in{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+
+/* ---------- generic modal ---------- */
+.cc-modal-backdrop{position:fixed;inset:0;z-index:200;background:rgba(43,43,43,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;transition:opacity .25s ease}
+.cc-modal-backdrop.on{opacity:1}
+.cc-backdrop-opaque{background:var(--co-blue);backdrop-filter:none;-webkit-backdrop-filter:none}
+.cc-modal{position:relative;background:var(--co-cream);border-radius:var(--r-lg);max-width:520px;width:100%;max-height:88svh;overflow:auto;padding:44px 40px 38px;text-align:center;transform:translateY(14px) scale(.98);transition:transform .25s ease}
+.cc-modal-backdrop.on .cc-modal{transform:none}
+.cc-modal h3{color:var(--co-blue);font-size:clamp(24px,3vw,30px);font-weight:700;letter-spacing:-.01em;line-height:1.15}
+.cc-modal-sub{color:var(--co-grey);font-size:17px;line-height:1.55;margin-top:12px}
+.cc-modal-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:28px}
+.cc-btn-outline{background:none;color:var(--co-blue);box-shadow:inset 0 0 0 2px var(--co-blue)}
+.cc-btn-outline:hover{background:var(--co-blue);color:#fff}
+.cc-modal-x{position:absolute;top:14px;right:14px;width:38px;height:38px;border:none;border-radius:50%;background:var(--co-cream-deep);color:var(--co-grey);font-size:19px;line-height:1;cursor:pointer;transition:background .15s ease,color .15s ease}
+.cc-modal-x:hover{background:var(--co-orange);color:#fff}
+@media (max-width:520px){
+  .cc-modal{padding:36px 24px 30px}
+}
+
+/* ---------- age gate ---------- */
+.cc-gate-logo{height:52px;margin:0 auto 26px}
+.cc-gate-fine{color:var(--co-grey-light);font-size:13.5px;margin-top:26px}
+
+/* ---------- footer message ---------- */
+.footer-msg{font-size:17px;font-weight:600;color:var(--co-blue)}
