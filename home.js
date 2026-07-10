@@ -1,16 +1,29 @@
-/* B2C v5 — hero flavour switcher + shop cards + scroll reveal */
+/* B2C v5 — hero flavour switcher + shop cards + story modal + scroll reveal */
 
+/* TODO: real per-flavour product links once the Fehér Nyúl webshop pages
+   are confirmed (set `shop` per flavour; WEBSHOP_URL is the fallback). */
+const WEBSHOP_URL = 'https://fehernyul.hu/webshop';
+
+/* `available:false` = not in the webshop at launch → "coming soon" sticker
+   + Notify me instead of Buy. TODO: confirm the launch list with the client.
+   `story`/`video` feed the click-popup — placeholder copy until László's
+   flavour infopack arrives (video: {src, poster, subs} once filmed). */
 const FLAVOURS = [
   { id: 'spritz',   name: 'Spritz',           colorVar: '--fl-spritz',
-    ing: 'Aperol, sparkling wine, soda · 8%' },
+    ing: 'Aperol, sparkling wine, soda · 8%', available: true, video: null,
+    story: 'Born on Venetian canals as the aperitivo of choice, ours is built on real Aperol and proper sparkling wine. Bitter, bubbly, unbothered.' },
   { id: 'mojito',   name: 'Mojito',           colorVar: '--fl-mojito',
-    ing: 'Planteray rum, lime, fresh mint, soda · 9.5%' },
+    ing: 'Planteray rum, lime, fresh mint, soda · 9.5%', available: true, video: null,
+    story: 'Havana’s gift to hot afternoons — and Hemingway’s standing order. Planteray rum, fresh mint and lime, exactly as a bartender would build it.' },
   { id: 'paloma',   name: 'Paloma',           colorVar: '--fl-paloma',
-    ing: 'Tequila, lime, grapefruit, soda · 9.5%' },
+    ing: 'Tequila, lime, grapefruit, soda · 9.5%', available: false, video: null,
+    story: 'Mexico’s true favourite tequila drink — not the margarita. Grapefruit, lime and a clean tequila bite, made for long tables in the sun.' },
   { id: 'pornstar', name: 'Pornstar Martini', colorVar: '--fl-pornstar',
-    ing: 'Vodka, passion fruit, vanilla, lime · 9.5%' },
+    ing: 'Vodka, passion fruit, vanilla, lime · 9.5%', available: true, video: null,
+    story: 'London, 2002: a cheeky name on a seriously good drink. Passion fruit, vanilla and vodka — the party cocktail that never left the charts.' },
   { id: 'mango',    name: 'Mango Mule',       colorVar: '--fl-mango',
-    ing: 'Vodka, mango purée, lime, ginger beer · 9.5%' },
+    ing: 'Vodka, mango purée, lime, ginger beer · 9.5%', available: false, video: null,
+    story: 'The Moscow Mule took a detour through the tropics. Mango purée, sharp lime and spicy ginger beer — our own twist on a copper-mug classic.' },
 ];
 
 const css = getComputedStyle(document.documentElement);
@@ -93,13 +106,79 @@ panel.addEventListener('touchend', e => {
 
 /* ---------- shop cards ---------- */
 const grid = document.querySelector('.shop-grid');
-grid.innerHTML = FLAVOURS.map(f => `
-  <div class="shop-card" style="--fl:${colorOf(f)}">
+grid.innerHTML = FLAVOURS.map((f, i) => `
+  <div class="shop-card${f.available ? '' : ' is-out'}" style="--fl:${colorOf(f)}"
+       data-i="${i}" role="button" tabindex="0" aria-label="${f.name} — the story">
+    ${f.available ? '' : '<span class="shop-sticker">Coming soon</span>'}
     <img src="assets/keg-full-${f.id}.png" alt="${f.name} keg">
     <h3>${f.name}</h3>
     <p class="ing">${f.ing}</p>
-    <button class="btn btn-primary">Buy</button>
+    <button class="btn btn-primary" data-buy="${i}">${f.available ? 'Buy' : 'Notify me'}</button>
+    <span class="shop-more">The story&nbsp;&rarr;</span>
   </div>`).join('');
+
+/* ---------- webshop redirect popup (all purchases finish at Fehér Nyúl) ---------- */
+function shopRedirect(f) {
+  const url = (f && f.shop) || WEBSHOP_URL;
+  ccModal({
+    html:
+      '<button class="cc-modal-x" data-close aria-label="Close">&times;</button>' +
+      '<h3>Off to the webshop.</h3>' +
+      '<p class="cc-modal-sub">Don’t be alarmed — our kegs are sold through our partner brewery. You’ll finish your purchase on the <b>Fehér Nyúl webshop</b>.</p>' +
+      '<div class="cc-modal-btns">' +
+        `<a class="btn btn-primary" href="${url}" target="_blank" rel="noopener" data-close>Take me there&nbsp;&rarr;</a>` +
+        '<button class="btn cc-btn-outline" data-close>Stay here</button>' +
+      '</div>'
+  });
+}
+
+/* ---------- flavour story popup (content pending László's infopack) ---------- */
+function openStory(f) {
+  const media = f.video
+    ? `<video controls playsinline poster="${f.video.poster || ''}">
+         <source src="${f.video.src}">
+         ${f.video.subs ? `<track kind="subtitles" src="${f.video.subs}" srclang="en" default>` : ''}
+       </video>`
+    : `<img src="assets/keg-full-${f.id}.png" alt="${f.name} keg">
+       <span class="story-soon">micro-video coming soon</span>`;
+  const m = ccModal({
+    html:
+      '<button class="cc-modal-x" data-close aria-label="Close">&times;</button>' +
+      `<div class="story-media" style="background:${colorOf(f)}">${media}</div>` +
+      `<h3>${f.name}</h3>` +
+      `<p class="cc-modal-sub">${f.story}</p>` +
+      '<div class="cc-modal-btns">' +
+        (f.available
+          ? '<button class="btn btn-primary" data-shop>Buy this keg&nbsp;&rarr;</button>'
+          : '<button class="btn btn-primary" data-notify>Notify me when it lands</button>') +
+      '</div>'
+  });
+  const shopBtn = m.querySelector('[data-shop]');
+  if (shopBtn) shopBtn.addEventListener('click', () => { m.close(); shopRedirect(f); });
+  const notifyBtn = m.querySelector('[data-notify]');
+  if (notifyBtn) notifyBtn.addEventListener('click', () => { m.close(); goNewsletter(); });
+}
+
+function goNewsletter() {
+  document.querySelector('.cta').scrollIntoView({ behavior: 'smooth' });
+  setTimeout(() => document.querySelector('.cta-form input')?.focus({ preventScroll: true }), 600);
+}
+
+grid.addEventListener('click', e => {
+  const buy = e.target.closest('[data-buy]');
+  if (buy) {
+    const f = FLAVOURS[+buy.dataset.buy];
+    f.available ? shopRedirect(f) : goNewsletter();
+    return;
+  }
+  const card = e.target.closest('.shop-card');
+  if (card) openStory(FLAVOURS[+card.dataset.i]);
+});
+grid.addEventListener('keydown', e => {
+  if (e.key !== 'Enter') return;
+  const card = e.target.closest('.shop-card');
+  if (card) openStory(FLAVOURS[+card.dataset.i]);
+});
 
 /* ---------- trusted ticker — venue logo + name pairs ----------
    TODO: when the client's venue-logo sheet arrives, drop the files in
