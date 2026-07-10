@@ -14,6 +14,12 @@ body.cc-noscroll{overflow:hidden}
 .nav-links a.active{color:var(--co-orange)}
 .nav-links a.active::after{content:"";position:absolute;left:50%;bottom:1px;transform:translateX(-50%);width:5px;height:5px;border-radius:50%;background:var(--co-orange)}
 
+/* ---------- language toggle ---------- */
+.nav-lang{display:flex;align-items:center;gap:2px;font-size:14px;font-weight:700;letter-spacing:.04em;color:var(--co-grey-light)}
+.nav-lang a{padding:7px 7px;border-radius:var(--r-sm);transition:color .15s ease,background .15s ease}
+.nav-lang a:hover{color:var(--co-orange);background:rgba(229,100,56,.10)}
+.nav-lang a.active{color:var(--co-orange)}
+
 /* ---------- mobile nav ---------- */
 .nav-burger{display:none;flex-direction:column;justify-content:center;align-items:stretch;gap:5px;width:44px;height:44px;padding:11px 9px;background:none;border:none;cursor:pointer}
 .nav-burger span{display:block;height:2.5px;border-radius:2px;background:var(--co-blue);transition:transform .25s ease,opacity .2s ease}

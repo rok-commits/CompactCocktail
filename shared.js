@@ -4,7 +4,53 @@
 
 (function () {
   /* pages under /en/ reference assets one level up */
-  var ROOT = /\/en\//.test(location.pathname) ? '../' : '';
+  var IS_EN_DIR = /\/en\//.test(location.pathname);
+  var ROOT = IS_EN_DIR ? '../' : '';
+  var LANG = document.documentElement.lang === 'hu' ? 'hu' : 'en';
+  window.CC_LANG = LANG;
+  window.CC_ROOT = ROOT;
+
+  /* ---------- language routing ----------
+     Root = HU (main market), /en/ = EN. First visit: pick by browser
+     language; afterwards the stored choice wins. The header HU/EN toggle
+     stores the choice before navigating. */
+  var LANG_KEY = 'cc_lang';
+  try {
+    var pref = localStorage.getItem(LANG_KEY);
+    if (!pref) {
+      var langs = navigator.languages || [navigator.language || 'hu'];
+      pref = langs.some(function (l) { return /^hu/i.test(l); }) ? 'hu' : 'en';
+      localStorage.setItem(LANG_KEY, pref);
+    }
+    var page = location.pathname.split('/').pop() || 'index.html';
+    if (pref === 'en' && !IS_EN_DIR) location.replace('en/' + page + location.hash);
+    else if (pref === 'hu' && IS_EN_DIR) location.replace('../' + page + location.hash);
+  } catch (e) {}
+
+  document.querySelectorAll('[data-setlang]').forEach(function (a) {
+    a.addEventListener('click', function () {
+      try { localStorage.setItem(LANG_KEY, a.getAttribute('data-setlang')); } catch (e) {}
+    });
+  });
+
+  /* ---------- shared UI strings ---------- */
+  var T = LANG === 'hu' ? {
+    gateQ: 'Elmúltál 18 éves?',
+    gateSub: 'Az oldal megtekintéséhez nagykorúnak kell lenned.',
+    gateYes: 'Igen, elmúltam 18',
+    gateNo: 'Még nem',
+    gateFine: 'Fogyaszd felelősséggel.',
+    gateDeniedH: 'Találkozunk pár év múlva.',
+    gateDeniedP: 'Gyere vissza, ha elmúltál 18 &mdash; a hordók megvárnak.'
+  } : {
+    gateQ: 'Are you 18 or older?',
+    gateSub: 'You must be of legal drinking age to enter this site.',
+    gateYes: 'Yes, I’m 18+',
+    gateNo: 'Not yet',
+    gateFine: 'Please enjoy responsibly.',
+    gateDeniedH: 'See you in a few years.',
+    gateDeniedP: 'Come back when you’re 18 &mdash; the kegs will be waiting.'
+  };
 
   /* ---------- generic modal ----------
      ccModal({ html, dismissable=true, opaque=false, onClose })
@@ -62,13 +108,13 @@
       opaque: true,
       html:
         '<img class="cc-gate-logo" src="' + ROOT + 'assets/logo-orange.svg" alt="Compact Cocktail">' +
-        '<h3>Are you 18 or older?</h3>' +
-        '<p class="cc-modal-sub">You must be of legal drinking age to enter this site.</p>' +
+        '<h3>' + T.gateQ + '</h3>' +
+        '<p class="cc-modal-sub">' + T.gateSub + '</p>' +
         '<div class="cc-modal-btns">' +
-          '<button class="btn btn-primary" data-yes>Yes, I’m 18+</button>' +
-          '<button class="btn cc-btn-outline" data-no>Not yet</button>' +
+          '<button class="btn btn-primary" data-yes>' + T.gateYes + '</button>' +
+          '<button class="btn cc-btn-outline" data-no>' + T.gateNo + '</button>' +
         '</div>' +
-        '<p class="cc-gate-fine">Please enjoy responsibly.</p>'
+        '<p class="cc-gate-fine">' + T.gateFine + '</p>'
     });
     gate.querySelector('[data-yes]').addEventListener('click', function () {
       try { localStorage.setItem(AGE_KEY, '1'); } catch (e) {}
@@ -77,9 +123,9 @@
     gate.querySelector('[data-no]').addEventListener('click', function () {
       gate.querySelector('.cc-modal').innerHTML =
         '<img class="cc-gate-logo" src="' + ROOT + 'assets/logo-orange.svg" alt="Compact Cocktail">' +
-        '<h3>See you in a few years.</h3>' +
-        '<p class="cc-modal-sub">Come back when you’re 18 &mdash; the kegs will be waiting.</p>' +
-        '<p class="cc-gate-fine">Please enjoy responsibly.</p>';
+        '<h3>' + T.gateDeniedH + '</h3>' +
+        '<p class="cc-modal-sub">' + T.gateDeniedP + '</p>' +
+        '<p class="cc-gate-fine">' + T.gateFine + '</p>';
     });
   }
 

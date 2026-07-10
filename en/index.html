@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compact Cocktail — Bar-quality cocktails, by the keg</title>
+<meta name="description" content="Bar-quality cocktails on tap. 5L party kegs — about 30 drinks each. Chill. Pour. Serve.">
+<!-- TODO: confirm the production domain (placeholder below) -->
+<link rel="canonical" href="https://compactcocktail.hu/en/">
+<link rel="alternate" hreflang="hu" href="https://compactcocktail.hu/">
+<link rel="alternate" hreflang="en" href="https://compactcocktail.hu/en/">
+<link rel="alternate" hreflang="x-default" href="https://compactcocktail.hu/">
+<link rel="stylesheet" href="../brand.css">
+<link rel="stylesheet" href="../home.css">
+<link rel="stylesheet" href="../shared.css">
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<header class="nav">
+  <a class="nav-logo" href="#"><img src="../assets/logo-orange.svg" alt="Compact Cocktail"></a>
+  <nav class="nav-links">
+    <a href="#flavours">Flavors</a>
+    <a href="#how">How it works</a>
+    <a href="#makers">The makers</a>
+    <a href="on-tap.html" class="nav-b2b">B2B</a>
+  </nav>
+<div class="nav-lang" aria-label="Language"><a href="../index.html" data-setlang="hu">HU</a><a href="index.html" data-setlang="en" class="active">EN</a></div>
+    <a href="#flavours" class="btn btn-primary nav-cta">Shop the kegs</a>
+  <button class="nav-burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+</header>
+
+<!-- ===== 1 · HERO — flavour switcher (kept from Figma, all 5 flavours) ===== -->
+<section class="hero" id="hero">
+  <div class="hero-panel" data-flavour="spritz">
+    <div class="hero-pattern"></div>
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <h1>Cocktails this good shouldn&rsquo;t be&nbsp;this&nbsp;easy.</h1>
+        <p class="hero-sub">Bar-quality cocktails, by the keg.<br>About 30 drinks each.</p>
+        <a href="#flavours" class="btn btn-light">Shop the kegs&nbsp;&rarr;</a>
+      </div>
+      <div class="hero-stage">
+        <img class="hero-garnish" src="../assets/garnish-spritz.png" alt="">
+        <img class="hero-keg" src="../assets/keg-full-spritz.png" alt="Compact Cocktail 5L keg">
+        <div class="hero-flavour-name">Spritz</div>
+      </div>
+      <div class="hero-cursor" aria-hidden="true">Next flavor&nbsp;&rarr;</div>
+    </div>
+    <div class="hero-dots" role="tablist" aria-label="Flavors"></div>
+  </div>
+</section>
+
+<!-- ===== 2 · SHOP — pick your flavour ===== -->
+<section class="shop" id="flavours">
+  <div class="wrap">
+    <p class="eyebrow">5 flavors &middot; 5L each</p>
+    <h2>Pick your flavor.</h2>
+    <p class="section-sub">One keg &asymp; 30 cocktails.</p>
+    <div class="shop-grid"></div>
+  </div>
+</section>
+
+<!-- ===== 3 · HOW — Chill. Pour. Serve. (people using it, high on the page) ===== -->
+<section class="how" id="how">
+  <div class="wrap">
+    <p class="eyebrow">The entire skill set</p>
+    <h2>Chill. Pour. Serve.</h2>
+    <div class="how-steps">
+      <div class="how-step" data-num="01">
+        <div class="how-photo"><img src="../assets/b2c-can.jpg" alt="Keg chilling in the fridge"></div>
+        <h3>Chill.</h3>
+        <p>Pop it in the fridge.</p>
+      </div>
+      <div class="how-step how-step-mid" data-num="02">
+        <div class="how-photo"><img src="../assets/b2c-pour.jpg" alt="Pouring straight from the keg"></div>
+        <h3>Pour.</h3>
+        <p>Straight from the keg.</p>
+      </div>
+      <div class="how-step how-step-last" data-num="03">
+        <div class="how-photo"><img src="../assets/b2c-enjoy.jpg" alt="Friends enjoying cocktails"></div>
+        <h3>Serve.</h3>
+        <p>&asymp;30 cocktails. Zero cleanup.</p>
+      </div>
+    </div>
+
+    <!-- how the keg itself works — placeholder line-art until the real
+         infographic; step wording TBC with the client -->
+    <div class="how-keg">
+      <p class="how-keg-head">The keg does the bartending.</p>
+      <div class="how-keg-row">
+        <div class="how-keg-step">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="12" y="6" width="24" height="36" rx="4"/><line x1="12" y1="22" x2="36" y2="22"/><line x1="31" y1="12" x2="31" y2="17"/><line x1="31" y1="27" x2="31" y2="32"/></svg>
+          <span>Chill it in the fridge</span>
+        </div>
+        <div class="how-keg-step">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18v-6a4 4 0 0 1 4-4h12a4 4 0 0 1 4 4v6"/><rect x="10" y="18" width="28" height="24" rx="5"/><path d="M24 18v-7"/><path d="M24 26v6"/><circle cx="24" cy="26" r="3"/></svg>
+          <span>Flip open the built-in tap</span>
+        </div>
+        <div class="how-keg-step">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 6h20l-3 30a5 5 0 0 1-5 4h-4a5 5 0 0 1-5-4z"/><path d="M15.5 18h17"/><path d="M20 44h8"/></svg>
+          <span>Pour &mdash; no gas, no tools</span>
+        </div>
+        <div class="how-keg-step">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="24" cy="24" r="18"/><path d="M24 13v11l8 5"/></svg>
+          <span>Stays fresh for days</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 4 · THE MATH — big-type band on CoCo Blue ===== -->
+<section class="math">
+  <div class="math-pattern" aria-hidden="true"></div>
+  <div class="wrap">
+    <p class="eyebrow eyebrow-onblue">The math</p>
+    <h2 class="math-head">Same drink. Different bill.</h2>
+    <div class="tag-row">
+      <div class="tag tag-us">
+        <span class="tag-where">your keg</span>
+        <span class="tag-price">&asymp;900&nbsp;Ft</span>
+        <span class="tag-per">a drink</span>
+      </div>
+      <div class="tag tag-bar">
+        <span class="tag-where">the bar</span>
+        <span class="tag-price tag-strike">3&thinsp;000&nbsp;Ft</span>
+        <span class="tag-per">a drink — plus the tip</span>
+      </div>
+    </div>
+    <p class="math-kicker">One keg &asymp; 30 cocktails.</p>
+
+    <!-- gains & pains from the value-prop canvas — sell the hosting
+         experience, not just the price (client feedback) -->
+    <div class="gains">
+      <h3 class="gains-head">Same night. Different host.</h3>
+      <div class="gains-row">
+        <div class="gain">
+          <span class="gain-pain">Stuck mixing in the kitchen</span>
+          <span class="gain-win">Guests pour their own</span>
+        </div>
+        <div class="gain">
+          <span class="gain-pain">A 15-ingredient shopping run</span>
+          <span class="gain-win">One keg in the fridge</span>
+        </div>
+        <div class="gain">
+          <span class="gain-pain">&bdquo;Did I mix this right?&rdquo;</span>
+          <span class="gain-win">Bar-quality, every pour</span>
+        </div>
+      </div>
+      <p class="math-kicker">You throw the party. The keg runs the bar.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 5 · TRUSTED — Budapest bars ticker on black ===== -->
+<section class="trusted">
+  <div class="wrap">
+    <p class="eyebrow eyebrow-onblack">As poured across Hungary</p>
+    <h2 class="trusted-line">Trusted by Hungary&rsquo;s best venues.<br><span>Now pouring at home, too.</span></h2>
+  </div>
+  <!-- venue logo+name pairs rendered from VENUES in home.js;
+       initials chips stand in until the client's logo sheet arrives -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track"></div>
+  </div>
+</section>
+
+<!-- ===== 6 · OCCASIONS — polaroid collage ===== -->
+<section class="occasions">
+  <div class="wrap">
+    <p class="eyebrow">Take it anywhere</p>
+    <h2>Wherever the good days happen.</h2>
+    <div class="pol-row">
+      <figure class="pol"><img src="../assets/occ-car.jpg" alt=""><figcaption>The lake, before noon.</figcaption></figure>
+      <figure class="pol"><img src="../assets/occ-skate.jpg" alt=""><figcaption>Skate now, sip later.</figcaption></figure>
+      <figure class="pol"><img src="../assets/occ-picnic.jpg" alt=""><figcaption>Riding shotgun to a friend&rsquo;s.</figcaption></figure>
+      <figure class="pol"><img src="../assets/b2c-party.jpg" alt=""><figcaption>House parties.</figcaption></figure>
+      <figure class="pol"><img src="../assets/occ-party.jpg" alt=""><figcaption>Birthdays.</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 7 · REACTIONS — speech bubbles + IG ===== -->
+<section class="reactions">
+  <div class="wrap">
+    <p class="eyebrow">What legends say</p>
+    <h2>The reviews are in.</h2>
+    <div class="bubble-row">
+      <div class="bubble bubble-spritz">
+        <p>&bdquo;I have taken more out of the Spritz than the Spritz has taken out of me.&rdquo;</p>
+        <span class="bubble-name">Winston Churchill* &middot; on the Spritz, probably</span>
+      </div>
+      <div class="bubble bubble-mojito bubble-mid">
+        <p>&bdquo;My mojito, wherever the keg is.&rdquo;</p>
+        <span class="bubble-name">Ernest Hemingway* &middot; on the Mojito, allegedly</span>
+      </div>
+      <div class="bubble bubble-pornstar">
+        <p>&bdquo;In victory, you deserve a Pornstar Martini. In defeat, you need one.&rdquo;</p>
+        <span class="bubble-name">Napoléon Bonaparte* &middot; on the Pornstar Martini, somehow</span>
+      </div>
+    </div>
+    <p class="footnote">*Not actual endorsements. But they&rsquo;d have loved it.</p>
+  </div>
+</section>
+
+<!-- ===== 8 · MAKERS — editorial split with giant arch photo ===== -->
+<section class="makers" id="makers">
+  <div class="wrap makers-grid">
+    <div class="makers-copy">
+      <p class="eyebrow">Who&rsquo;s behind it</p>
+      <h2>A Bartender of the Year. A Michelin chef. An award&#8209;winning brewery.</h2>
+      <p class="makers-line">The dream team behind the perfect pour.</p>
+    </div>
+    <div class="makers-photo"><img src="../assets/founders-kegs.jpg" alt="The founders laughing over a stack of Compact Cocktail kegs"></div>
+  </div>
+</section>
+
+<!-- ===== 9 · LAST PUSH — where & how to get it ===== -->
+<section class="taste">
+  <div class="wrap taste-grid">
+    <div class="taste-copy">
+      <p class="eyebrow eyebrow-onorange">Delivery &middot; Pickup</p>
+      <h2>Get your keg.</h2>
+      <p class="taste-sub">At your door in 1&ndash;2 days, anywhere in Hungary &mdash; or grab one off the shelf at Mr.&nbsp;Alkohol in&nbsp;Budapest.</p>
+      <div class="taste-btns">
+        <!-- TODO: point "Shop online" at the external webshop once it's live -->
+        <a href="#flavours" class="btn btn-light">Shop online&nbsp;&rarr;</a>
+        <a href="https://www.google.com/maps/search/?api=1&amp;query=Mr.+Alkohol+Bajcsy-Zsilinszky+%C3%BAt+Budapest" target="_blank" rel="noopener" class="btn btn-ghost">Pick up in person&nbsp;&rarr;</a>
+      </div>
+    </div>
+    <div class="taste-photo"><img src="../assets/taste-car.jpg" alt="A keg riding along on the front seat of a convertible"></div>
+  </div>
+</section>
+
+<!-- ===== 9b · FOR VENUES — B2B funnel ===== -->
+<section class="b2b">
+  <div class="wrap b2b-grid">
+    <div class="b2b-copy">
+      <p class="eyebrow">For venues</p>
+      <h2 class="b2b-head">Run a bar, hotel or&nbsp;event?</h2>
+      <p class="b2b-sub">The same cocktails on a pro tap system — 12&ndash;30&thinsp;L kegs, poured in seconds, no&nbsp;training.</p>
+      <a href="on-tap.html" class="btn btn-primary">See it on tap&nbsp;&rarr;</a>
+    </div>
+    <div class="b2b-photo"><img src="../assets/b2b-real-pour.jpg" alt="Compact Cocktail poured from the tap at Sirály Bár"></div>
+  </div>
+</section>
+
+<!-- ===== 10 · FINAL CTA + FOOTER ===== -->
+<section class="cta">
+  <div class="wrap">
+    <h2>Pour yourself 10% off.</h2>
+    <p class="section-sub">Drop your email, we send the code for your first keg — plus first dibs when a new flavor drops. No spam, just cocktails.</p>
+    <form class="cta-form">
+      <input type="email" name="email" placeholder="you@email.hu" aria-label="Email" required>
+      <button class="btn btn-primary" type="submit">Get the code</button>
+    </form>
+    <p class="cta-sent" hidden>Done &mdash; your code is on its way. Check your inbox.</p>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap footer-grid">
+    <img src="../assets/logo-orange.svg" alt="Compact Cocktail" class="footer-logo">
+    <p class="footer-msg">Please enjoy responsibly.</p>
+    <p class="footer-fine">&copy; 2026 Compact Cocktail &middot; 18+</p>
+  </div>
+</footer>
+
+<script src="../shared.js"></script>
+<script src="../home.js"></script>
+</body>
+</html>
