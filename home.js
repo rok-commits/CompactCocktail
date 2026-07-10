@@ -101,6 +101,37 @@ grid.innerHTML = FLAVOURS.map(f => `
     <button class="btn btn-primary">Buy</button>
   </div>`).join('');
 
+/* ---------- trusted ticker — venue logo + name pairs ----------
+   TODO: when the client's venue-logo sheet arrives, drop the files in
+   assets/venues/ and set logo:'assets/venues/<file>.svg' per venue;
+   until then an initials chip is rendered. */
+const VENUES = [
+  { name: 'Time Out Market',   logo: null },
+  { name: 'Spíler Biergarten', logo: null },
+  { name: 'Voilá',             logo: null },
+  { name: 'Pántlika',          logo: null },
+  { name: 'Gajdó',             logo: null },
+  { name: 'Accor',             logo: null },
+  { name: 'Rajkai',            logo: null },
+  { name: 'Világbéke',         logo: null },
+  { name: 'Utazó Bár',         logo: null },
+  { name: 'Patent',            logo: null },
+  { name: 'Flip Mood',         logo: null },
+  { name: 'Vak Varjú',         logo: null },
+  { name: 'És Bisztró',        logo: null },
+];
+
+const tickTrack = document.querySelector('.ticker-track');
+if (tickTrack) {
+  const initials = n => n.split(/\s+/).map(w => w[0]).slice(0, 2).join('').toUpperCase();
+  const tkItem = v => `<span class="tk">` +
+    (v.logo ? `<img class="tk-logo" src="${v.logo}" alt="">`
+            : `<i class="tk-logo">${initials(v.name)}</i>`) +
+    `${v.name}</span>`;
+  const set = VENUES.map(tkItem).join('');
+  tickTrack.innerHTML = set + set; // duplicate for the seamless loop
+}
+
 /* ---------- math pattern parallax (brand arch tile drifts on scroll) ---------- */
 const mathPattern = document.querySelector('.math-pattern');
 const mathSec = document.querySelector('.math');
