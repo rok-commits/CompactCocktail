@@ -6,6 +6,9 @@ const ROOT = window.CC_ROOT || '';     // '../' on /en/ pages
 /* TODO: real per-flavour product links once the Fehér Nyúl webshop pages
    are confirmed (set `shop` per flavour; WEBSHOP_URL is the fallback). */
 const WEBSHOP_URL = 'https://fehernyul.hu/webshop';
+/* in-person pickup — Mr. Alkohol, Budapest (the only pickup point at launch;
+   Sirály/Shirai dropped per client, Jul 13). */
+const PICKUP_URL = 'https://www.google.com/maps/search/?api=1&query=Mr.+Alkohol+Bajcsy-Zsilinszky+%C3%BAt+Budapest';
 
 /* page strings rendered by JS, per language */
 const T = LANG === 'hu' ? {
@@ -13,9 +16,9 @@ const T = LANG === 'hu' ? {
   sticker: 'Hamarosan', aria: ' — a sztori',
   buyKeg: 'Megveszem ezt a hordót&nbsp;&rarr;', notifyKeg: 'Értesíts, ha megérkezik',
   videoSoon: 'hamarosan mikro-videó',
-  shopH: 'Irány a webshop.',
-  shopP: 'Ne ijedj meg — a hordóinkat a partner sörfőzdénk árulja. A vásárlást a <b>Fehér Nyúl webshopjában</b> fejezed be.',
-  shopGo: 'Vigyél oda&nbsp;&rarr;', shopStay: 'Maradok',
+  shopH: 'Hogyan szeretnéd?',
+  shopP: 'Ne ijedj meg — a hordóinkat a partner sörfőzdénk árulja. Online a <b>Fehér Nyúl webshopjában</b> fejezed be a vásárlást, vagy személyesen átveheted a <b>Mr. Alkoholban</b>, Budapesten.',
+  shopGo: 'Online vásárlás&nbsp;&rarr;', shopPickup: 'Személyes átvétel&nbsp;&rarr;', shopStay: 'Maradok',
   ing: {
     spritz: 'Aperol, pezsgő, szóda · 8%',
     mojito: 'Planteray rum, lime, friss menta, szóda · 9.5%',
@@ -28,9 +31,9 @@ const T = LANG === 'hu' ? {
   sticker: 'Coming soon', aria: ' — the story',
   buyKeg: 'Buy this keg&nbsp;&rarr;', notifyKeg: 'Notify me when it lands',
   videoSoon: 'micro-video coming soon',
-  shopH: 'Off to the webshop.',
-  shopP: 'Don’t be alarmed — our kegs are sold through our partner brewery. You’ll finish your purchase on the <b>Fehér Nyúl webshop</b>.',
-  shopGo: 'Take me there&nbsp;&rarr;', shopStay: 'Stay here',
+  shopH: 'How would you like it?',
+  shopP: 'Don’t be alarmed — our kegs are sold through our partner brewery. Finish online on the <b>Fehér Nyúl webshop</b>, or pick one up in person at <b>Mr. Alkohol</b> in Budapest.',
+  shopGo: 'Shop online&nbsp;&rarr;', shopPickup: 'Pick up in person&nbsp;&rarr;', shopStay: 'Stay here',
   ing: {
     spritz: 'Aperol, sparkling wine, soda · 8%',
     mojito: 'Planteray rum, lime, fresh mint, soda · 9.5%',
@@ -41,26 +44,27 @@ const T = LANG === 'hu' ? {
 };
 
 /* `available:false` = not in the webshop at launch → "coming soon" sticker
-   + Notify me instead of Buy. TODO: confirm the launch list with the client.
+   + Notify me instead of Buy. Launch list (client, Jul 13): Mojito, Paloma,
+   Pornstar Martini live; Spritz + Mango Mule coming soon, grouped at the end.
    `story`/`video` feed the click-popup — placeholder copy until László's
    flavour infopack arrives (video: {src, poster, subs} once filmed). */
 const FLAVOURS = [
-  { id: 'spritz',   name: 'Spritz',           colorVar: '--fl-spritz',
-    available: true, video: null, story: {
-      en: 'Born on Venetian canals as the aperitivo of choice, ours is built on real Aperol and proper sparkling wine. Bitter, bubbly, unbothered.',
-      hu: 'A velencei csatornák aperitivója, igazi Aperolból és rendes pezsgőből építve. Keserű, buborékos, laza.' } },
   { id: 'mojito',   name: 'Mojito',           colorVar: '--fl-mojito',
     available: true, video: null, story: {
       en: 'Havana’s gift to hot afternoons — and Hemingway’s standing order. Planteray rum, fresh mint and lime, exactly as a bartender would build it.',
       hu: 'Havanna ajándéka a forró délutánokra — és Hemingway állandó rendelése. Planteray rum, friss menta és lime, pontosan úgy, ahogy egy bártender készítené.' } },
   { id: 'paloma',   name: 'Paloma',           colorVar: '--fl-paloma',
-    available: false, video: null, story: {
+    available: true, video: null, story: {
       en: 'Mexico’s true favourite tequila drink — not the margarita. Grapefruit, lime and a clean tequila bite, made for long tables in the sun.',
       hu: 'Mexikó igazi kedvenc tequilás itala — nem a margarita. Grépfrút, lime és tiszta tequila, hosszú, napsütötte asztalokhoz.' } },
   { id: 'pornstar', name: 'Pornstar Martini', colorVar: '--fl-pornstar',
     available: true, video: null, story: {
       en: 'London, 2002: a cheeky name on a seriously good drink. Passion fruit, vanilla and vodka — the party cocktail that never left the charts.',
       hu: 'London, 2002: pimasz név egy komolyan jó italon. Maracuja, vanília és vodka — a partikoktél, ami sosem esett ki a slágerlistáról.' } },
+  { id: 'spritz',   name: 'Spritz',           colorVar: '--fl-spritz',
+    available: false, video: null, story: {
+      en: 'Born on Venetian canals as the aperitivo of choice, ours is built on real Aperol and proper sparkling wine. Bitter, bubbly, unbothered.',
+      hu: 'A velencei csatornák aperitivója, igazi Aperolból és rendes pezsgőből építve. Keserű, buborékos, laza.' } },
   { id: 'mango',    name: 'Mango Mule',       colorVar: '--fl-mango',
     available: false, video: null, story: {
       en: 'The Moscow Mule took a detour through the tropics. Mango purée, sharp lime and spicy ginger beer — our own twist on a copper-mug classic.',
@@ -92,6 +96,17 @@ FLAVOURS.forEach((f, i) => {
 });
 const dots = [...dotsBox.children];
 
+/* initial paint — first (available) flavour, no roll animation */
+(function initHero() {
+  const f = FLAVOURS[0];
+  panel.style.background = colorOf(f);
+  panel.style.setProperty('--fl-dark', darkOf(f));
+  panel.dataset.flavour = f.id;
+  kegImg.src  = `${ROOT}assets/keg-full-${f.id}.png`;
+  garnish.src = `${ROOT}assets/garnish-${f.id}.png`;
+  fname.textContent = f.name;
+})();
+
 function show(i) {
   current = i;
   const f = FLAVOURS[i];
@@ -101,13 +116,16 @@ function show(i) {
   pattern.classList.remove('roll');
   void pattern.offsetWidth; // restart the roll animation
   pattern.classList.add('roll');
-  stage.classList.add('switching');
+  stage.classList.remove('entering');
+  stage.classList.add('switching');       // keg + garnish fly out
   setTimeout(() => {
     kegImg.src  = `${ROOT}assets/keg-full-${f.id}.png`;
     garnish.src = `${ROOT}assets/garnish-${f.id}.png`;
     fname.textContent = f.name;
     stage.classList.remove('switching');
-  }, 320);
+    stage.classList.add('entering');      // keg + garnish fly back in
+    setTimeout(() => stage.classList.remove('entering'), 520);
+  }, 380);
   dots.forEach((d, j) => d.classList.toggle('active', j === i));
 }
 
@@ -169,8 +187,9 @@ function shopRedirect(f) {
       `<p class="cc-modal-sub">${T.shopP}</p>` +
       '<div class="cc-modal-btns">' +
         `<a class="btn btn-primary" href="${url}" target="_blank" rel="noopener" data-close>${T.shopGo}</a>` +
-        `<button class="btn cc-btn-outline" data-close>${T.shopStay}</button>` +
-      '</div>'
+        `<a class="btn cc-btn-outline" href="${PICKUP_URL}" target="_blank" rel="noopener" data-close>${T.shopPickup}</a>` +
+      '</div>' +
+      `<button class="cc-modal-plain" data-close>${T.shopStay}</button>`
   });
 }
 
@@ -202,8 +221,10 @@ function openStory(f) {
 }
 
 function goNewsletter() {
-  document.querySelector('.cta').scrollIntoView({ behavior: 'smooth' });
-  setTimeout(() => document.querySelector('.cta-form input')?.focus({ preventScroll: true }), 600);
+  const form = document.querySelector('.cta-form');
+  if (!form) return;
+  form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  setTimeout(() => form.querySelector('input')?.focus({ preventScroll: true }), 600);
 }
 
 grid.addEventListener('click', e => {
@@ -222,33 +243,42 @@ grid.addEventListener('keydown', e => {
   if (card) openStory(FLAVOURS[+card.dataset.i]);
 });
 
-/* ---------- trusted ticker — venue logo + name pairs ----------
-   TODO: when the client's venue-logo sheet arrives, drop the files in
-   assets/venues/ and set logo:'assets/venues/<file>.svg' per venue;
-   until then an initials chip is rendered. */
+/* ---------- trusted ticker — venue logos, grayscale ----------
+   TODO: Flip Mood — no official logo found online (client-confirmed
+   real business, but no site/social presence turned up); needs a
+   file or link from the client.
+   All logos are pre-converted to grayscale (assets/venue-logos/*-gray)
+   so the row reads as one uniform system instead of each venue's own
+   brand colours. `square: true` = a circular/near-square badge, which
+   gets a taller box than the wordmark logos so it stays readable. */
+/* size: {h,w} = explicit per-logo override (client: rebalance pass),
+   px, computed from each logo's real aspect ratio at ±20% of its tier's
+   default height (55px wordmarks / 100px badges) so it renders at
+   exactly that height with no letterboxing from the width cap. */
 const VENUES = [
-  { name: 'Time Out Market',   logo: null },
-  { name: 'Spíler Biergarten', logo: null },
-  { name: 'Voilá',             logo: null },
-  { name: 'Pántlika',          logo: null },
-  { name: 'Gajdó',             logo: null },
-  { name: 'Accor',             logo: null },
-  { name: 'Rajkai',            logo: null },
-  { name: 'Világbéke',         logo: null },
-  { name: 'Utazó Bár',         logo: null },
-  { name: 'Patent',            logo: null },
+  { name: 'Time Out Market',   logo: `${ROOT}assets/venue-logos/time-out-market-gray.png` },
+  { name: 'Spíler Biergarten', logo: `${ROOT}assets/venue-logos/spiler-biergarten-gray.png` },
+  { name: 'Voilá',             logo: `${ROOT}assets/venue-logos/voila-gray.png` },
+  { name: 'Pántlika',          logo: `${ROOT}assets/venue-logos/pantlika-gray.png`, size: { h: 66, w: 110 } },
+  { name: 'Gajdó',             logo: `${ROOT}assets/venue-logos/gajdo-gray.png`, square: true, size: { h: 80, w: 91 } },
+  { name: 'Accor',             logo: `${ROOT}assets/venue-logos/accor-gray.svg` },
+  { name: 'Rajkai',            logo: `${ROOT}assets/venue-logos/rajkai-gray.png`, size: { h: 44, w: 124 } },
+  { name: 'Világbéke',         logo: `${ROOT}assets/venue-logos/vilagbeke-gray.png`, square: true },
+  { name: 'Utazó Bár',         logo: `${ROOT}assets/venue-logos/utazo-bar-gray.png`, size: { h: 66, w: 388 } },
+  { name: 'Patent',            logo: `${ROOT}assets/venue-logos/patent-gray.png`, square: true },
   { name: 'Flip Mood',         logo: null },
-  { name: 'Vak Varjú',         logo: null },
-  { name: 'És Bisztró',        logo: null },
+  { name: 'Vak Varjú',         logo: `${ROOT}assets/venue-logos/vak-varju-gray.png`, size: { h: 66, w: 137 } },
+  { name: 'És Bisztró',        logo: `${ROOT}assets/venue-logos/es-bisztro-gray.png`, square: true },
 ];
 
 const tickTrack = document.querySelector('.ticker-track');
 if (tickTrack) {
-  const initials = n => n.split(/\s+/).map(w => w[0]).slice(0, 2).join('').toUpperCase();
-  const tkItem = v => `<span class="tk">` +
-    (v.logo ? `<img class="tk-logo" src="${v.logo}" alt="">`
-            : `<i class="tk-logo">${initials(v.name)}</i>`) +
-    `${v.name}</span>`;
+  const sizeStyle = v => v.size ? ` style="height:${v.size.h}px;width:${v.size.w}px"` : '';
+  const tkItem = v => `<span class="tk" title="${v.name}">` +
+    (v.logo ? `<img class="tk-logo${v.square ? ' tk-logo-square' : ''}" src="${v.logo}" alt="${v.name}"${sizeStyle(v)}>`
+            // no logo yet — show the venue name as type instead of a vague initials icon
+            : `<span class="tk-logo-type">${v.name}</span>`) +
+    `</span>`;
   const set = VENUES.map(tkItem).join('');
   tickTrack.innerHTML = set + set; // duplicate for the seamless loop
 }

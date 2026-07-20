@@ -32,7 +32,7 @@
 
 <!-- ===== 1 · HERO — flavour switcher (kept from Figma, all 5 flavours) ===== -->
 <section class="hero" id="hero">
-  <div class="hero-panel" data-flavour="spritz">
+  <div class="hero-panel" data-flavour="mojito">
     <div class="hero-pattern"></div>
     <div class="hero-inner">
       <div class="hero-copy">
@@ -41,9 +41,9 @@
         <a href="#flavours" class="btn btn-light">Shop the kegs&nbsp;&rarr;</a>
       </div>
       <div class="hero-stage">
-        <img class="hero-garnish" src="../assets/garnish-spritz.png" alt="">
-        <img class="hero-keg" src="../assets/keg-full-spritz.png" alt="Compact Cocktail 5L keg">
-        <div class="hero-flavour-name">Spritz</div>
+        <img class="hero-garnish" src="../assets/garnish-mojito.png" alt="">
+        <img class="hero-keg" src="../assets/keg-full-mojito.png" alt="Compact Cocktail 5L keg">
+        <div class="hero-flavour-name">Mojito</div>
       </div>
       <div class="hero-cursor" aria-hidden="true">Next flavor&nbsp;&rarr;</div>
     </div>
@@ -84,71 +84,49 @@
       </div>
     </div>
 
-    <!-- how the keg itself works — placeholder line-art until the real
-         infographic; step wording TBC with the client -->
-    <div class="how-keg">
-      <p class="how-keg-head">The keg does the bartending.</p>
-      <div class="how-keg-row">
-        <div class="how-keg-step">
-          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="12" y="6" width="24" height="36" rx="4"/><line x1="12" y1="22" x2="36" y2="22"/><line x1="31" y1="12" x2="31" y2="17"/><line x1="31" y1="27" x2="31" y2="32"/></svg>
-          <span>Chill it in the fridge</span>
-        </div>
-        <div class="how-keg-step">
-          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18v-6a4 4 0 0 1 4-4h12a4 4 0 0 1 4 4v6"/><rect x="10" y="18" width="28" height="24" rx="5"/><path d="M24 18v-7"/><path d="M24 26v6"/><circle cx="24" cy="26" r="3"/></svg>
-          <span>Flip open the built-in tap</span>
-        </div>
-        <div class="how-keg-step">
-          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 6h20l-3 30a5 5 0 0 1-5 4h-4a5 5 0 0 1-5-4z"/><path d="M15.5 18h17"/><path d="M20 44h8"/></svg>
-          <span>Pour &mdash; no gas, no tools</span>
-        </div>
-        <div class="how-keg-step">
-          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="24" cy="24" r="18"/><path d="M24 13v11l8 5"/></svg>
-          <span>Stays fresh for days</span>
-        </div>
+    <!-- "everything included" reassurance folded into the same section (no
+         separate box, per client). Real keg-print infographic TODO. -->
+    <div class="how-note">
+      <p class="how-note-head">Everything&rsquo;s included &mdash; just add ice.</p>
+      <div class="how-note-icons">
+        <span class="how-nicon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18v-6a4 4 0 0 1 4-4h12a4 4 0 0 1 4 4v6"/><rect x="10" y="18" width="28" height="24" rx="5"/><path d="M24 18v-7"/><path d="M24 26v6"/><circle cx="24" cy="26" r="3"/></svg>Flip open the built-in tap</span>
+        <span class="how-nicon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 6h20l-3 30a5 5 0 0 1-5 4h-4a5 5 0 0 1-5-4z"/><path d="M15.5 18h17"/><path d="M20 44h8"/></svg>Pour &mdash; no gas, no tools</span>
+        <span class="how-nicon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="24" cy="24" r="18"/><path d="M24 13v11l8 5"/></svg>Stays fresh for days</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ===== 4 · THE MATH — big-type band on CoCo Blue ===== -->
+<!-- ===== 4 · PRICE vs VALUE — one CoCo Blue band, split two ways:
+     left = the price tags, right = why it's worth it (client feedback) ===== -->
 <section class="math">
   <div class="math-pattern" aria-hidden="true"></div>
   <div class="wrap">
     <p class="eyebrow eyebrow-onblue">The math</p>
     <h2 class="math-head">Same drink. Different bill.</h2>
-    <div class="tag-row">
-      <div class="tag tag-us">
-        <span class="tag-where">your keg</span>
-        <span class="tag-price">&asymp;900&nbsp;Ft</span>
-        <span class="tag-per">a drink</span>
-      </div>
-      <div class="tag tag-bar">
-        <span class="tag-where">the bar</span>
-        <span class="tag-price tag-strike">3&thinsp;000&nbsp;Ft</span>
-        <span class="tag-per">a drink — plus the tip</span>
-      </div>
-    </div>
-    <p class="math-kicker">One keg &asymp; 30 cocktails.</p>
-
-    <!-- gains & pains from the value-prop canvas — sell the hosting
-         experience, not just the price (client feedback) -->
-    <div class="gains">
-      <h3 class="gains-head">Same night. Different host.</h3>
-      <div class="gains-row">
-        <div class="gain">
-          <span class="gain-pain">Stuck mixing in the kitchen</span>
-          <span class="gain-win">Guests pour their own</span>
+    <div class="value-grid">
+      <div class="value-price">
+        <div class="tag-row">
+          <div class="tag tag-us">
+            <span class="tag-where">your keg</span>
+            <span class="tag-price">&asymp;900&nbsp;Ft</span>
+            <span class="tag-per">a drink</span>
+          </div>
+          <div class="tag tag-bar">
+            <span class="tag-where">the bar</span>
+            <span class="tag-price tag-strike">3&thinsp;000&nbsp;Ft</span>
+            <span class="tag-per">a drink</span>
+          </div>
         </div>
-        <div class="gain">
-          <span class="gain-pain">A 15-ingredient shopping run</span>
-          <span class="gain-win">One keg in the fridge</span>
-        </div>
-        <div class="gain">
-          <span class="gain-pain">&bdquo;Did I mix this right?&rdquo;</span>
-          <span class="gain-win">Bar-quality, every pour</span>
-        </div>
+        <p class="math-kicker">One keg &asymp; 30 cocktails.</p>
       </div>
-      <p class="math-kicker">You throw the party. The keg runs the bar.</p>
+      <div class="value-why">
+        <ul class="value-list">
+          <li>Bar-quality, every pour</li>
+          <li>One keg in the fridge &mdash; that&rsquo;s the whole setup</li>
+          <li>Guests pour their own, you throw the party</li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
@@ -187,13 +165,13 @@
     <p class="eyebrow">What legends say</p>
     <h2>The reviews are in.</h2>
     <div class="bubble-row">
-      <div class="bubble bubble-spritz">
-        <p>&bdquo;I have taken more out of the Spritz than the Spritz has taken out of me.&rdquo;</p>
-        <span class="bubble-name">Winston Churchill* &middot; on the Spritz, probably</span>
-      </div>
-      <div class="bubble bubble-mojito bubble-mid">
-        <p>&bdquo;My mojito, wherever the keg is.&rdquo;</p>
+      <div class="bubble bubble-mojito">
+        <p>&bdquo;There is no friend as loyal as a mojito that&rsquo;s always on tap.&rdquo;</p>
         <span class="bubble-name">Ernest Hemingway* &middot; on the Mojito, allegedly</span>
+      </div>
+      <div class="bubble bubble-paloma bubble-mid">
+        <p>&bdquo;Give me a Paloma and a shady spot, and the afternoon runs itself.&rdquo;</p>
+        <span class="bubble-name">Frida Kahlo* &middot; on the Paloma, supposedly</span>
       </div>
       <div class="bubble bubble-pornstar">
         <p>&bdquo;In victory, you deserve a Pornstar Martini. In defeat, you need one.&rdquo;</p>
@@ -216,7 +194,7 @@
   </div>
 </section>
 
-<!-- ===== 9 · LAST PUSH — where & how to get it ===== -->
+<!-- ===== 9 · GET YOUR KEG — focused purchase band (delivery + pickup) ===== -->
 <section class="taste">
   <div class="wrap taste-grid">
     <div class="taste-copy">
@@ -233,27 +211,32 @@
   </div>
 </section>
 
-<!-- ===== 9b · FOR VENUES — B2B funnel ===== -->
-<section class="b2b">
-  <div class="wrap b2b-grid">
-    <div class="b2b-copy">
-      <p class="eyebrow">For venues</p>
-      <h2 class="b2b-head">Run a bar, hotel or&nbsp;event?</h2>
-      <p class="b2b-sub">The same cocktails on a pro tap system — 12&ndash;30&thinsp;L kegs, poured in seconds, no&nbsp;training.</p>
-      <a href="on-tap.html" class="btn btn-primary">See it on tap&nbsp;&rarr;</a>
+<!-- ===== 9b · FOR VENUES — slim B2B bridge strip (radius matched to the bands) ===== -->
+<section class="b2b-strip">
+  <div class="wrap b2b-strip-inner">
+    <div class="b2b-strip-copy">
+      <p class="eyebrow eyebrow-onblue">For venues</p>
+      <p class="b2b-strip-head">Run a bar, hotel or event? The same cocktails, on a pro tap system.</p>
     </div>
-    <div class="b2b-photo"><img src="../assets/b2b-real-pour.jpg" alt="Compact Cocktail poured from the tap at Sirály Bár"></div>
+    <a href="on-tap.html" class="btn btn-primary">See it on tap&nbsp;&rarr;</a>
   </div>
 </section>
 
-<!-- ===== 10 · FINAL CTA + FOOTER ===== -->
+<!-- ===== 10 · NEWSLETTER — its own section again (10% welcome coupon) ===== -->
 <section class="cta">
   <div class="wrap">
     <h2>Pour yourself 10% off.</h2>
-    <p class="section-sub">Drop your email, we send the code for your first keg — plus first dibs when a new flavor drops. No spam, just cocktails.</p>
+    <p class="section-sub">Drop your email, we send the code for your first keg &mdash; plus first dibs when a new flavor drops. No spam, just cocktails.</p>
     <form class="cta-form">
-      <input type="email" name="email" placeholder="you@email.hu" aria-label="Email" required>
-      <button class="btn btn-primary" type="submit">Get the code</button>
+      <div class="cta-form-row">
+        <input type="email" name="email" placeholder="you@email.hu" aria-label="Email" required>
+        <button class="btn btn-primary" type="submit">Get the code</button>
+      </div>
+      <!-- privacy consent required for marketing email (GDPR) -->
+      <label class="cc-check">
+        <input type="checkbox" name="privacy" required>
+        <span>I agree to the <a href="privacy.html" target="_blank" rel="noopener">privacy policy</a>.</span>
+      </label>
     </form>
     <p class="cta-sent" hidden>Done &mdash; your code is on its way. Check your inbox.</p>
   </div>

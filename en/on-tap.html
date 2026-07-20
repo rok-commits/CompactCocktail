@@ -21,6 +21,7 @@
 <header class="nav">
   <a class="nav-logo" href="index.html"><img src="../assets/logo-blue.svg" alt="Compact Cocktail"></a>
   <nav class="nav-links">
+    <a href="#flavours">Flavours</a>
     <a href="#system">How it works</a>
     <a href="#why">Why on tap</a>
     <a href="#ready">Ready?</a>
@@ -31,8 +32,10 @@
   <button class="nav-burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
 </header>
 
-<!-- ===== 1 · HERO — real tap-pour behind the bar ===== -->
-<section class="ot-hero">
+<!-- ===== 1 · HERO — same flavour-switcher as B2C, 12L trade kegs.
+     TODO: add Paloma + Mango Mule once poly-keg photos for those exist
+     (only Mojito/Pornstar/Spritz are shot so far). ===== -->
+<section class="ot-hero" id="flavours">
   <div class="ot-hero-panel">
     <div class="ot-hero-pattern" aria-hidden="true"></div>
     <div class="wrap ot-hero-grid">
@@ -45,8 +48,14 @@
           <a href="#ready" class="btn ot-btn-ghost">Is your venue tap&#8209;ready?&nbsp;&rarr;</a>
         </div>
       </div>
-      <div class="ot-hero-photo"><img src="../assets/b2b-real-pour.jpg" alt="A Compact Cocktail poured from the tap at Sirály Bár"></div>
+      <div class="hero-stage ot-hero-stage">
+        <img class="hero-garnish" src="../assets/garnish-mojito.png" alt="">
+        <img class="hero-keg" src="../assets/poly-mojito.png" alt="Compact Cocktail 12L trade keg">
+        <div class="hero-flavour-name">Mojito</div>
+        <div class="hero-cursor" aria-hidden="true">Next flavor&nbsp;&rarr;</div>
+      </div>
     </div>
+    <div class="hero-dots" role="tablist" aria-label="Flavors"></div>
   </div>
 </section>
 
@@ -93,7 +102,20 @@
   </div>
 </section>
 
-<!-- ===== 3 · WHY VENUES PUT US ON TAP — qualify, who it's for ===== -->
+<!-- ===== 3 · READY? — the #1 B2B tool, moved directly under the system
+     (client: this is what venues stall on). One question at a time; each
+     ends in a pre-filled contact form. Flow = Lackó's dispensing-system PDF.
+     Per-question sketches injected by ontap.js (graphics TODO). ===== -->
+<section class="ot-quiz" id="ready">
+  <div class="wrap">
+    <p class="eyebrow">Quick check</p>
+    <h2>Is your venue ready?</h2>
+    <p class="section-sub">Most venues already are. Find out in a few clicks.</p>
+    <div class="ot-wizard" id="wizard"></div>
+  </div>
+</section>
+
+<!-- ===== 4 · WHY VENUES PUT US ON TAP — qualify, who it's for ===== -->
 <section class="ot-why" id="why">
   <div class="wrap">
     <p class="eyebrow">Who it&rsquo;s for</p>
@@ -104,9 +126,9 @@
         <h3>Bars</h3>
         <p class="ot-stat"><b>6&times; faster</b><span>than a manual pour</span></p>
         <ul>
-          <li>Same pour every shift</li>
+          <li>Less to stock, fewer suppliers</li>
           <li>Anyone can pour &mdash; no skilled hire</li>
-          <li>No over-pour = more margin</li>
+          <li>No MOHU hassle &mdash; easier waste management</li>
         </ul>
       </article>
       <article class="ot-card">
@@ -114,9 +136,9 @@
         <h3>Hotels</h3>
         <p class="ot-stat"><b>1 drink</b><span>identical at every outlet</span></p>
         <ul>
+          <li>Built for high turnover &mdash; new staff pour on day one</li>
           <li>Same drink, lobby to rooftop</li>
-          <li>No mixologist per outlet</li>
-          <li>Scales across every property</li>
+          <li>Long shelf life keeps stock-taking in order</li>
         </ul>
       </article>
       <article class="ot-card">
@@ -125,39 +147,11 @@
         <p class="ot-stat"><b>180&thinsp;/&thinsp;hr</b><span>a manual bar can&rsquo;t clear</span></p>
         <ul>
           <li>Serve 1,000+ guests, no bottleneck</li>
-          <li>No trained bar team to hire</li>
+          <li>Pour a Pornstar as fast as a Spritz</li>
           <li>One tap = a full bar, no build-out</li>
         </ul>
       </article>
     </div>
-
-    <!-- segment-agnostic operator pros (client feedback) — MOHU wording TBC -->
-    <div class="ot-pros">
-      <div class="ot-pro">
-        <b>No MOHU hassle</b>
-        <span>Returnable kegs, no deposit-return admin &mdash; and far less waste to manage.</span>
-      </div>
-      <div class="ot-pro">
-        <b>Fewer suppliers</b>
-        <span>One keg replaces the 5&ndash;6 ingredients you&rsquo;d order per drink.</span>
-      </div>
-      <div class="ot-pro">
-        <b>Long shelf life</b>
-        <span>Keeps your stock in order &mdash; nothing wilting, nothing going off.</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== 4 · EARLY CTA — after qualifying ===== -->
-<section class="ot-band ot-band-orange">
-  <div class="wrap ot-band-grid">
-    <div>
-      <h2 class="ot-band-head">Sound like your venue?</h2>
-      <p class="ot-band-sub">Get in touch &mdash; we&rsquo;ll set up a free tasting and walk you through the numbers.</p>
-      <a class="ot-band-link" href="#ready">First, check if you&rsquo;re tap-ready in a few clicks&nbsp;&darr;</a>
-    </div>
-    <a href="#contact" class="btn btn-light">Get in touch&nbsp;&rarr;</a>
   </div>
 </section>
 
@@ -166,17 +160,16 @@
   <div class="wrap">
     <p class="eyebrow">What you&rsquo;d pour</p>
     <h2>The range.</h2>
-    <!-- center-sticker graphics per client feedback (stylized polykegs
-         read dull) — CSS circles stand in; TODO: swap each .ot-sticker
-         for the real retail-keg label artwork once exported from
-         WebDesign_2026_CompactCocktail.ai -->
+    <!-- real polykeg photos where we have them; TODO: shoot Paloma + Mango
+         Mule polykegs (new angled photos coming from Noel) — CSS sticker
+         stands in for those two until then. -->
     <div class="ot-kegs">
-      <figure class="ot-keg"><div class="ot-sticker" style="--fl:var(--fl-spritz)"><span>Spritz</span></div><figcaption>Spritz</figcaption><p class="ot-keg-ing">Aperol, sparkling wine, soda &middot; 8%</p></figure>
-      <figure class="ot-keg"><div class="ot-sticker" style="--fl:var(--fl-pornstar)"><span>Pornstar Martini</span></div><figcaption>Pornstar Martini</figcaption><p class="ot-keg-ing">Vodka, passion fruit, vanilla, lime &middot; 9.5%</p></figure>
-      <figure class="ot-keg"><div class="ot-sticker" style="--fl:var(--fl-mojito)"><span>Mojito</span></div><figcaption>Mojito</figcaption><p class="ot-keg-ing">Planteray rum, lime, fresh mint, soda &middot; 9.5%</p></figure>
+      <figure class="ot-keg"><img class="ot-keg-photo" src="../assets/poly-mojito.png" alt="Mojito polykeg"><figcaption>Mojito</figcaption><p class="ot-keg-ing">Planteray rum, lime, fresh mint, soda &middot; 9.5%</p></figure>
       <figure class="ot-keg"><div class="ot-sticker" style="--fl:var(--fl-paloma)"><span>Paloma</span></div><figcaption>Paloma</figcaption><p class="ot-keg-ing">Tequila, lime, grapefruit, soda &middot; 9.5%</p></figure>
+      <figure class="ot-keg"><img class="ot-keg-photo" src="../assets/poly-pornstar.png" alt="Pornstar Martini polykeg"><figcaption>Pornstar Martini</figcaption><p class="ot-keg-ing">Vodka, passion fruit, vanilla, lime &middot; 9.5%</p></figure>
+      <figure class="ot-keg"><img class="ot-keg-photo" src="../assets/poly-spritz.png" alt="Spritz polykeg"><figcaption>Spritz</figcaption><p class="ot-keg-ing">Aperol, sparkling wine, soda &middot; 8%</p></figure>
       <figure class="ot-keg"><div class="ot-sticker" style="--fl:var(--fl-mango)"><span>Mango Mule</span></div><figcaption>Mango Mule</figcaption><p class="ot-keg-ing">Vodka, mango purée, lime, ginger beer &middot; 9.5%</p></figure>
-      <figure class="ot-keg ot-keg-sig"><div class="ot-sticker ot-sticker-sig"><span>Your label here</span></div><figcaption>Your signature</figcaption><p class="ot-keg-ing">Your recipe, your keg, your label &middot; from 500&thinsp;L</p></figure>
+      <figure class="ot-keg ot-keg-sig"><img class="ot-keg-photo" src="../assets/poly-yourcocktail.png" alt="Your own signature polykeg"><figcaption>Your signature</figcaption><p class="ot-keg-ing">Your recipe, your keg, your label &middot; from 500&thinsp;L</p></figure>
     </div>
   </div>
 </section>
@@ -209,17 +202,6 @@
   </div>
 </section>
 
-<!-- ===== 7 · READY? — one question at a time, ends in a pre-filled
-     contact form. Flow = Lackó's dispensing-system PDF. ===== -->
-<section class="ot-quiz" id="ready">
-  <div class="wrap">
-    <p class="eyebrow">Quick check</p>
-    <h2>Is your venue ready?</h2>
-    <p class="section-sub">Find out in a few clicks.</p>
-    <div class="ot-wizard" id="wizard"></div>
-  </div>
-</section>
-
 <!-- ===== 7 · THE PEOPLE — same credential line as B2C makers ===== -->
 <section class="ot-makers">
   <div class="wrap ot-makers-grid">
@@ -230,34 +212,16 @@
       <p class="eyebrow">Who&rsquo;s behind it</p>
       <h2>Built on real experience.</h2>
       <ul class="ot-founders">
-        <li><b>László Pálffy</b> &mdash; co-owner of Mobilkoktél, Bartender of the Year.</li>
-        <li><b>Dávid Ruff</b> &mdash; Michelin-trained chef, a decade of top-level service.</li>
-        <li><b>Fehér Nyúl Brewery</b> &mdash; the facilities and technical know-how behind every batch.</li>
+        <li><b>László Pálffy</b> &mdash; co-owner of Mobilcocktail and &bdquo;Bartender of the Year&rdquo;, a long-standing name in the Hungarian cocktail scene.</li>
+        <li><b>Dávid Ruff</b> &mdash; Michelin-trained chef with 10+ years in fine dining and large-event catering.</li>
+        <li><b>Fehér Nyúl Brewery</b> &mdash; our production partner of nearly 9 years, holding every batch to the same standard.</li>
       </ul>
-      <!-- TODO: drop in recent brewery photos (professional environment)
-           when the client sends them -->
       <div class="ot-brewery-thumbs">
-        <div class="ot-thumb">brewery<br>photo</div>
-        <div class="ot-thumb">brewery<br>photo</div>
-        <div class="ot-thumb">brewery<br>photo</div>
+        <div class="ot-thumb"><img src="../assets/brewery-tanks.jpg" alt="Fermentation tanks at the Fehér Nyúl brewery"></div>
+        <div class="ot-thumb"><img src="../assets/brewery-kegs.jpg" alt="Compact Cocktail kegs ready on the production line"></div>
+        <div class="ot-thumb"><img src="../assets/brewery-pour.jpg" alt="Pouring a fresh pour straight from the tank"></div>
       </div>
-      <p class="ot-makers-line">The dream team behind the perfect pour.</p>
     </div>
-  </div>
-</section>
-
-<!-- ===== 8 · EVERYTHING'S HANDLED — split with the system photo ===== -->
-<section class="ot-handled">
-  <div class="wrap ot-handled-grid">
-    <div class="ot-handled-copy">
-      <p class="eyebrow">Everything&rsquo;s handled</p>
-      <h2>We set it up. Your team pours.</h2>
-      <ul class="ot-checks">
-        <li>Delivered &amp; set up in person, the first time</li>
-        <li>Ongoing support + a troubleshooting manual</li>
-      </ul>
-    </div>
-    <div class="ot-handled-photo"><img src="../assets/b2b-system.jpg" alt="The Compact Cocktail keg and tap system"></div>
   </div>
 </section>
 
@@ -267,12 +231,12 @@
     <p class="eyebrow">Take it to the team</p>
     <h2>Everything you need to decide.</h2>
     <div class="ot-docs-grid">
-      <!-- TODO: link the real PDFs -->
-      <a class="ot-doc" href="#" download>
+      <a class="ot-doc" href="../assets/price-list.pdf" download>
         <span class="ot-doc-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/></svg></span>
-        <b>Price list</b><span>Per-flavour &amp; volume pricing</span>
+        <b>Price list &amp; guide</b><span>Pricing, setup instructions and FAQ, all in one</span>
         <em>Download PDF &darr;</em>
       </a>
+      <!-- TODO: link the real PDFs -->
       <a class="ot-doc" href="#" download>
         <span class="ot-doc-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>
         <b>Setup manual</b><span>How the system works, step by step</span>
@@ -287,12 +251,42 @@
   </div>
 </section>
 
+<!-- ===== 9b · FAQ — accordion; a web version of the price-list PDF's FAQ.
+     TODO: replace placeholder Q&As with the real copy from the PDF (EN/HU). ===== -->
+<section class="ot-faq">
+  <div class="wrap">
+    <p class="eyebrow">Good to know</p>
+    <h2>Frequently asked.</h2>
+    <div class="ot-faq-list">
+      <details class="ot-faq-item">
+        <summary>Do I need my own tap system?<span class="ot-faq-ic" aria-hidden="true"></span></summary>
+        <div class="ot-faq-a"><p>Usually not much. Most venues already have what&rsquo;s needed &mdash; run the tap-ready check above to see in a few clicks. No tap? A mobile unit solves it, and we sort the setup together.</p></div>
+      </details>
+      <details class="ot-faq-item">
+        <summary>What keg sizes do you offer?<span class="ot-faq-ic" aria-hidden="true"></span></summary>
+        <div class="ot-faq-a"><p>12&thinsp;L and 30&thinsp;L kegs on standard CO&#8322; draft &mdash; 72 to 180 drinks per keg depending on size and pour.</p></div>
+      </details>
+      <details class="ot-faq-item">
+        <summary>How long does a keg keep once it&rsquo;s tapped?<span class="ot-faq-ic" aria-hidden="true"></span></summary>
+        <div class="ot-faq-a"><p>Once tapped, 2&ndash;3 weeks &mdash; the gas never touches the drink, so nothing oxidizes in the meantime. Unopened, a keg keeps for at least 12 months from its production date.</p></div>
+      </details>
+      <details class="ot-faq-item">
+        <summary>How is it delivered and set up?<span class="ot-faq-ic" aria-hidden="true"></span></summary>
+        <div class="ot-faq-a"><p>We deliver and set it up in person the first time, then leave you with ongoing support and a troubleshooting manual.</p></div>
+      </details>
+      <details class="ot-faq-item">
+        <summary>What does it cost?<span class="ot-faq-ic" aria-hidden="true"></span></summary>
+        <div class="ot-faq-a"><p>12&thinsp;L kegs run roughly 57,000&ndash;67,000&nbsp;Ft depending on flavour (about 760&ndash;890&nbsp;Ft per drink), 30&thinsp;L from ~130,000&nbsp;Ft. Full per-flavour and volume pricing is in the price list above &mdash; or get in touch and we&rsquo;ll walk you through the numbers.</p></div>
+      </details>
+    </div>
+  </div>
+</section>
+
 <!-- ===== 8 · FINAL CTA — get in touch ===== -->
 <section class="ot-contact" id="contact">
   <div class="wrap ot-contact-inner">
-    <p class="eyebrow eyebrow-onblue">No commitment</p>
-    <h2 class="ot-contact-head">How can we make it work for you?</h2>
-    <p class="ot-contact-sub">Book a tasting &mdash; see how it cuts waste, saves time, and lifts your margins.</p>
+    <p class="eyebrow eyebrow-onblue">Book a tasting &middot; no commitment</p>
+    <h2 class="ot-contact-head">See how it cuts waste, saves time and lifts your margins.</h2>
     <!-- submits via ccSubmitForm (shared.js) — backend TODO -->
     <form class="ot-form">
       <input type="text" name="venue" placeholder="Venue or event" aria-label="Venue or event" required>
@@ -301,22 +295,26 @@
         <input type="tel" name="phone" placeholder="Phone (optional)" aria-label="Phone">
       </div>
       <textarea name="message" rows="3" placeholder="Anything we should know? (optional)" aria-label="Message"></textarea>
+      <label class="cc-check cc-check-onblue">
+        <input type="checkbox" name="privacy" required>
+        <span>I agree to the <a href="privacy.html" target="_blank" rel="noopener">privacy policy</a>.</span>
+      </label>
       <button class="btn btn-primary" type="submit">Send&nbsp;&rarr;</button>
     </form>
     <p class="ot-sent" hidden>Thanks &mdash; we&rsquo;ll be in touch within a day.</p>
   </div>
 </section>
 
-<!-- ===== 11 · FOR HOME — mirror of the B2C page's B2B card, in orange ===== -->
-<section class="ot-b2c">
-  <div class="wrap ot-b2c-grid">
-    <div class="ot-b2c-copy">
-      <p class="eyebrow eyebrow-onorange">For home</p>
-      <h2 class="ot-b2c-head">Just want to try it at&nbsp;home?</h2>
-      <p class="ot-b2c-sub">The same cocktails in 5&thinsp;L party kegs &mdash; about 30 drinks each, straight from the&nbsp;shop.</p>
-      <a href="index.html#flavours" class="btn btn-light">Shop party kegs&nbsp;&rarr;</a>
+<!-- ===== 11 · FOR HOME — slim orange strip mirroring the B2C bridge;
+     a 5L keg thumbnail signals it's the party-keg side ===== -->
+<section class="ot-b2c-strip">
+  <div class="wrap ot-b2c-strip-inner">
+    <img class="ot-b2c-thumb" src="../assets/keg-full-mojito.png" alt="5L Compact Cocktail party keg">
+    <div class="ot-b2c-strip-copy">
+      <p class="ot-b2c-strip-eyebrow">For home</p>
+      <p class="ot-b2c-strip-head">Just want to try it at home? The same cocktails in 5&thinsp;L party kegs.</p>
     </div>
-    <div class="ot-b2c-photo"><img src="../assets/b2c-enjoy.jpg" alt="Friends enjoying cocktails at home"></div>
+    <a href="index.html#flavours" class="btn btn-light">Shop party kegs&nbsp;&rarr;</a>
   </div>
 </section>
 

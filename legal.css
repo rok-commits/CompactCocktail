@@ -1,0 +1,23 @@
+/* =====================================================================
+   LEGAL — simple prose pages (privacy policy, terms). Loaded on top of
+   home.css (base reset/nav/wrap) + shared.css (nav affordance/footer).
+   ===================================================================== */
+.legal{padding:150px 0 120px}
+.legal-wrap{max-width:760px}
+/* this page is usually opened in a fresh tab (consent-checkbox link),
+   which has no browser history to go "back" through — give it an
+   explicit way out instead */
+.legal .legal-back{display:inline-flex;align-items:center;gap:6px;color:var(--co-orange);font-weight:700;font-size:14px;text-decoration:none;margin-bottom:28px}
+.legal .legal-back:hover{text-decoration:underline}
+.legal h1{color:var(--co-blue);font-size:clamp(32px,4.2vw,48px);font-weight:700;letter-spacing:-.02em;line-height:1.1;margin-bottom:6px}
+.legal-updated{color:var(--co-grey-light);font-size:14px;margin-bottom:36px}
+.legal h2{color:var(--co-blue);font-size:22px;font-weight:700;letter-spacing:-.01em;margin:38px 0 12px}
+.legal p{color:var(--co-grey);font-size:16px;line-height:1.65;margin-bottom:14px}
+.legal ul{margin:0 0 14px 22px;color:var(--co-grey);font-size:16px;line-height:1.65}
+.legal li{margin-bottom:6px}
+.legal a{color:var(--co-orange);text-decoration:underline;text-underline-offset:2px}
+.legal-todo{color:var(--co-orange-dark);font-style:italic}
+
+@media (max-width:600px){
+  .legal{padding:130px 0 90px}
+}
