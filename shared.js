@@ -146,7 +146,7 @@
   }
 
   /* ---------- nav scroll-spy ---------- */
-  var spyLinks = [].slice.call(document.querySelectorAll('.nav-links a[href^="#"]'));
+  var spyLinks = [].slice.call(document.querySelectorAll('.nav-links a[href^="#"]:not(.nav-cta-mobile)'));
   var spySections = spyLinks
     .map(function (a) { return document.querySelector(a.getAttribute('href')); })
     .filter(Boolean);
