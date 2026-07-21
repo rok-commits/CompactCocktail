@@ -139,12 +139,12 @@
   };
 
   /* `sketch` = fallback text for any step whose illustration isn't in yet.
-     Steps with an image ready are listed in WIZARD_IMG below (assets/wizard-<id>.png);
+     Steps with an image ready are listed in WIZARD_IMG below (assets/wizard-<id>.jpg);
      the "coupler" outcome reuses q3's illustration — same F/M coupler pair, which already
      shows the "one attached, one still needed" idea the outcome text is making. */
   var WIZARD_IMG = { q1: 1, q2: 1, q3: 1, q4: 1, ready: 1, tap: 1, install: 1, coupler: 1 };
-  var WIZARD_IMG_SRC = { coupler: 'wizard-q3.png' };
-  function wizardImgSrc(id) { return WIZARD_IMG_SRC[id] || ('wizard-' + id + '.png'); }
+  var WIZARD_IMG_SRC = { coupler: 'wizard-q3.jpg' };
+  function wizardImgSrc(id) { return WIZARD_IMG_SRC[id] || ('wizard-' + id + '.jpg'); }
   var QUESTIONS = {
     q1: { label: { en: 'built-in system', hu: 'beépített rendszer' },
           text: { en: 'Does your venue have a built-in dispensing system?', hu: 'Van beépített sörcsaprendszer a helyeden?' },
