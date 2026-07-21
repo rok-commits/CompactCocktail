@@ -1,12 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<!-- HU draft translated from the EN master (en/index.html) — needs a
+     native review by the client before launch. Keep the two files in
+     sync: every structural edit here must land in en/index.html too. -->
+<html lang="hu">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Compact Cocktail — Bar-quality cocktails, by the keg</title>
-<meta name="description" content="Bar-quality cocktails on tap. 5L party kegs — about 30 drinks each. Chill. Pour. Serve.">
+<title>Compact Cocktail — Bárminőségű koktélok, hordóból</title>
+<meta name="description" content="Bárminőségű koktélok csapolva. 5 literes partihordók — kb. 30 ital hordónként. Hűtsd. Töltsd. Kínáld.">
+<!-- TODO: confirm the production domain (placeholder below) -->
+<link rel="canonical" href="https://compactcocktail.hu/">
+<link rel="alternate" hreflang="hu" href="https://compactcocktail.hu/">
+<link rel="alternate" hreflang="en" href="https://compactcocktail.hu/en/">
+<link rel="alternate" hreflang="x-default" href="https://compactcocktail.hu/">
 <link rel="stylesheet" href="brand.css">
 <link rel="stylesheet" href="home.css">
+<link rel="stylesheet" href="shared.css">
 </head>
 <body>
 
@@ -14,12 +23,14 @@
 <header class="nav">
   <a class="nav-logo" href="#"><img src="assets/logo-orange.svg" alt="Compact Cocktail"></a>
   <nav class="nav-links">
-    <a href="#flavours">Flavours</a>
-    <a href="#how">How it works</a>
-    <a href="#makers">The makers</a>
+    <a href="#flavours">Ízek</a>
+    <a href="#how">Hogyan működik</a>
+    <a href="#makers">Az alkotók</a>
     <a href="on-tap.html" class="nav-b2b">B2B</a>
   </nav>
-  <a href="#flavours" class="btn btn-primary nav-cta">Shop the kegs</a>
+  <div class="nav-lang" aria-label="Nyelv"><a href="index.html" data-setlang="hu" class="active">HU</a><a href="en/index.html" data-setlang="en">EN</a></div>
+  <a href="#flavours" class="btn btn-primary nav-cta">Válassz hordót</a>
+  <button class="nav-burger" aria-label="Menü" aria-expanded="false"><span></span><span></span><span></span></button>
 </header>
 
 <!-- ===== 1 · HERO — flavour switcher (kept from Figma, all 5 flavours) ===== -->
@@ -28,27 +39,27 @@
     <div class="hero-pattern"></div>
     <div class="hero-inner">
       <div class="hero-copy">
-        <h1>Cocktails this good shouldn&rsquo;t be&nbsp;this&nbsp;easy.</h1>
-        <p class="hero-sub">Bar-quality cocktails, by the keg.<br>About 30 drinks each.</p>
-        <a href="#flavours" class="btn btn-light">Shop the kegs&nbsp;&rarr;</a>
+        <h1>Ennyire jó koktél nem lehetne ilyen&nbsp;egyszerű.</h1>
+        <p class="hero-sub">Bárminőségű koktélok, hordóból.<br>Legyél házigazda, ne bártender.</p>
+        <a href="#flavours" class="btn btn-light">Válassz hordót&nbsp;&rarr;</a>
       </div>
       <div class="hero-stage">
         <img class="hero-garnish" src="assets/garnish-spritz.png" alt="">
-        <img class="hero-keg" src="assets/keg-full-spritz.png" alt="Compact Cocktail 5L keg">
+        <img class="hero-keg" src="assets/keg-full-spritz.png" alt="Compact Cocktail 5 literes hordó">
         <div class="hero-flavour-name">Spritz</div>
       </div>
-      <div class="hero-cursor" aria-hidden="true">Next flavour&nbsp;&rarr;</div>
+      <div class="hero-cursor" aria-hidden="true">Következő íz&nbsp;&rarr;</div>
     </div>
-    <div class="hero-dots" role="tablist" aria-label="Flavours"></div>
+    <div class="hero-dots" role="tablist" aria-label="Ízek"></div>
   </div>
 </section>
 
 <!-- ===== 2 · SHOP — pick your flavour ===== -->
 <section class="shop" id="flavours">
   <div class="wrap">
-    <p class="eyebrow">5 flavours &middot; 5L each</p>
-    <h2>Pick your flavour.</h2>
-    <p class="section-sub">One keg &asymp; 30 cocktails.</p>
+    <p class="eyebrow">5 íz &middot; 5 liter</p>
+    <h2>Válaszd ki az ízed.</h2>
+    <p class="section-sub">Egy hordó &asymp; 30 koktél.</p>
     <div class="shop-grid"></div>
   </div>
 </section>
@@ -56,98 +67,120 @@
 <!-- ===== 3 · HOW — Chill. Pour. Serve. (people using it, high on the page) ===== -->
 <section class="how" id="how">
   <div class="wrap">
-    <p class="eyebrow">The entire skill set</p>
-    <h2>Chill. Pour. Serve.</h2>
+    <p class="eyebrow">A teljes tudomány</p>
+    <h2>Hűtsd. Töltsd. Kínáld.</h2>
     <div class="how-steps">
       <div class="how-step" data-num="01">
-        <div class="how-photo"><img src="assets/b2c-can.jpg" alt="Keg chilling in the fridge"></div>
-        <h3>Chill</h3>
-        <p>Pop it in the fridge.</p>
+        <div class="how-photo"><img src="assets/b2c-can.jpg" alt="Hordó a hűtőben"></div>
+        <h3>Hűtsd.</h3>
+        <p>Be a hűtőbe vele.</p>
       </div>
       <div class="how-step how-step-mid" data-num="02">
-        <div class="how-photo"><img src="assets/b2c-pour.jpg" alt="Pouring straight from the keg"></div>
-        <h3>Pour</h3>
-        <p>Straight from the keg.</p>
+        <div class="how-photo"><img src="assets/b2c-pour.jpg" alt="Töltés egyenesen a hordóból"></div>
+        <h3>Töltsd.</h3>
+        <p>Egyenesen a hordóból.</p>
       </div>
       <div class="how-step how-step-last" data-num="03">
-        <div class="how-photo"><img src="assets/b2c-enjoy.jpg" alt="Friends enjoying cocktails"></div>
-        <h3>Serve</h3>
-        <p>&asymp;30 cocktails. Zero cleanup.</p>
+        <div class="how-photo"><img src="assets/b2c-enjoy.jpg" alt="Barátok koktéloznak"></div>
+        <h3>Kínáld.</h3>
+        <p>&asymp;30 koktél. Nulla mosogatás.</p>
+      </div>
+    </div>
+
+    <!-- "everything included" reassurance folded into the same section (no
+         separate box, per client). Real keg-print infographic TODO. -->
+    <div class="how-note">
+      <p class="how-note-head">Minden benne van &mdash; csak jég kell hozzá.</p>
+      <div class="how-note-icons">
+        <span class="how-nicon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18v-6a4 4 0 0 1 4-4h12a4 4 0 0 1 4 4v6"/><rect x="10" y="18" width="28" height="24" rx="5"/><path d="M24 18v-7"/><path d="M24 26v6"/><circle cx="24" cy="26" r="3"/></svg>Pattintsd ki a beépített csapot</span>
+        <span class="how-nicon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 6h20l-3 30a5 5 0 0 1-5 4h-4a5 5 0 0 1-5-4z"/><path d="M15.5 18h17"/><path d="M20 44h8"/></svg>Tölts &mdash; se gáz, se szerszám</span>
+        <span class="how-nicon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="24" cy="24" r="18"/><path d="M24 13v11l8 5"/></svg>Napokig friss marad</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ===== 4 · THE MATH — big-type band on CoCo Blue ===== -->
+<!-- ===== 4 · PRICE vs VALUE — one CoCo Blue band, split two ways:
+     left = the price tags, right = why it's worth it (client feedback) ===== -->
 <section class="math">
   <div class="math-pattern" aria-hidden="true"></div>
   <div class="wrap">
-    <p class="eyebrow eyebrow-onblue">The math</p>
-    <h2 class="math-head">Same drink. Different bill.</h2>
-    <div class="tag-row">
-      <div class="tag tag-us">
-        <span class="tag-where">your keg</span>
-        <span class="tag-price">&asymp;900&nbsp;Ft</span>
-        <span class="tag-per">a drink</span>
+    <p class="eyebrow eyebrow-onblue">A matek</p>
+    <h2 class="math-head">Bárminőség. Nem bár árak.</h2>
+    <div class="value-grid">
+      <div class="value-price">
+        <div class="tag-row">
+          <div class="tag tag-us">
+            <span class="tag-where">a te hordód</span>
+            <span class="tag-price">&asymp;900&nbsp;Ft</span>
+            <span class="tag-per">italonként</span>
+          </div>
+          <div class="tag tag-bar">
+            <span class="tag-where">a bár</span>
+            <span class="tag-price tag-strike">3&thinsp;000&nbsp;Ft</span>
+            <span class="tag-per">italonként — plusz borravaló</span>
+          </div>
+        </div>
       </div>
-      <div class="tag tag-bar">
-        <span class="tag-where">the bar</span>
-        <span class="tag-price tag-strike">3&thinsp;000&nbsp;Ft</span>
-        <span class="tag-per">a drink — plus the tip</span>
+      <div class="value-why">
+        <ul class="value-list">
+          <li>Bárminőség, minden pohárnál</li>
+          <li>Egy hordó a hűtőben</li>
+          <li>A vendégek maguknak töltenek</li>
+        </ul>
       </div>
     </div>
-    <p class="math-kicker">One keg &asymp; 30 cocktails.</p>
   </div>
 </section>
 
-<!-- ===== 5 · TRUSTED — Budapest bars ticker on black ===== -->
+<!-- ===== 5 · TRUSTED — venue ticker on black ===== -->
 <section class="trusted">
   <div class="wrap">
-    <p class="eyebrow eyebrow-onblack">As poured in Budapest</p>
-    <h2 class="trusted-line">Trusted by Budapest&rsquo;s best bars.<br><span>Now pouring at home, too.</span></h2>
+    <p class="eyebrow eyebrow-onblack">Így csapolunk országszerte</p>
+    <h2 class="trusted-line">Magyarország legjobb helyei bíznak bennünk.<br><span>Már otthon is csapolható.</span></h2>
   </div>
+  <!-- venue logo+name pairs rendered from VENUES in home.js;
+       initials chips stand in until the client's logo sheet arrives -->
   <div class="ticker" aria-hidden="true">
-    <div class="ticker-track">
-      <span>Time Out Market</span><i>&#9679;</i><span>Spíler Biergarten</span><i>&#9679;</i><span>Voilá</span><i>&#9679;</i><span>Pántlika</span><i>&#9679;</i><span>Gajdó</span><i>&#9679;</i><span>Accor</span><i>&#9679;</i><span>Rajkai</span><i>&#9679;</i><span>Világbéke</span><i>&#9679;</i><span>Utazó Bár</span><i>&#9679;</i><span>Patent</span><i>&#9679;</i><span>Flip Mood</span><i>&#9679;</i><span>Vak Varjú</span><i>&#9679;</i><span>És Bisztró</span><i>&#9679;</i>
-      <span>Time Out Market</span><i>&#9679;</i><span>Spíler Biergarten</span><i>&#9679;</i><span>Voilá</span><i>&#9679;</i><span>Pántlika</span><i>&#9679;</i><span>Gajdó</span><i>&#9679;</i><span>Accor</span><i>&#9679;</i><span>Rajkai</span><i>&#9679;</i><span>Világbéke</span><i>&#9679;</i><span>Utazó Bár</span><i>&#9679;</i><span>Patent</span><i>&#9679;</i><span>Flip Mood</span><i>&#9679;</i><span>Vak Varjú</span><i>&#9679;</i><span>És Bisztró</span><i>&#9679;</i>
-    </div>
+    <div class="ticker-track"></div>
   </div>
 </section>
 
 <!-- ===== 6 · OCCASIONS — polaroid collage ===== -->
 <section class="occasions">
   <div class="wrap">
-    <p class="eyebrow">Take it anywhere</p>
-    <h2>Wherever the good days happen.</h2>
+    <p class="eyebrow">Vidd bárhová</p>
+    <h2>Ahol a jó napok történnek.</h2>
     <div class="pol-row">
-      <figure class="pol"><img src="assets/occ-car.jpg" alt=""><figcaption>The lake, before noon.</figcaption></figure>
-      <figure class="pol"><img src="assets/occ-skate.jpg" alt=""><figcaption>Skate now, sip later.</figcaption></figure>
-      <figure class="pol"><img src="assets/occ-picnic.jpg" alt=""><figcaption>Riding shotgun to a friend&rsquo;s.</figcaption></figure>
-      <figure class="pol"><img src="assets/b2c-party.jpg" alt=""><figcaption>House parties.</figcaption></figure>
-      <figure class="pol"><img src="assets/occ-party.jpg" alt=""><figcaption>Birthdays.</figcaption></figure>
+      <figure class="pol"><img src="assets/occ-car.jpg" alt=""><figcaption>A tó, még dél előtt.</figcaption></figure>
+      <figure class="pol"><img src="assets/occ-skate.jpg" alt=""><figcaption>Előbb deszka, aztán koccintás.</figcaption></figure>
+      <figure class="pol"><img src="assets/occ-picnic.jpg" alt=""><figcaption>Úton egy házibuliba.</figcaption></figure>
+      <figure class="pol"><img src="assets/b2c-party.jpg" alt=""><figcaption>Házibulik.</figcaption></figure>
+      <figure class="pol"><img src="assets/occ-party.jpg" alt=""><figcaption>Szülinapok.</figcaption></figure>
     </div>
   </div>
 </section>
 
-<!-- ===== 7 · REACTIONS — speech bubbles + IG ===== -->
+<!-- ===== 7 · REACTIONS — speech bubbles ===== -->
 <section class="reactions">
   <div class="wrap">
-    <p class="eyebrow">What people say</p>
-    <h2>The reviews are in.</h2>
+    <p class="eyebrow">A legendák szerint</p>
+    <h2>Megérkeztek a vélemények.</h2>
     <div class="bubble-row">
-      <div class="bubble bubble-spritz">
-        <p>&bdquo;Like having your own cocktail mixer at the party. No messing — just pour. Tastes great too.&rdquo;</p>
-        <span class="bubble-name">Réka K. &middot; hen party, District VII</span>
+      <div class="bubble bubble-mojito">
+        <p>&bdquo;Nincs olyan hű barát, mint egy mojito, ami mindig csapon van.&rdquo;</p>
+        <span class="bubble-name">Ernest Hemingway* &middot; a Mojitóról, állítólag</span>
       </div>
-      <div class="bubble bubble-mojito bubble-mid">
-        <p>&bdquo;The mojito is dangerously good. We finished the keg before the playlist ran out.&rdquo;</p>
-        <span class="bubble-name">Anna V. &middot; Budapest</span>
+      <div class="bubble bubble-paloma bubble-mid">
+        <p>&bdquo;Adj egy Palomát és egy árnyékos helyet, és a délután magától megtörténik.&rdquo;</p>
+        <span class="bubble-name">Frida Kahlo* &middot; a Palomáról, állítólag</span>
       </div>
       <div class="bubble bubble-pornstar">
-        <p>&bdquo;A keg in the cool box and camper nights are sorted. Good strength too — these are real cocktails.&rdquo;</p>
-        <span class="bubble-name">Dóra M. &middot; camper weekend, Őrség</span>
+        <p>&bdquo;Győzelemkor megérdemled a Pornstar Martinit. Vereségkor szükséged van rá.&rdquo;</p>
+        <span class="bubble-name">Napóleon Bonaparte* &middot; a Pornstar Martiniről, valahogyan</span>
       </div>
     </div>
+    <p class="footnote">*Nem valódi ajánlások. De imádták volna.</p>
   </div>
 </section>
 
@@ -155,11 +188,11 @@
 <section class="makers" id="makers">
   <div class="wrap makers-grid">
     <div class="makers-copy">
-      <p class="eyebrow">Who&rsquo;s behind it</p>
-      <h2>A Bartender of the Year. A Michelin chef. An award&#8209;winning brewery.</h2>
-      <p class="makers-line">The dream team behind the perfect pour.</p>
+      <p class="eyebrow">Kik állnak mögötte</p>
+      <h2>Az Év Bártendere. Egy Michelin-séf. Egy díjnyertes sörfőzde.</h2>
+      <p class="makers-line">Álomcsapat a tökéletes ital mögött.</p>
     </div>
-    <div class="makers-photo"><img src="assets/founders-kegs.jpg" alt="The founders laughing over a stack of Compact Cocktail kegs"></div>
+    <div class="makers-photo"><img src="assets/founders-kegs.jpg" alt="Az alapítók egy halom Compact Cocktail hordó fölött nevetnek"></div>
   </div>
 </section>
 
@@ -167,51 +200,59 @@
 <section class="taste">
   <div class="wrap taste-grid">
     <div class="taste-copy">
-      <p class="eyebrow eyebrow-onorange">Delivery &middot; Pickup</p>
-      <h2>Get your keg.</h2>
-      <p class="taste-sub">At your door in 1&ndash;2 days, anywhere in Hungary &mdash; or grab one off the shelf at Mr.&nbsp;Alkohol in&nbsp;Budapest.</p>
+      <p class="eyebrow eyebrow-onorange">Szállítás &middot; Átvétel</p>
+      <h2>Szerezd be a hordód.</h2>
+      <p class="taste-sub">1&ndash;2 nap alatt házhoz visszük az ország bármely pontjára &mdash; vagy vedd le a polcról a Mr.&nbsp;Alkoholban, Budapesten.</p>
       <div class="taste-btns">
         <!-- TODO: point "Shop online" at the external webshop once it's live -->
-        <a href="#flavours" class="btn btn-light">Shop online&nbsp;&rarr;</a>
-        <a href="https://www.google.com/maps/search/?api=1&amp;query=Mr.+Alkohol+Bajcsy-Zsilinszky+%C3%BAt+Budapest" target="_blank" rel="noopener" class="btn btn-ghost">Pick up in person&nbsp;&rarr;</a>
+        <a href="#flavours" class="btn btn-light">Vásárlás online&nbsp;&rarr;</a>
+        <a href="https://www.google.com/maps/search/?api=1&amp;query=Mr.+Alkohol+Bajcsy-Zsilinszky+%C3%BAt+Budapest" target="_blank" rel="noopener" class="btn btn-ghost">Személyes átvétel&nbsp;&rarr;</a>
       </div>
     </div>
-    <div class="taste-photo"><img src="assets/taste-car.jpg" alt="A keg riding along on the front seat of a convertible"></div>
+    <div class="taste-photo"><img src="assets/taste-car.jpg" alt="Egy hordó a kabrió anyósülésén"></div>
   </div>
 </section>
 
-<!-- ===== 9b · FOR VENUES — B2B funnel ===== -->
-<section class="b2b">
-  <div class="wrap b2b-grid">
-    <div class="b2b-copy">
-      <p class="eyebrow">For venues</p>
-      <h2 class="b2b-head">Run a bar, hotel or&nbsp;event?</h2>
-      <p class="b2b-sub">The same cocktails on a pro tap system — 12&ndash;30&thinsp;L kegs, poured in seconds, no&nbsp;training.</p>
-      <a href="on-tap.html" class="btn btn-primary">See it on tap&nbsp;&rarr;</a>
+<!-- ===== 9b · FOR VENUES — slim B2B bridge strip (radius matched to the bands) ===== -->
+<section class="b2b-strip">
+  <div class="wrap b2b-strip-inner">
+    <div class="b2b-strip-copy">
+      <p class="eyebrow eyebrow-onblue">Vendéglátósoknak</p>
+      <p class="b2b-strip-head">Bárt, hotelt vagy rendezvényt viszel? Ugyanezek a koktélok, profi csaprendszeren.</p>
     </div>
-    <div class="b2b-photo"><img src="assets/b2b-real-pour.jpg" alt="Compact Cocktail poured from the tap at Sirály Bár"></div>
+    <a href="on-tap.html" class="btn btn-primary">Nézd meg csapon&nbsp;&rarr;</a>
   </div>
 </section>
 
 <!-- ===== 10 · FINAL CTA + FOOTER ===== -->
 <section class="cta">
   <div class="wrap">
-    <h2>Pour yourself 10% off.</h2>
-    <p class="section-sub">Drop your email, we send the code for your first keg — plus first dibs when a new flavour drops. No spam, just cocktails.</p>
-    <form class="cta-form" onsubmit="return false">
-      <input type="email" placeholder="you@email.hu" aria-label="Email">
-      <button class="btn btn-primary">Get the code</button>
+    <h2>Tölts magadnak 10% kedvezményt.</h2>
+    <p class="section-sub">Add meg az e-mail-címed, küldjük a kódot az első hordódhoz — plusz elsőként értesülsz, ha új íz érkezik. Semmi spam, csak koktél.</p>
+    <form class="cta-form">
+      <div class="cta-form-row">
+        <input type="email" name="email" placeholder="te@email.hu" aria-label="E-mail" required>
+        <button class="btn btn-primary" type="submit">Kérem a kódot</button>
+      </div>
+      <!-- privacy consent required for marketing email (GDPR) -->
+      <label class="cc-check">
+        <input type="checkbox" name="privacy" required>
+        <span>Elfogadom az <a href="privacy.html" target="_blank" rel="noopener">adatkezelési tájékoztatót</a>.</span>
+      </label>
     </form>
+    <p class="cta-sent" hidden>Kész &mdash; úton a kód. Nézd meg a postafiókod.</p>
   </div>
 </section>
 
 <footer class="footer">
   <div class="wrap footer-grid">
     <img src="assets/logo-orange.svg" alt="Compact Cocktail" class="footer-logo">
-    <p class="footer-fine">&copy; 2026 Compact Cocktail &middot; Drink responsibly &middot; 18+</p>
+    <p class="footer-msg">Fogyaszd felelősséggel.</p>
+    <p class="footer-fine">&copy; 2026 Compact Cocktail &middot; 18+</p>
   </div>
 </footer>
 
+<script src="shared.js"></script>
 <script src="home.js"></script>
 </body>
 </html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — Compact Cocktail</title>
+<meta name="description" content="How Compact Cocktail collects, uses and protects your data.">
+<meta name="robots" content="noindex">
+<!-- TODO: confirm the production domain (placeholder below) -->
+<link rel="canonical" href="https://compactcocktail.hu/en/privacy.html">
+<link rel="stylesheet" href="../brand.css">
+<link rel="stylesheet" href="../home.css">
+<link rel="stylesheet" href="../shared.css">
+<link rel="stylesheet" href="../legal.css">
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<header class="nav">
+  <a class="nav-logo" href="index.html"><img src="../assets/logo-orange.svg" alt="Compact Cocktail"></a>
+  <nav class="nav-links">
+    <a href="index.html#flavours">Flavors</a>
+    <a href="index.html#how">How it works</a>
+    <a href="index.html#makers">The makers</a>
+    <a href="on-tap.html" class="nav-b2b">B2B</a>
+  </nav>
+  <div class="nav-lang" aria-label="Language"><a href="../privacy.html" data-setlang="hu">HU</a><a href="privacy.html" data-setlang="en" class="active">EN</a></div>
+  <a href="index.html#flavours" class="btn btn-primary nav-cta">Shop the kegs</a>
+  <button class="nav-burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+</header>
+
+<!-- ===== LEGAL CONTENT ===== -->
+<section class="legal">
+  <div class="wrap legal-wrap">
+    <a href="index.html" class="legal-back">&larr; Back to compactcocktail.hu</a>
+    <p class="eyebrow">Legal</p>
+    <h1>Privacy Policy</h1>
+    <p class="legal-updated">Last updated: <!-- TODO: set real date on launch -->20 July 2026</p>
+
+    <p>Compact Cocktail (&ldquo;we&rdquo;, &ldquo;us&rdquo;) respects your privacy. This page explains what data we collect when you use this website, why we collect it, and what rights you have over it &mdash; in line with the EU General Data Protection Regulation (GDPR).</p>
+
+    <!-- TODO: confirm real legal entity name, company registration (cégjegyzékszám),
+         tax number (adószám) and registered address before launch -->
+    <h2>Who we are</h2>
+    <p><strong>Data controller:</strong> Compact Cocktail<span class="legal-todo"> [legal entity name, registration number &amp; registered address to confirm]</span><br>
+    <strong>Contact:</strong> <a href="mailto:hello@compactcocktail.hu">hello@compactcocktail.hu</a><span class="legal-todo"> [confirm real inbox]</span></p>
+
+    <h2>What we collect</h2>
+    <ul>
+      <li><strong>Newsletter sign-up</strong> &mdash; your email address, when you request a discount code or updates on new flavors.</li>
+      <li><strong>B2B enquiries</strong> &mdash; name, email, venue/company name and any details you add in the contact or demo-request form.</li>
+      <li><strong>Purchases</strong> &mdash; handled entirely by our production &amp; fulfilment partner Fehér Nyúl Brewery on their webshop. We do not see or store your payment details; their own privacy policy covers that data.</li>
+      <li><strong>Basic site analytics</strong> &mdash; anonymised usage data (pages viewed, general location, device type) to understand how the site is used.</li>
+    </ul>
+
+    <h2>Why we use it</h2>
+    <ul>
+      <li>To send the newsletter and discount codes you asked for &mdash; based on your <strong>consent</strong>, which you can withdraw at any time.</li>
+      <li>To respond to B2B enquiries and arrange tastings/demos &mdash; based on <strong>your request</strong> and our legitimate interest in following up on it.</li>
+      <li>To understand and improve the site &mdash; based on our <strong>legitimate interest</strong> in keeping it useful.</li>
+    </ul>
+
+    <h2>Who we share it with</h2>
+    <p>We use a small number of trusted processors to run the site and send emails<span class="legal-todo"> [name the email/newsletter platform, e.g. Mailchimp, once confirmed]</span>. We don&rsquo;t sell your data, and we only share what&rsquo;s needed for these services to work.</p>
+
+    <h2>Cookies</h2>
+    <p>We use essential cookies to run the site (like remembering you&rsquo;ve confirmed you&rsquo;re 18+) and, where enabled, anonymised analytics cookies to see how the site performs. You can control cookies through your browser settings at any time.</p>
+
+    <h2>How long we keep it</h2>
+    <p>Newsletter emails are kept until you unsubscribe. B2B enquiry details are kept for as long as needed to follow up, then deleted or anonymised. You can ask us to delete your data sooner at any time.</p>
+
+    <h2>Your rights</h2>
+    <p>Under GDPR, you can ask us to:</p>
+    <ul>
+      <li>show you the data we hold about you;</li>
+      <li>correct anything that&rsquo;s wrong;</li>
+      <li>delete your data;</li>
+      <li>restrict or object to how we use it;</li>
+      <li>send you a copy in a portable format;</li>
+      <li>and you can withdraw consent (e.g. unsubscribe) at any time.</li>
+    </ul>
+    <p>To use any of these, email us at <a href="mailto:hello@compactcocktail.hu">hello@compactcocktail.hu</a><span class="legal-todo"> [confirm real inbox]</span>. If you&rsquo;re not happy with how we&rsquo;ve handled your data, you can also complain to Hungary&rsquo;s data protection authority, NAIH (naih.hu).</p>
+
+    <h2>Changes to this policy</h2>
+    <p>If this policy changes, we&rsquo;ll update this page and adjust the date at the top.</p>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap footer-grid">
+    <img src="../assets/logo-orange.svg" alt="Compact Cocktail" class="footer-logo">
+    <p class="footer-msg">Please enjoy responsibly.</p>
+    <p class="footer-fine">&copy; 2026 Compact Cocktail &middot; 18+</p>
+  </div>
+</footer>
+
+<script src="../shared.js"></script>
+<script>
+  /* opened via target="_blank" from wherever the consent checkbox was
+     (B2C or B2B page) — send "back" to that same page rather than
+     always defaulting to the B2C homepage */
+  (function () {
+    var back = document.querySelector('.legal-back');
+    if (back && document.referrer && document.referrer.indexOf(location.origin) === 0) {
+      back.href = document.referrer;
+    }
+  })();
+</script>
+</body>
+</html>
