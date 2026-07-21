@@ -165,8 +165,10 @@
 .ot-faq-a p{overflow:hidden;min-height:0;padding:0 26px 24px;color:var(--co-grey);font-size:16.5px;line-height:1.6}
 .ot-faq-a em{color:var(--co-grey-light);font-style:italic}
 
-/* ---------- wizard per-question sketch (graphics TODO) ---------- */
+/* ---------- wizard per-question sketch (text fallback for steps with no illustration yet) ---------- */
 .ot-wsketch{width:100%;aspect-ratio:16/9;margin-bottom:22px;border:2px dashed rgba(43,43,43,.25);border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;text-align:center;padding:16px;font-size:13.5px;font-weight:600;color:var(--co-grey-light);line-height:1.4}
+.ot-wsketch-img{border:none;padding:0;background:#f3e6cf;overflow:hidden}
+.ot-wsketch-img img{width:100%;height:100%;object-fit:contain}
 
 /* ---------- 8 · FINAL CTA — blue band + form ---------- */
 .ot-contact{background:var(--co-blue);padding:88px 0}

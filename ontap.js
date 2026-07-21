@@ -117,6 +117,7 @@
 })();
 
 (function () {
+  var ROOT = window.CC_ROOT || '';
   var LANG = window.CC_LANG || 'en';
   var t = function (x) { return typeof x === 'string' ? x : x[LANG]; };
 
@@ -137,9 +138,13 @@
     sent: 'Thanks — we’ll be in touch within a day.', qword: function (n) { return 'Question ' + n; }
   };
 
-  /* `sketch` = placeholder for a simple line-art illustration per step (client:
-     help venues picture what we're asking). TODO: drop the generated images in
-     as assets/wizard-<id>.png and swap the placeholder box for an <img>. */
+  /* `sketch` = fallback text for any step whose illustration isn't in yet.
+     Steps with an image ready are listed in WIZARD_IMG below (assets/wizard-<id>.png);
+     the "coupler" outcome reuses q3's illustration — same F/M coupler pair, which already
+     shows the "one attached, one still needed" idea the outcome text is making. */
+  var WIZARD_IMG = { q1: 1, q2: 1, q3: 1, q4: 1, ready: 1, tap: 1, install: 1, coupler: 1 };
+  var WIZARD_IMG_SRC = { coupler: 'wizard-q3.png' };
+  function wizardImgSrc(id) { return WIZARD_IMG_SRC[id] || ('wizard-' + id + '.png'); }
   var QUESTIONS = {
     q1: { label: { en: 'built-in system', hu: 'beépített rendszer' },
           text: { en: 'Does your venue have a built-in dispensing system?', hu: 'Van beépített sörcsaprendszer a helyeden?' },
@@ -153,7 +158,7 @@
           sketch: '“F” and “M” KeyKEG couplers side by side, one clicking onto a keg neck', yes: 'ready', no: 'coupler' },
     q4: { label: { en: 'counter space', hu: 'hely a pultnál' },
           text: { en: 'Is there counter space (top & bottom) for a built-in system?', hu: 'Van hely a pulton és alatta egy beépített rendszernek?' },
-          sketch: 'Bar counter in side view with room above the top and cabinet space below', yes: 'tap', no: 'tap' }
+          sketch: 'Bar counter in side view with room above the top and cabinet space below', yes: 'install', no: 'tap' }
   };
 
   var OUTCOMES = {
@@ -169,10 +174,16 @@
               hu: 'Csak a megfelelő csatlakozófej kell — a 12 literes „F”, a 30 literes „M” KeyKEG fejet kér. Add meg az elérhetőséged, és az első rendeléssel megoldjuk, partnereinken keresztül.' },
       cta: { en: 'Send — we’ll sort the coupler →', hu: 'Küldés — intézzük a csatlakozót →' }
     },
+    install: {
+      title: { en: 'You’ve got the room to choose.', hu: 'Van hely — válogathatsz.' },
+      text: { en: 'A mobile tap or a full built-in system could both work here — worth a quick chat, including purchase, rental, or installment options. Leave your details and we’ll walk through it together.',
+              hu: 'Nálatok mobil csapoló és egy teljes beépített rendszer is szóba jöhet — érdemes átbeszélni, vásárlással, bérléssel vagy részletfizetéssel is. Add meg az elérhetőséged, és átnézzük együtt.' },
+      cta: { en: 'Send — let’s talk options →', hu: 'Küldés — beszéljük át az opciókat →' }
+    },
     tap: {
-      title: { en: 'No tap? No problem.', hu: 'Nincs csap? Nem gond.' },
-      text: { en: 'Leave your details and we’ll get in touch — a mobile tap solves it, and we’ll sort out the right setup together through our partners.',
-              hu: 'Add meg az elérhetőséged és jelentkezünk — egy mobil csapoló megoldja, a megfelelő szettet pedig partnereinken keresztül közösen összerakjuk.' },
+      title: { en: 'No counter space? A mobile tap works too.', hu: 'Nincs hely a pultnál? A mobil csapoló is megoldás.' },
+      text: { en: 'A mobile tap unit needs no built-in install — available to purchase, rent, or pay off in installments. Leave your details and we’ll sort out the right setup through our partners.',
+              hu: 'A mobil csapoló beépítés nélkül is működik — vásárolható, bérelhető, vagy részletre is elérhető. Add meg az elérhetőséged, és partnereinken keresztül összerakjuk a megfelelő szettet.' },
       cta: { en: 'Send — we’ll get in touch →', hu: 'Küldés — jelentkezünk →' }
     }
   };
@@ -188,7 +199,8 @@
     var q = QUESTIONS[id];
     wizard.innerHTML =
       '<div class="ot-wcard">' +
-        (q.sketch ? '<div class="ot-wsketch">Sketch: ' + q.sketch + '</div>' : '') +
+        (WIZARD_IMG[id] ? '<div class="ot-wsketch ot-wsketch-img"><img src="' + ROOT + 'assets/' + wizardImgSrc(id) + '" alt=""></div>' :
+         q.sketch ? '<div class="ot-wsketch">Sketch: ' + q.sketch + '</div>' : '') +
         '<p class="ot-wstep">' + W.qword(askedCount()) + '</p>' +
         '<h3 class="ot-wq">' + t(q.text) + '</h3>' +
         (q.hint ? '<p class="ot-whint">' + t(q.hint) + '</p>' : '') +
@@ -225,6 +237,7 @@
     var o = OUTCOMES[id];
     wizard.innerHTML =
       '<div class="ot-wcard ot-wcard-outcome">' +
+        (WIZARD_IMG[id] ? '<div class="ot-wsketch ot-wsketch-img"><img src="' + ROOT + 'assets/' + wizardImgSrc(id) + '" alt=""></div>' : '') +
         '<p class="ot-wstep">' + W.result + '</p>' +
         '<h3 class="ot-wq">' + t(o.title) + '</h3>' +
         '<p class="ot-wtext">' + t(o.text) + '</p>' +

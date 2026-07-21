@@ -87,70 +87,48 @@
       </div>
     </div>
 
-    <!-- how the keg itself works — placeholder line-art until the real
-         infographic; step wording TBC with the client -->
-    <div class="how-keg">
-      <p class="how-keg-head">A hordó a pultos.</p>
-      <div class="how-keg-row">
-        <div class="how-keg-step">
-          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="12" y="6" width="24" height="36" rx="4"/><line x1="12" y1="22" x2="36" y2="22"/><line x1="31" y1="12" x2="31" y2="17"/><line x1="31" y1="27" x2="31" y2="32"/></svg>
-          <span>Hűtsd le a hűtőben</span>
-        </div>
-        <div class="how-keg-step">
-          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18v-6a4 4 0 0 1 4-4h12a4 4 0 0 1 4 4v6"/><rect x="10" y="18" width="28" height="24" rx="5"/><path d="M24 18v-7"/><path d="M24 26v6"/><circle cx="24" cy="26" r="3"/></svg>
-          <span>Pattintsd ki a beépített csapot</span>
-        </div>
-        <div class="how-keg-step">
-          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 6h20l-3 30a5 5 0 0 1-5 4h-4a5 5 0 0 1-5-4z"/><path d="M15.5 18h17"/><path d="M20 44h8"/></svg>
-          <span>Tölts &mdash; se gáz, se szerszám</span>
-        </div>
-        <div class="how-keg-step">
-          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="24" cy="24" r="18"/><path d="M24 13v11l8 5"/></svg>
-          <span>Napokig friss marad</span>
-        </div>
+    <!-- "everything included" reassurance folded into the same section (no
+         separate box, per client). Real keg-print infographic TODO. -->
+    <div class="how-note">
+      <p class="how-note-head">Minden benne van &mdash; csak jég kell hozzá.</p>
+      <div class="how-note-icons">
+        <span class="how-nicon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 18v-6a4 4 0 0 1 4-4h12a4 4 0 0 1 4 4v6"/><rect x="10" y="18" width="28" height="24" rx="5"/><path d="M24 18v-7"/><path d="M24 26v6"/><circle cx="24" cy="26" r="3"/></svg>Pattintsd ki a beépített csapot</span>
+        <span class="how-nicon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 6h20l-3 30a5 5 0 0 1-5 4h-4a5 5 0 0 1-5-4z"/><path d="M15.5 18h17"/><path d="M20 44h8"/></svg>Tölts &mdash; se gáz, se szerszám</span>
+        <span class="how-nicon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="24" cy="24" r="18"/><path d="M24 13v11l8 5"/></svg>Napokig friss marad</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ===== 4 · THE MATH — big-type band on CoCo Blue ===== -->
+<!-- ===== 4 · PRICE vs VALUE — one CoCo Blue band, split two ways:
+     left = the price tags, right = why it's worth it (client feedback) ===== -->
 <section class="math">
   <div class="math-pattern" aria-hidden="true"></div>
   <div class="wrap">
     <p class="eyebrow eyebrow-onblue">A matek</p>
     <h2 class="math-head">Bárminőség. Nem bár árak.</h2>
-    <div class="tag-row">
-      <div class="tag tag-us">
-        <span class="tag-where">a te hordód</span>
-        <span class="tag-price">&asymp;900&nbsp;Ft</span>
-        <span class="tag-per">italonként</span>
-      </div>
-      <div class="tag tag-bar">
-        <span class="tag-where">a bár</span>
-        <span class="tag-price tag-strike">3&thinsp;000&nbsp;Ft</span>
-        <span class="tag-per">italonként — plusz borravaló</span>
-      </div>
-    </div>
-
-    <!-- gains & pains from the value-prop canvas — sell the hosting
-         experience, not just the price (client feedback) -->
-    <div class="gains">
-      <h3 class="gains-head">Ugyanaz a buli. Más házigazda.</h3>
-      <div class="gains-row">
-        <div class="gain">
-          <span class="gain-pain">Egész este a konyhában kevergetsz</span>
-          <span class="gain-win">A vendégek maguknak töltenek</span>
-        </div>
-        <div class="gain">
-          <span class="gain-pain">15 tételes bevásárlólista</span>
-          <span class="gain-win">Egy hordó a hűtőben</span>
-        </div>
-        <div class="gain">
-          <span class="gain-pain">&bdquo;Jól kevertem ezt?&rdquo;</span>
-          <span class="gain-win">Bárminőség, minden pohárnál</span>
+    <div class="value-grid">
+      <div class="value-price">
+        <div class="tag-row">
+          <div class="tag tag-us">
+            <span class="tag-where">a te hordód</span>
+            <span class="tag-price">&asymp;900&nbsp;Ft</span>
+            <span class="tag-per">italonként</span>
+          </div>
+          <div class="tag tag-bar">
+            <span class="tag-where">a bár</span>
+            <span class="tag-price tag-strike">3&thinsp;000&nbsp;Ft</span>
+            <span class="tag-per">italonként — plusz borravaló</span>
+          </div>
         </div>
       </div>
-      <p class="math-kicker">Te viszed a bulit. A hordó viszi a bárpultot.</p>
+      <div class="value-why">
+        <ul class="value-list">
+          <li>Bárminőség, minden pohárnál</li>
+          <li>Egy hordó a hűtőben</li>
+          <li>A vendégek maguknak töltenek</li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
@@ -189,13 +167,13 @@
     <p class="eyebrow">A legendák szerint</p>
     <h2>Megérkeztek a vélemények.</h2>
     <div class="bubble-row">
-      <div class="bubble bubble-spritz">
-        <p>&bdquo;Többet vettem ki a Spritzből, mint amennyit a Spritz vett ki belőlem.&rdquo;</p>
-        <span class="bubble-name">Winston Churchill* &middot; a Spritzről, valószínűleg</span>
-      </div>
-      <div class="bubble bubble-mojito bubble-mid">
-        <p>&bdquo;A mojitóm ott, ahol a hordó.&rdquo;</p>
+      <div class="bubble bubble-mojito">
+        <p>&bdquo;Nincs olyan hű barát, mint egy mojito, ami mindig csapon van.&rdquo;</p>
         <span class="bubble-name">Ernest Hemingway* &middot; a Mojitóról, állítólag</span>
+      </div>
+      <div class="bubble bubble-paloma bubble-mid">
+        <p>&bdquo;Adj egy Palomát és egy árnyékos helyet, és a délután magától megtörténik.&rdquo;</p>
+        <span class="bubble-name">Frida Kahlo* &middot; a Palomáról, állítólag</span>
       </div>
       <div class="bubble bubble-pornstar">
         <p>&bdquo;Győzelemkor megérdemled a Pornstar Martinit. Vereségkor szükséged van rá.&rdquo;</p>
@@ -235,16 +213,14 @@
   </div>
 </section>
 
-<!-- ===== 9b · FOR VENUES — B2B funnel ===== -->
-<section class="b2b">
-  <div class="wrap b2b-grid">
-    <div class="b2b-copy">
-      <p class="eyebrow">Vendéglátósoknak</p>
-      <h2 class="b2b-head">Bárt, hotelt vagy rendezvényt viszel?</h2>
-      <p class="b2b-sub">Ugyanezek a koktélok profi csaprendszeren — 12&ndash;30&thinsp;literes hordók, másodpercek alatt csapolva, betanítás&nbsp;nélkül.</p>
-      <a href="on-tap.html" class="btn btn-primary">Nézd meg csapon&nbsp;&rarr;</a>
+<!-- ===== 9b · FOR VENUES — slim B2B bridge strip (radius matched to the bands) ===== -->
+<section class="b2b-strip">
+  <div class="wrap b2b-strip-inner">
+    <div class="b2b-strip-copy">
+      <p class="eyebrow eyebrow-onblue">Vendéglátósoknak</p>
+      <p class="b2b-strip-head">Bárt, hotelt vagy rendezvényt viszel? Ugyanezek a koktélok, profi csaprendszeren.</p>
     </div>
-    <div class="b2b-photo"><img src="assets/b2b-real-pour.jpg" alt="Compact Cocktail csapolás a Sirály Bárban"></div>
+    <a href="on-tap.html" class="btn btn-primary">Nézd meg csapon&nbsp;&rarr;</a>
   </div>
 </section>
 
@@ -254,8 +230,15 @@
     <h2>Tölts magadnak 10% kedvezményt.</h2>
     <p class="section-sub">Add meg az e-mail-címed, küldjük a kódot az első hordódhoz — plusz elsőként értesülsz, ha új íz érkezik. Semmi spam, csak koktél.</p>
     <form class="cta-form">
-      <input type="email" name="email" placeholder="te@email.hu" aria-label="E-mail" required>
-      <button class="btn btn-primary" type="submit">Kérem a kódot</button>
+      <div class="cta-form-row">
+        <input type="email" name="email" placeholder="te@email.hu" aria-label="E-mail" required>
+        <button class="btn btn-primary" type="submit">Kérem a kódot</button>
+      </div>
+      <!-- privacy consent required for marketing email (GDPR) -->
+      <label class="cc-check">
+        <input type="checkbox" name="privacy" required>
+        <span>Elfogadom az <a href="privacy.html" target="_blank" rel="noopener">adatkezelési tájékoztatót</a>.</span>
+      </label>
     </form>
     <p class="cta-sent" hidden>Kész &mdash; úton a kód. Nézd meg a postafiókod.</p>
   </div>
