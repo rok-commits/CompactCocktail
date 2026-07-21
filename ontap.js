@@ -309,8 +309,8 @@
         '<h3>' + C.h + '</h3>' +
         '<p class="cc-modal-sub">' + C.p + '</p>' +
         '<div class="cc-modal-btns">' +
-          '<a class="btn btn-primary" href="index.html">' + C.go + '</a>' +
-          '<button class="btn cc-btn-outline" data-close>' + C.stay + '</button>' +
+          '<button class="btn btn-primary" data-close>' + C.stay + '</button>' +
+          '<a class="btn cc-btn-outline" href="index.html">' + C.go + '</a>' +
         '</div>'
     });
   }, 700);
