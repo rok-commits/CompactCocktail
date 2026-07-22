@@ -293,7 +293,7 @@
 
 /* B2B→B2C landing nudge (client, Jul 13) — if someone lands on the trade
    page by accident, offer the home shop. Once per session, and only after the
-   age gate is cleared so two modals never stack. Photo is a placeholder. */
+   age gate is cleared so two modals never stack. */
 (function () {
   var ROOT = window.CC_ROOT || '';
   var LANG = window.CC_LANG || 'en';
@@ -318,7 +318,7 @@
     ccModal({
       html:
         '<button class="cc-modal-x" data-close aria-label="Close">&times;</button>' +
-        '<div class="cc-modal-photo"><img src="' + ROOT + 'assets/b2c-enjoy.jpg" alt=""></div>' +
+        '<div class="cc-modal-photo"><img src="' + ROOT + 'assets/b2b-tap-pour.jpg" alt=""></div>' +
         '<h3>' + C.h + '</h3>' +
         '<p class="cc-modal-sub">' + C.p + '</p>' +
         '<div class="cc-modal-btns">' +

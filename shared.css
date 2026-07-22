@@ -66,7 +66,12 @@ body.cc-noscroll{overflow:hidden}
 .cc-modal-backdrop.on .cc-modal{transform:none}
 .cc-modal h3{color:var(--co-blue);font-size:clamp(24px,3vw,30px);font-weight:700;letter-spacing:-.01em;line-height:1.15}
 .cc-modal-sub{color:var(--co-grey);font-size:17px;line-height:1.55;margin-top:12px}
-.cc-modal-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:28px}
+/* sticky footer: on short viewports .cc-modal scrolls internally (see
+   max-height below) — pinning the CTA row to the bottom of that scroll
+   area means the primary action is always reachable instead of getting
+   cut off mid-button, which is what made the popups feel broken on real
+   phones (the surrounding text can still scroll up under it). */
+.cc-modal-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:28px;position:sticky;bottom:-1px;background:var(--co-cream);padding-bottom:2px}
 .cc-btn-outline{background:none;color:var(--co-blue);box-shadow:inset 0 0 0 2px var(--co-blue)}
 .cc-btn-outline:hover{background:var(--co-blue);color:#fff}
 .cc-modal-x{position:absolute;top:14px;right:14px;z-index:3;width:38px;height:38px;border:none;border-radius:50%;background:var(--co-cream-deep);color:var(--co-grey);font-size:19px;line-height:1;cursor:pointer;transition:background .15s ease,color .15s ease}
@@ -77,12 +82,28 @@ body.cc-noscroll{overflow:hidden}
 @media (max-width:520px){
   .cc-modal{padding:36px 24px 30px}
 }
+/* short viewports (phones with the browser chrome still expanded, or
+   landscape) — .cc-modal is already max-height:88svh + overflow:auto, but
+   without this the photo/heading/copy alone can exceed that before you
+   even reach the buttons. Tightening the rhythm here means most phones
+   never need to scroll the modal at all. */
+@media (max-height:700px){
+  .cc-modal{padding:28px 24px 22px;max-height:92svh}
+  .cc-modal h3{font-size:22px}
+  .cc-modal-sub{font-size:15.5px;margin-top:8px}
+  .cc-modal-btns{margin-top:18px}
+  .cc-gate-logo{height:40px;margin-bottom:16px}
+  .cc-gate-fine{margin-top:14px}
+}
 
 /* ---------- modal photo (e.g. the B2B→B2C nudge) ---------- */
 .cc-modal-photo{margin:-44px -40px 24px;aspect-ratio:16/9;overflow:hidden;border-radius:var(--r-lg) var(--r-lg) 0 0}
 .cc-modal-photo img{width:100%;height:100%;object-fit:cover}
 @media (max-width:520px){
   .cc-modal-photo{margin:-36px -24px 20px}
+}
+@media (max-height:700px){
+  .cc-modal-photo{aspect-ratio:21/9;margin-bottom:16px}
 }
 
 /* ---------- age gate ---------- */

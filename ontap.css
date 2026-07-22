@@ -211,6 +211,12 @@
   .ot-makers-grid{grid-template-columns:1fr;gap:40px}
   .ot-docs-grid{grid-template-columns:1fr}
   .ot-form-row{flex-direction:column}
-  .ot-b2c-strip-inner{justify-content:center;text-align:center}
+  /* keg spans both rows on the left; copy sits above the button, both
+     sharing the button's left edge, instead of the button wrapping full-
+     width below everything */
+  .ot-b2c-strip-inner{display:grid;grid-template-columns:auto 1fr;align-items:center;column-gap:22px;row-gap:14px;text-align:left}
+  .ot-b2c-thumb{grid-row:1/3;height:108px}
+  .ot-b2c-strip-copy{grid-row:1}
+  .ot-b2c-strip-inner>.btn{grid-row:2;justify-self:start}
   .ot-marquee-item{width:280px;height:210px;margin-right:14px}
 }
