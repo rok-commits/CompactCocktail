@@ -356,118 +356,90 @@ const io = new IntersectionObserver(es => es.forEach(e => {
 document.querySelectorAll(
   '.shop-card,.bubble,.makers-copy'
 ).forEach(el => { el.classList.add('reveal'); io.observe(el); });
-
-/* ---------- polaroid pile: scroll-stepped stack (mobile layout — see
-   .occasions/.pol-stage/.pol in home.css). The section is made tall and
-   its cork card (.wrap) is sticky, so the board locks into the viewport
-   while the extra scroll room is consumed. We map scroll POSITION within
-   the section to how many photos have landed: each slice of scroll drops
-   one more polaroid onto the pile (bottom→top), and scrolling back up
-   lifts them off again. Driving it off position rather than intercepting
-   gestures is what makes it momentum-proof (a fast fling just lands the
-   ones it passes), never double-fires, and always replays. Above the
-   mobile breakpoint the photos are a static fanned row (CSS) — we strip
-   our inline styles so they don't override it. ---------- */
-(function polStack() {
+/* ---------- polaroid pile (mobile): a two-column stack you build by
+   swiping (layout in home.css — .occasions/.pol-stage/.pol-row). Cards 1+2
+   drop onto the left/right columns when the stage scrolls into view. The
+   stage is a hidden horizontal snap-scroller (stops built here): each
+   swipe throws the next card onto the pile — 3 → left column, 4 → right,
+   5 → middle — and swiping back lifts them off. Position-driven off
+   scrollLeft, so momentum can't double-fire and it always replays; the
+   page's vertical flow is never touched. Every landing is the "few cm
+   drop": straight down onto its spot with a slight settle rotation.
+   Desktop keeps the static fanned row; prefers-reduced-motion shows the
+   finished pile with no animation. Earlier takes archived in
+   variants/occasions-pinned-reveal.md + git history. ---------- */
+(function polPile() {
   const occ   = document.querySelector('.occasions');
   const stage = document.querySelector('.pol-stage');
-  const wrap  = occ && occ.querySelector('.wrap');
   const cards = [...document.querySelectorAll('.pol')];
-  if (!occ || !stage || !wrap || !cards.length) return;
+  if (!occ || !stage || cards.length < 3) return;
   const mq = matchMedia('(max-width:860px)');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)');
   const n = cards.length;
-
-  // subtle scroll-progress line (styled in home.css). Built here so the
-  // markup stays out of the two index.html files; its fill tracks reveal
-  // progress so the pin reads as short and finite.
-  const progress = document.createElement('div');
-  progress.className = 'pol-progress';
-  const progressFill = document.createElement('i');
-  progress.appendChild(progressFill);
-  wrap.appendChild(progress);
-  const REST = [ // small scatter per card once landed (x/y/r), plus which side it slides in from
-    { x: -16, y: 10, r: -6, side: -1 }, { x: 14, y: -6, r: 5, side: 1 }, { x: -10, y: 4, r: -4, side: -1 },
-    { x: 12, y: 8, r: 5, side: 1 }, { x: -14, y: -4, r: -5, side: -1 },
+  const BASE = 2;    // cards already on the table before any swiping
+  const ZONE = 140;  // px of horizontal scroll per thrown card (one snap stop)
+  const zones = n - BASE;
+  // resting spots: x is % across the stage (so the pile fills any width and
+  // the outer edges may bleed past the cork card), y/r a small scatter.
+  // 1+3 share the left column, 2+4 the right, 5 tops the middle.
+  const REST = [
+    { x: 26, y: 0,  r: -5 }, { x: 74, y: 8,  r: 4 }, { x: 27, y: 14, r: -2 },
+    { x: 73, y: -2, r: 5 },  { x: 50, y: 6,  r: -3 },
   ];
-  const DURATION = 520; // ms — one card's landing animation
-  const EASE = 'cubic-bezier(.16,1,.3,1)'; // fast start, long slow tail — the "drop, then slide to a stop" feel
-  const state = new Array(n).fill(false); // is card i currently landed?
-  let pin = '';       // '', 'pinned' or 'past' — current pin phase
-  let ticking = false;
+  const DURATION = 600;
+  const EASE = 'cubic-bezier(.3,1.3,.4,1)'; // small overshoot — drop, then settle
+  const state = new Array(n).fill(false);   // is card i currently on the table?
+  let entered = false, ticking = false, io = null, built = false;
 
-  function paint(i, atRest) {
+  function buildTrack() {
+    if (built) return; built = true;
+    for (let i = 0; i < zones; i++) {
+      const z = document.createElement('div');
+      z.className = 'pol-snapzone';
+      stage.appendChild(z);
+    }
+    const fill = document.createElement('div');
+    fill.className = 'pol-snapfill';
+    stage.appendChild(fill);
+  }
+
+  function paint(i, landed, delayMs) {
     const rest = REST[i % REST.length];
     const card = cards[i];
-    if (atRest) {
-      card.style.transform = `translate(calc(-50% + ${rest.x}px), calc(-50% + ${rest.y}px)) rotate(${rest.r}deg) scale(1)`;
+    card.style.left = rest.x + '%';
+    card.style.transitionDelay = (landed && delayMs ? delayMs : 0) + 'ms';
+    if (landed) {
+      card.style.transform = `translate(-50%, calc(-50% + ${rest.y}px)) rotate(${rest.r}deg) scale(1)`;
       card.style.opacity = '1';
     } else {
-      const startX = rest.x + rest.side * 240; // waits off to the side, not below
-      const startY = rest.y - 36; // and a little above its resting spot, so it drops as it slides in
-      card.style.transform = `translate(calc(-50% + ${startX}px), calc(-50% + ${startY}px)) rotate(0deg) scale(.86)`;
+      // held a few cm above its landing spot — falls straight down onto it
+      card.style.transform = `translate(-50%, calc(-50% + ${rest.y - 30}px)) rotate(${rest.r * 0.4}deg) scale(1.05)`;
       card.style.opacity = '0';
     }
-    card.style.zIndex = String(i + 1); // later photos land on top of earlier ones
+    card.style.zIndex = String(i + 1); // later throws land on top
   }
 
-  function arm() {
-    // paint all cards to their hidden/off-stage start with no transition,
-    // then flush and re-enable transitions so the first real landing animates
-    cards.forEach((card, i) => { card.style.transition = 'none'; paint(i, false); state[i] = false; });
-    void stage.offsetWidth;
-    cards.forEach(card => { card.style.transition = `transform ${DURATION}ms ${EASE}, opacity ${Math.round(DURATION * 0.5)}ms ease-out`; });
-  }
-
-  function clear() {
-    // above the breakpoint (and under reduced-motion) .pol-row is a static
-    // layout — leftover inline styles would override it, so strip them
-    cards.forEach((card, i) => { card.style.transition = ''; card.style.transform = ''; card.style.opacity = ''; card.style.zIndex = ''; state[i] = false; });
-    setPin('');                       // drop the fixed-pin classes
-    progress.classList.remove('on');  // hide the progress line
-  }
-
-  // Drive the pin via position:fixed rather than position:sticky — sticky
-  // was unreliable against mobile viewport dynamics; toggling these classes
-  // guarantees the board fills the viewport for the whole pinned range.
-  function setPin(phase) {
-    if (phase === pin) return;
-    wrap.classList.toggle('is-pinned', phase === 'pinned');
-    wrap.classList.toggle('is-past',   phase === 'past');
-    pin = phase;
-  }
-
-  // The scroll window over which the board is pinned. secTop is where the
-  // card's top reaches the viewport top (pin begins); once the remaining
-  // track (section height − one card height) is consumed the card parks at
-  // the section bottom (pin ends). Progress across that window drives how
-  // many photos have landed: n+1 even zones, so photo i lands at i/(n+1).
-  function geom() {
-    const secTop = occ.getBoundingClientRect().top + window.scrollY;
-    const pinStart = secTop;
-    const pinEnd = secTop + occ.offsetHeight - wrap.offsetHeight;
-    return { pinStart, pinEnd };
+  // how many cards belong on the table right now: none before the stage is
+  // seen; the two base columns once it is; +1 per snapped zone of swipe
+  function target() {
+    if (!entered) return 0;
+    const z = Math.round(stage.scrollLeft / ZONE);
+    return BASE + Math.max(0, Math.min(zones, z));
   }
 
   function update() {
     ticking = false;
     if (!mq.matches) return;
-    const { pinStart, pinEnd } = geom();
-    const y = window.scrollY;
-    let p;
-    if (y < pinStart)      { setPin('');       p = 0; }
-    else if (y < pinEnd)   { setPin('pinned'); p = (y - pinStart) / (pinEnd - pinStart); }
-    else                   { setPin('past');   p = 1; }
-    const cp = Math.max(0, Math.min(1, p));
-    const target = Math.max(0, Math.min(n, Math.floor(cp * (n + 1))));
+    const t = target();
+    let batch = 0; // stagger when several land in one go (entrance, hard fling)
     for (let i = 0; i < n; i++) {
-      const shouldRest = i < target;
-      if (shouldRest !== state[i]) { paint(i, shouldRest); state[i] = shouldRest; }
+      const should = i < t;
+      if (should !== state[i]) {
+        paint(i, should, batch * 90);
+        state[i] = should;
+        if (should) batch++;
+      }
     }
-    // progress line: visible only while the board is engaged (pinned / just
-    // past), fill tracks how far through the reveal we are
-    progress.classList.toggle('on', pin !== '');
-    progressFill.style.width = (cp * 100) + '%';
   }
 
   function onScroll() {
@@ -476,14 +448,56 @@ document.querySelectorAll(
     requestAnimationFrame(update);
   }
 
-  function setup() {
-    // reduced-motion or desktop → static layout (see home.css), no pinning
-    if (mq.matches && !reduce.matches) { arm(); update(); }
-    else clear();
+  function arm() {
+    buildTrack();
+    // start everything lifted, with no transition (no first-paint flash),
+    // then flush and re-enable so the first drop animates
+    cards.forEach((c, i) => { c.style.transition = 'none'; paint(i, false, 0); state[i] = false; });
+    void stage.offsetWidth;
+    cards.forEach(c => { c.style.transition = `transform ${DURATION}ms ${EASE}, opacity ${Math.round(DURATION / 2)}ms ease-out`; });
+    if (!io) {
+      io = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting && e.intersectionRatio >= 0.25) {
+            entered = true; update();
+          } else if (!e.isIntersecting) {
+            // fully out of view — rewind + lift everything for a replay
+            entered = false; stage.scrollLeft = 0; update();
+          }
+        });
+      }, { threshold: [0, 0.25] });
+      io.observe(stage);
+    }
+    stage.addEventListener('scroll', onScroll, { passive: true });
+    update();
   }
 
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', setup, { passive: true });
+  function staticPile() {
+    // reduced motion: full finished pile, no entrance, swiping changes nothing
+    buildTrack();
+    if (io) { io.disconnect(); io = null; }
+    stage.removeEventListener('scroll', onScroll);
+    cards.forEach((c, i) => { c.style.transition = 'none'; paint(i, true, 0); state[i] = true; });
+  }
+
+  function clear() {
+    // desktop: strip inline styles so the static fanned CSS row shows
+    if (io) { io.disconnect(); io = null; }
+    stage.removeEventListener('scroll', onScroll);
+    cards.forEach((c, i) => {
+      c.style.transition = ''; c.style.transform = ''; c.style.opacity = '';
+      c.style.zIndex = ''; c.style.left = ''; c.style.transitionDelay = '';
+      state[i] = false;
+    });
+    entered = false;
+  }
+
+  function setup() {
+    if (!mq.matches) clear();
+    else if (reduce.matches) staticPile();
+    else arm();
+  }
+
   mq.addEventListener('change', setup);
   reduce.addEventListener('change', setup);
   setup();
