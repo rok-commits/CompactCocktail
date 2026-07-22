@@ -356,89 +356,59 @@ const io = new IntersectionObserver(es => es.forEach(e => {
 document.querySelectorAll(
   '.shop-card,.bubble,.makers-copy'
 ).forEach(el => { el.classList.add('reveal'); io.observe(el); });
-/* ---------- polaroid pile (mobile): a two-column stack you build by
-   swiping (layout in home.css — .occasions/.pol-stage/.pol-row). Cards 1+2
-   drop onto the left/right columns when the stage scrolls into view. The
-   stage is a hidden horizontal snap-scroller (stops built here): each
-   swipe throws the next card onto the pile — 3 → left column, 4 → right,
-   5 → middle — and swiping back lifts them off. Position-driven off
-   scrollLeft, so momentum can't double-fire and it always replays; the
-   page's vertical flow is never touched. Every landing is the "few cm
-   drop": straight down onto its spot with a slight settle rotation.
-   Desktop keeps the static fanned row; prefers-reduced-motion shows the
-   finished pile with no animation. Earlier takes archived in
-   variants/occasions-pinned-reveal.md + git history. ---------- */
-(function polPile() {
+/* ---------- polaroid collage (mobile): "dropped on the table" auto-reveal
+   (layout + drop keyframes in home.css — .occasions/.pol-stage/.pol). No
+   gesture: when the section scrolls into view we add .pol-play, and the
+   photos fall onto the cork one after another (CSS handles the physics —
+   accelerating fall, cushioned contact, slide+rotate settle, no rebound)
+   into a scattered two-column collage where every photo stays visible.
+   Scrolling the section fully out re-arms it, so the drop replays on the
+   next visit. Desktop keeps its static fanned row; prefers-reduced-motion
+   shows the finished collage with no animation (CSS gates it, and we never
+   add .pol-play). ---------- */
+(function polDrop() {
   const occ   = document.querySelector('.occasions');
   const stage = document.querySelector('.pol-stage');
   const cards = [...document.querySelectorAll('.pol')];
-  if (!occ || !stage || cards.length < 3) return;
+  if (!occ || !stage || !cards.length) return;
   const mq = matchMedia('(max-width:860px)');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)');
-  const n = cards.length;
-  const BASE = 2;    // cards already on the table before any swiping
-  const ZONE = 140;  // px of horizontal scroll per thrown card (one snap stop)
-  const zones = n - BASE;
-  // resting spots: x is % across the stage (so the pile fills any width and
-  // the outer edges may bleed past the cork card), y/r a small scatter.
-  // 1+3 share the left column, 2+4 the right, 5 tops the middle.
-  const REST = [
-    { x: 26, y: 0,  r: -5 }, { x: 74, y: 8,  r: 4 }, { x: 27, y: 14, r: -2 },
-    { x: 73, y: -2, r: 5 },  { x: 50, y: 6,  r: -3 },
-  ];
-  const DURATION = 600;
-  const EASE = 'cubic-bezier(.3,1.3,.4,1)'; // small overshoot — drop, then settle
-  const state = new Array(n).fill(false);   // is card i currently on the table?
-  let entered = false, ticking = false, io = null, built = false;
+  let ticking = false, played = false;
 
-  function buildTrack() {
-    if (built) return; built = true;
-    for (let i = 0; i < zones; i++) {
-      const z = document.createElement('div');
-      z.className = 'pol-snapzone';
-      stage.appendChild(z);
-    }
-    const fill = document.createElement('div');
-    fill.className = 'pol-snapfill';
-    stage.appendChild(fill);
+  // "in view enough to play": the stage has entered the lower ~three-
+  // quarters of the viewport but hasn't fully scrolled off the top. Latched
+  // via `played`, and released once the section scrolls away, so the drop
+  // replays (freshly randomised) on the next visit. (A scroll+rect check,
+  // not IntersectionObserver, keeps it dependency-free.)
+  function inView() {
+    const r = stage.getBoundingClientRect();
+    const vh = window.innerHeight;
+    return r.top < vh * 0.8 && r.bottom > vh * 0.2;
   }
 
-  function paint(i, landed, delayMs) {
-    const rest = REST[i % REST.length];
-    const card = cards[i];
-    card.style.left = rest.x + '%';
-    card.style.transitionDelay = (landed && delayMs ? delayMs : 0) + 'ms';
-    if (landed) {
-      card.style.transform = `translate(-50%, calc(-50% + ${rest.y}px)) rotate(${rest.r}deg) scale(1)`;
-      card.style.opacity = '1';
-    } else {
-      // held a few cm above its landing spot — falls straight down onto it
-      card.style.transform = `translate(-50%, calc(-50% + ${rest.y - 30}px)) rotate(${rest.r * 0.4}deg) scale(1.05)`;
-      card.style.opacity = '0';
-    }
-    card.style.zIndex = String(i + 1); // later throws land on top
+  // Randomise each card's delay + fall speed so the pile never lands on a
+  // mechanical beat. Delays are a running sum of random gaps (some tight =
+  // a pair landing together, some longer = a natural pause); duration
+  // varies a touch too. Re-rolled every time the section re-enters view.
+  function randomiseTiming() {
+    let t = Math.random() * 0.06;
+    cards.forEach(card => {
+      card.style.animationDelay = t.toFixed(3) + 's';
+      card.style.animationDuration = (0.58 + Math.random() * 0.16).toFixed(3) + 's';
+      t += 0.1 + Math.random() * 0.36; // 0.10–0.46s gap before the next one
+    });
   }
-
-  // how many cards belong on the table right now: none before the stage is
-  // seen; the two base columns once it is; +1 per snapped zone of swipe
-  function target() {
-    if (!entered) return 0;
-    const z = Math.round(stage.scrollLeft / ZONE);
-    return BASE + Math.max(0, Math.min(zones, z));
+  function clearTiming() {
+    cards.forEach(card => { card.style.animationDelay = ''; card.style.animationDuration = ''; });
   }
 
   function update() {
     ticking = false;
-    if (!mq.matches) return;
-    const t = target();
-    let batch = 0; // stagger when several land in one go (entrance, hard fling)
-    for (let i = 0; i < n; i++) {
-      const should = i < t;
-      if (should !== state[i]) {
-        paint(i, should, batch * 90);
-        state[i] = should;
-        if (should) batch++;
-      }
+    const active = mq.matches && !reduce.matches;
+    if (active && inView()) {
+      if (!played) { randomiseTiming(); occ.classList.add('pol-play'); played = true; }
+    } else if (played || occ.classList.contains('pol-play')) {
+      occ.classList.remove('pol-play'); clearTiming(); played = false;
     }
   }
 
@@ -448,57 +418,9 @@ document.querySelectorAll(
     requestAnimationFrame(update);
   }
 
-  function arm() {
-    buildTrack();
-    // start everything lifted, with no transition (no first-paint flash),
-    // then flush and re-enable so the first drop animates
-    cards.forEach((c, i) => { c.style.transition = 'none'; paint(i, false, 0); state[i] = false; });
-    void stage.offsetWidth;
-    cards.forEach(c => { c.style.transition = `transform ${DURATION}ms ${EASE}, opacity ${Math.round(DURATION / 2)}ms ease-out`; });
-    if (!io) {
-      io = new IntersectionObserver(entries => {
-        entries.forEach(e => {
-          if (e.isIntersecting && e.intersectionRatio >= 0.25) {
-            entered = true; update();
-          } else if (!e.isIntersecting) {
-            // fully out of view — rewind + lift everything for a replay
-            entered = false; stage.scrollLeft = 0; update();
-          }
-        });
-      }, { threshold: [0, 0.25] });
-      io.observe(stage);
-    }
-    stage.addEventListener('scroll', onScroll, { passive: true });
-    update();
-  }
-
-  function staticPile() {
-    // reduced motion: full finished pile, no entrance, swiping changes nothing
-    buildTrack();
-    if (io) { io.disconnect(); io = null; }
-    stage.removeEventListener('scroll', onScroll);
-    cards.forEach((c, i) => { c.style.transition = 'none'; paint(i, true, 0); state[i] = true; });
-  }
-
-  function clear() {
-    // desktop: strip inline styles so the static fanned CSS row shows
-    if (io) { io.disconnect(); io = null; }
-    stage.removeEventListener('scroll', onScroll);
-    cards.forEach((c, i) => {
-      c.style.transition = ''; c.style.transform = ''; c.style.opacity = '';
-      c.style.zIndex = ''; c.style.left = ''; c.style.transitionDelay = '';
-      state[i] = false;
-    });
-    entered = false;
-  }
-
-  function setup() {
-    if (!mq.matches) clear();
-    else if (reduce.matches) staticPile();
-    else arm();
-  }
-
-  mq.addEventListener('change', setup);
-  reduce.addEventListener('change', setup);
-  setup();
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', update, { passive: true });
+  mq.addEventListener('change', update);
+  reduce.addEventListener('change', update);
+  update();
 })();

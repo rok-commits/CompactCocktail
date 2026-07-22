@@ -271,12 +271,12 @@ img.tk-logo-square{height:100px;width:auto;max-width:120px;object-fit:contain}
 .occasions h2{color:#fff}
 .occasions .wrap{position:relative}
 .pol-row{display:flex;justify-content:center;align-items:flex-start;margin-top:70px;flex-wrap:wrap}
-/* snap stops for the mobile swipe pile, built by polPile() in home.js —
-   inert on desktop, enabled inside the mobile media block */
-.pol-snapzone,.pol-snapfill{display:none}
 .pol{position:relative;background:#fff;padding:14px 14px 16px;box-shadow:0 18px 34px rgba(43,25,6,.36);width:230px;margin:0 -10px;transition:transform .25s ease,box-shadow .25s ease}
 /* square-ish polaroid crop (client: image a touch wider than tall) */
 .pol img{width:100%;aspect-ratio:1/1;object-fit:cover}
+/* the lake/car shot (first photo) is framed from the top, so the square
+   crop keeps the top of the image rather than centring it */
+.pol:nth-child(1) img{object-position:top}
 /* angled light sheen — always on (like it's lit by a screen/lamp), and
    slides further across on hover. Two variants, not five: photos tilted
    the same way (same rotation direction) share the same light angle. */
@@ -463,47 +463,72 @@ img.tk-logo-square{height:100px;width:auto;max-width:120px;object-fit:contain}
   .hero-garnish{max-width:540px}
   .how-steps{grid-template-columns:1fr;max-width:340px;margin:48px auto 0}
   .how-step-mid,.how-step-last{margin-top:24px}
-  /* "Take it anywhere" on mobile = rounded cork card + a two-column
-     polaroid pile you BUILD by swiping. Cards 1+2 drop onto the left/right
-     columns (filling the width) when the section scrolls into view; the
-     stage is then a hidden horizontal snap-scroller (stops built by
-     polPile() in home.js) and each swipe throws the next card onto the
-     pile — 3 onto the left column, 4 onto the right, 5 into the middle.
-     Swiping back lifts them off again. Vertical flow is never blocked.
+  /* "Take it anywhere" on mobile = a rounded cork card holding a scattered
+     two-column polaroid COLLAGE. No gesture: when the section scrolls into
+     view, polDrop() in home.js adds .pol-play and the photos drop onto the
+     cork one after another (staggered) and settle into their scattered
+     resting spots — every photo visible, nothing hidden, vertical scroll
+     never touched. Scrolling the section back out re-arms it, so the drop
+     replays on the next visit.
 
-     Cropping: the photos' outer edges may hang PAST the cork card — only
-     the browser edge cuts them. So the crop moves to the full-width
-     section (.occasions{overflow:hidden} at margin 0 = the viewport edge)
-     and the rounded cork surface moves onto .wrap, which the photos are
-     free to overflow.
-     Earlier takes: pinned reveal (variants/occasions-pinned-reveal.md,
-     commit bd0f2cf), edge-to-edge carousel (in git history). */
+     Cropping: the outer photos may hang PAST the cork card; only the
+     BROWSER edge cuts them. So the crop lives on the full-width section
+     (.occasions{overflow:hidden} at margin 0 = viewport edge) and the
+     rounded cork surface moves onto .wrap, which photos are free to
+     overflow. Earlier takes: pinned reveal
+     (variants/occasions-pinned-reveal.md, commit bd0f2cf), swipe-built
+     pile + carousel (git history). */
   .occasions{margin:24px 0 0;padding:0;background:none;box-shadow:none;
     border-radius:0;overflow:hidden}
-  .occasions .wrap{margin:0 12px;padding:64px 20px 58px;border-radius:48px;
+  .occasions .wrap{margin:0 12px;padding:60px 20px 40px;border-radius:48px;
     background-color:#bd9455;
     background-image:
       linear-gradient(160deg,rgba(195,156,92,.55),rgba(120,78,32,.6)),
       url("assets/cork-texture.jpg");
     background-size:cover;background-position:center;
     box-shadow:inset 0 0 100px rgba(64,38,12,.4)}
-  /* the stage is the (invisible) horizontal scroller; -20px margins undo
-     the wrap padding so the pile positions across the full card width */
-  .pol-stage{position:relative;display:flex;height:360px;margin:18px -20px 0;
-    overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;
-    -webkit-overflow-scrolling:touch;scrollbar-width:none}
-  .pol-stage::-webkit-scrollbar{display:none}
-  /* the row rides sticky at left:0, so the pile stays put while the snap
-     stops scroll underneath; -100% margin lets the stops start at x=0 */
-  .pol-row{position:sticky;left:0;flex:0 0 100%;margin:0 -100% 0 0;height:100%}
-  .pol-snapzone{display:block;flex:0 0 140px;height:1px;scroll-snap-align:start}
-  .pol-snapfill{display:block;flex:0 0 100%;height:1px;scroll-snap-align:start}
-  /* left/top/transform set inline by polPile() (%-based x, so the pile
-     spreads across any width; outermost edges may bleed off-card) */
-  .pol{position:absolute;top:50%;width:min(230px,62vw);margin:0;will-change:transform,opacity}
+  /* the collage canvas. -20px side margins undo the wrap padding so the
+     pile positions (and bleeds) across the full card width. Fixed height
+     holds the absolutely-placed photos; captions live inside it. */
+  /* -20px margins undo the wrap padding so the collage spans (and bleeds
+     off) the full card width. Auto height — the pile grows to fit all five,
+     so a caption can never be clipped. */
+  .pol-stage{margin:18px -20px 0}
+  /* two-column pile: left column = cards 1 & 3, right column = cards 2 & 4,
+     card 5 crowns below. Each column is pulled toward the MIDDLE (left cards
+     justify end + push right, right cards justify start + push left) so the
+     paired photos overlap in the centre like a real strewn stack. Vertical
+     gaps stay just clear of the captions so every occasion is readable. */
+  .pol-row{display:grid;grid-template-columns:1fr 1fr;justify-items:center;align-items:start}
+  .pol{width:min(176px,49vw);margin:0;position:relative;
+    transform:translateY(-104px) rotate(0deg) scale(1.06);
+    opacity:0;will-change:transform,opacity;z-index:1}
+  /* --r final tilt, --sx tiny settle-slide. Negative inner margins slide
+     the two columns together so they overlap across the centre line. */
+  .pol:nth-child(1){justify-self:end;margin-right:-32px;--r:-5deg;--sx:-3px;z-index:2}
+  .pol:nth-child(2){justify-self:start;margin-left:-32px;margin-top:32px;--r:4deg;--sx:3px;z-index:3}
+  .pol:nth-child(3){justify-self:end;margin-right:-32px;margin-top:12px;--r:-4deg;--sx:-3px;z-index:4}
+  .pol:nth-child(4){justify-self:start;margin-left:-32px;margin-top:12px;--r:5deg;--sx:4px;z-index:5}
+  .pol:nth-child(5){grid-column:1 / 3;justify-self:center;margin-top:18px;--r:-2deg;--sx:0px;z-index:6}
   /* no push-pins on mobile — the pile reads as photos dropped on a table,
      not tacked to the board */
   .pol::before{display:none}
+  .pol figcaption{margin-top:8px;font-size:14.5px}
+  /* the drop: fall accelerates (ease-in), contact absorbs it at 50% with a
+     slight cushion dip — NO rebound up — then a short slide+rotate settles
+     to rest (ease-out). Held above the surface until .pol-play arrives.
+     Layout position comes from the grid; the transform only falls + tilts. */
+  /* per-card animation-delay + duration are set (randomised) inline by
+     polDrop() in home.js when the section enters view, so the drop never
+     feels mechanically evenly-timed. This is just the base animation. */
+  .occasions.pol-play .pol{animation:pol-drop .66s both}
+  @keyframes pol-drop{
+    0%{transform:translateY(-104px) rotate(0deg) scale(1.06);opacity:0;
+      animation-timing-function:cubic-bezier(.45,0,.85,.5)}   /* accelerating fall — gathers energy */
+    42%{opacity:1}
+    52%{transform:translateY(0) rotate(0deg) scale(1);opacity:1;
+      animation-timing-function:cubic-bezier(.2,.7,.25,1)}    /* lands flat on the surface — no rebound up */
+    100%{transform:translateX(var(--sx,0px)) rotate(var(--r,0deg)) scale(1);opacity:1}} /* cushioned settle: slides + rotates to a stop, Y stays put */
   .makers-grid{grid-template-columns:1fr;gap:44px}
   .taste-grid{grid-template-columns:1fr;gap:40px}
   .taste-btns{flex-direction:column;align-items:flex-start}
@@ -515,4 +540,12 @@ img.tk-logo-square{height:100px;width:auto;max-width:120px;object-fit:contain}
   .shop-grid{grid-template-columns:repeat(2,1fr)}
   .cta-form input{width:100%}
   .cta-form-row{flex-direction:column}
+}
+
+/* Reduced-motion: no drop animation — the collage is simply already there,
+   every photo at its resting spot. polDrop() detects the same query and
+   never adds .pol-play, so nothing animates. */
+@media (max-width:860px) and (prefers-reduced-motion:reduce){
+  .pol{opacity:1;transform:translateX(var(--sx,0px)) rotate(var(--r,0deg)) scale(1)}
+  .occasions.pol-play .pol{animation:none}
 }
