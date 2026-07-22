@@ -96,6 +96,26 @@ FLAVOURS.forEach((f, i) => {
 });
 const dots = [...dotsBox.children];
 
+/* ---------- image preloading ----------
+   The swap in show() sets src mid-animation; without preloading, the
+   incoming keg can still be decoding when the fly-in starts, which reads
+   as a stutter on mobile. We DON'T preload all five up front (that's a
+   burst of requests on load) — instead we keep the *next* flavour warm,
+   so at any moment only ~1 extra keg+garnish is in flight, and every
+   swap comes from cache. decode() also gets the bitmap ready off the
+   main thread where supported. */
+const imgCache = {};
+function preload(i) {
+  const f = FLAVOURS[(i + FLAVOURS.length) % FLAVOURS.length];
+  if (imgCache[f.id]) return;
+  imgCache[f.id] = [`keg-full-${f.id}`, `garnish-${f.id}`].map(name => {
+    const img = new Image();
+    img.src = `${ROOT}assets/${name}.png`;
+    if (img.decode) img.decode().catch(() => {});
+    return img;
+  });
+}
+
 /* initial paint — first (available) flavour, no roll animation */
 (function initHero() {
   const f = FLAVOURS[0];
@@ -105,6 +125,8 @@ const dots = [...dotsBox.children];
   kegImg.src  = `${ROOT}assets/keg-full-${f.id}.png`;
   garnish.src = `${ROOT}assets/garnish-${f.id}.png`;
   fname.textContent = f.name;
+  preload(0);        // current
+  preload(1);        // next one up, ready before the first auto-advance
 })();
 
 function show(i) {
@@ -127,6 +149,7 @@ function show(i) {
     setTimeout(() => stage.classList.remove('entering'), 520);
   }, 380);
   dots.forEach((d, j) => d.classList.toggle('active', j === i));
+  preload(i + 1);   // stay one flavour ahead so the *next* swap is instant
 }
 
 function restart() {
@@ -134,8 +157,14 @@ function restart() {
   timer = setInterval(() => show((current + 1) % FLAVOURS.length), 4200);
 }
 restart();
-panel.addEventListener('mouseenter', () => clearInterval(timer));
-panel.addEventListener('mouseleave', restart);
+/* pause-on-hover is scoped to the keg stage, not the whole (viewport-tall)
+   panel — binding it to `panel` meant a cursor merely resting anywhere on
+   the hero (very likely right after a page load/click) killed the timer
+   before it ever fired, so the loop looked like it "never started". */
+if (matchMedia('(pointer:fine)').matches) {
+  stage.addEventListener('mouseenter', () => clearInterval(timer));
+  stage.addEventListener('mouseleave', restart);
+}
 
 /* ---------- "next flavour" cursor + click on the keg stage ---------- */
 const cursor = document.querySelector('.hero-cursor');
@@ -327,3 +356,100 @@ const io = new IntersectionObserver(es => es.forEach(e => {
 document.querySelectorAll(
   '.shop-card,.bubble,.makers-copy'
 ).forEach(el => { el.classList.add('reveal'); io.observe(el); });
+
+/* ---------- polaroid pile: scroll-stepped stack (mobile layout — see
+   .occasions/.pol-stage/.pol in home.css). The section is made tall and
+   its cork card (.wrap) is sticky, so the board locks into the viewport
+   while the extra scroll room is consumed. We map scroll POSITION within
+   the section to how many photos have landed: each slice of scroll drops
+   one more polaroid onto the pile (bottom→top), and scrolling back up
+   lifts them off again. Driving it off position rather than intercepting
+   gestures is what makes it momentum-proof (a fast fling just lands the
+   ones it passes), never double-fires, and always replays. Above the
+   mobile breakpoint the photos are a static fanned row (CSS) — we strip
+   our inline styles so they don't override it. ---------- */
+(function polStack() {
+  const occ   = document.querySelector('.occasions');
+  const stage = document.querySelector('.pol-stage');
+  const cards = [...document.querySelectorAll('.pol')];
+  if (!occ || !stage || !cards.length) return;
+  const mq = matchMedia('(max-width:860px)');
+  const n = cards.length;
+  const REST = [ // small scatter per card once landed (x/y/r), plus which side it slides in from
+    { x: -16, y: 10, r: -6, side: -1 }, { x: 14, y: -6, r: 5, side: 1 }, { x: -10, y: 4, r: -4, side: -1 },
+    { x: 12, y: 8, r: 5, side: 1 }, { x: -14, y: -4, r: -5, side: -1 },
+  ];
+  const DURATION = 520; // ms — one card's landing animation
+  const EASE = 'cubic-bezier(.16,1,.3,1)'; // fast start, long slow tail — the "drop, then slide to a stop" feel
+  const state = new Array(n).fill(false); // is card i currently landed?
+  let ticking = false;
+
+  function paint(i, atRest) {
+    const rest = REST[i % REST.length];
+    const card = cards[i];
+    if (atRest) {
+      card.style.transform = `translate(calc(-50% + ${rest.x}px), calc(-50% + ${rest.y}px)) rotate(${rest.r}deg) scale(1)`;
+      card.style.opacity = '1';
+    } else {
+      const startX = rest.x + rest.side * 240; // waits off to the side, not below
+      const startY = rest.y - 36; // and a little above its resting spot, so it drops as it slides in
+      card.style.transform = `translate(calc(-50% + ${startX}px), calc(-50% + ${startY}px)) rotate(0deg) scale(.86)`;
+      card.style.opacity = '0';
+    }
+    card.style.zIndex = String(i + 1); // later photos land on top of earlier ones
+  }
+
+  function arm() {
+    // paint all cards to their hidden/off-stage start with no transition,
+    // then flush and re-enable transitions so the first real landing animates
+    cards.forEach((card, i) => { card.style.transition = 'none'; paint(i, false); state[i] = false; });
+    void stage.offsetWidth;
+    cards.forEach(card => { card.style.transition = `transform ${DURATION}ms ${EASE}, opacity ${Math.round(DURATION * 0.5)}ms ease-out`; });
+  }
+
+  function clear() {
+    // above the breakpoint .pol-row is the static fanned row (own CSS
+    // transforms per nth-child) — leftover inline styles would override it
+    cards.forEach((card, i) => { card.style.transition = ''; card.style.transform = ''; card.style.opacity = ''; card.style.zIndex = ''; state[i] = false; });
+  }
+
+  // How many photos should be landed for the current scroll position.
+  // 0 while the card is still sliding up to pin (lead-in), n once the last
+  // slice is reached (lead-out) — n+1 even zones across the pinned range,
+  // so photo i lands as scroll crosses i/(n+1) of the way through.
+  function targetLanded() {
+    const navH = document.querySelector('.nav')?.offsetHeight || 0;
+    const docTop = occ.getBoundingClientRect().top + window.scrollY;
+    const start = docTop - navH;                          // scrollY where the card pins
+    const end = docTop + occ.offsetHeight - innerHeight;  // scrollY where it unpins
+    const p = end > start ? (window.scrollY - start) / (end - start) : 0;
+    const cp = Math.max(0, Math.min(1, p));
+    return Math.max(0, Math.min(n, Math.floor(cp * (n + 1))));
+  }
+
+  function update() {
+    ticking = false;
+    if (!mq.matches) return;
+    const target = targetLanded();
+    for (let i = 0; i < n; i++) {
+      const shouldRest = i < target;
+      if (shouldRest !== state[i]) { paint(i, shouldRest); state[i] = shouldRest; }
+    }
+  }
+
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(update);
+  }
+
+  function setup() {
+    if (mq.matches) { arm(); update(); }
+    else clear();
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', setup, { passive: true });
+  mq.addEventListener('change', setup);
+  setup();
+})();

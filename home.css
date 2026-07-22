@@ -9,6 +9,13 @@
 
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
+/* NOTE: don't add overflow-x:hidden here again — it breaks position:sticky
+   for every nested descendant (confirmed: any non-visible overflow-x on
+   html/body, even overflow-x:clip, disqualifies the root as the sticky
+   viewport in this engine), which the polaroid scroll-stack and B2B pages
+   both rely on. The mobile "page not full width" bug this was guarding
+   against was actually the .ot-kegs grid track sizing — fixed at the
+   source in ontap.css instead. */
 body{font-family:var(--font-sans);background:var(--co-cream);color:var(--co-black);-webkit-font-smoothing:antialiased}
 img{display:block;max-width:100%}
 a{text-decoration:none;color:inherit}
@@ -39,20 +46,47 @@ h2{color:var(--co-blue);font-size:clamp(32px,4.2vw,52px);font-weight:700;letter-
    1 · HERO — flavour-colour panel, keg + garnish, dot switcher
    ===================================================================== */
 .hero{padding:0}
-.hero-panel{position:relative;overflow:hidden;border-radius:0 0 64px 64px;background:var(--fl-spritz);transition:background .8s ease;min-height:calc(100svh - 110px);display:flex;flex-direction:column;justify-content:center}
+/* container-type so .hero-pattern below can size itself off this box's
+   real content width (cqw) rather than the viewport (vw) — vw includes
+   the scrollbar gutter on desktop, which drifted the CO tiling ~15px
+   out of alignment with the actual panel width */
+.hero-panel{position:relative;overflow:hidden;border-radius:0 0 64px 64px;background:var(--fl-spritz);transition:background .8s ease;min-height:calc(100svh - 110px);display:flex;flex-direction:column;justify-content:center;container-type:inline-size}
 /* fades near the bottom so the pattern resolves into the panel's rounded
    corner instead of getting sliced off hard mid-shape */
+/* --pat-unit is the scaled width of ONE letter's native tile (529 units —
+   half the original combined "CO" tile: co-pattern-col.svg packed one C
+   + one O + a trailing gap into 1058 units, so each letter's own clean
+   repeat period is 1058/2 = 529). co-pattern-c.svg / co-pattern-o.svg
+   are that same artwork split into two single-letter files at exactly
+   that width, so tiling BOTH at --pat-unit reproduces the original
+   evenly-spaced "CO CO CO" with no offset needed between the layers —
+   and, unlike one shared image, each letter is now its own mask layer
+   that can roll on its own timing. --pat-unit is set in vw (not a flat
+   px) so it always divides the viewport into whole "CO" units — one
+   clean pair on mobile, two on desktop — instead of slicing one off
+   at the edge. */
 .hero-pattern{position:absolute;inset:0;opacity:.55;pointer-events:none;
+  --pat-unit:50cqw;--pat-h:calc(var(--pat-unit) * 563 / 529);
   -webkit-mask-image:linear-gradient(to bottom,#000 78%,transparent 100%);
   mask-image:linear-gradient(to bottom,#000 78%,transparent 100%)}
-/* two mask layers, each holding every other CO column (same tile, half-tile x-offset),
-   so alternate columns can roll in opposite directions on flavour switch */
-.hero-pattern::before,.hero-pattern::after{content:"";position:absolute;inset:0;background:var(--fl-dark,var(--fl-spritz-dark));-webkit-mask:url("assets/co-pattern-col.svg") repeat;-webkit-mask-size:1996.5px 1062.44px;mask:url("assets/co-pattern-col.svg") repeat;mask-size:1996.5px 1062.44px;transition:background .8s ease}
-.hero-pattern::after{-webkit-mask-position:998.25px 0;mask-position:998.25px 0}
-.hero-pattern.roll::before{animation:pat-roll-down .9s cubic-bezier(.65,.05,.36,1)}
-.hero-pattern.roll::after{animation:pat-roll-up .9s cubic-bezier(.65,.05,.36,1)}
-@keyframes pat-roll-down{to{-webkit-mask-position:0 1062.44px;mask-position:0 1062.44px}}
-@keyframes pat-roll-up{from{-webkit-mask-position:998.25px 0;mask-position:998.25px 0}to{-webkit-mask-position:998.25px -1062.44px;mask-position:998.25px -1062.44px}}
+.hero-pattern::before,.hero-pattern::after{content:"";position:absolute;inset:0;background:var(--fl-dark,var(--fl-spritz-dark));-webkit-mask-repeat:repeat;mask-repeat:repeat;-webkit-mask-size:var(--pat-unit) var(--pat-h);mask-size:var(--pat-unit) var(--pat-h);transition:background .8s ease}
+.hero-pattern::before{-webkit-mask-image:url("assets/co-pattern-c.svg");mask-image:url("assets/co-pattern-c.svg")}
+.hero-pattern::after{-webkit-mask-image:url("assets/co-pattern-o.svg");mask-image:url("assets/co-pattern-o.svg")}
+/* beyond typical desktop, fixing --pat-unit at 50cqw (2 "CO" units) means
+   each letter keeps growing with the screen — on an ultrawide monitor
+   that's an oversized C/O. Add more units instead of letting them keep
+   scaling: 3 on wide screens, 4 on ultrawide, so individual letter size
+   stays roughly capped while the texture still fills the width cleanly. */
+@media (min-width:1600px){.hero-pattern{--pat-unit:33.333cqw}}
+@media (min-width:2400px){.hero-pattern{--pat-unit:25cqw}}
+/* C and O are independent layers now, but roll together (same duration,
+   no offset delay) so they start AND land in sync — C moves up, O moves
+   down, so the two still read as distinct, opposite motions without
+   drifting apart at the end */
+.hero-pattern.roll::before{animation:pat-roll-up .9s cubic-bezier(.65,.05,.36,1)}
+.hero-pattern.roll::after{animation:pat-roll-down .9s cubic-bezier(.65,.05,.36,1)}
+@keyframes pat-roll-up{to{-webkit-mask-position:0 calc(-1 * var(--pat-h));mask-position:0 calc(-1 * var(--pat-h))}}
+@keyframes pat-roll-down{to{-webkit-mask-position:0 var(--pat-h);mask-position:0 var(--pat-h)}}
 .hero-inner{position:relative;flex:1;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:24px;max-width:1200px;width:100%;margin:0 auto;padding:48px 40px 24px}
 .hero-copy h1{color:#fff;font-size:clamp(38px,4.6vw,58px);font-weight:700;line-height:1.1;letter-spacing:-.02em}
 .hero-sub{color:rgba(255,255,255,.92);font-size:19px;line-height:1.5;margin:20px 0 28px}
@@ -222,7 +256,11 @@ img.tk-logo-square{height:100px;width:auto;max-width:120px;object-fit:contain}
    copy and polaroids still pop. Photos get an angled sheen that slides
    on hover; pins lift off the board on hover.
    ===================================================================== */
-.occasions{position:relative;overflow:hidden;padding:110px 0 120px;text-align:center;border-radius:64px;margin:24px 16px;
+/* no overflow:hidden here (unlike other rounded bands) — the polaroid
+   pinned scroll-stack below needs a clean ancestor chain for
+   position:sticky to work; background-image already clips to the
+   border-radius on its own without it */
+.occasions{position:relative;border-radius:64px;margin:24px 16px;padding:110px 0 120px;text-align:center;
   background-color:#bd9455;
   background-image:
     linear-gradient(160deg,rgba(195,156,92,.55),rgba(120,78,32,.6)),
@@ -269,8 +307,8 @@ img.tk-logo-square{height:100px;width:auto;max-width:120px;object-fit:contain}
    (client feedback) */
 .reactions{padding:76px 0 64px;text-align:center}
 .bubble-row{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:44px;align-items:start}
-.bubble{position:relative;background:color-mix(in srgb,var(--fl,var(--co-orange)) 16%,#fff);border-radius:22px;padding:24px 24px 20px;text-align:left;border:2px solid var(--fl,var(--co-orange))}
-.bubble::after{content:"";position:absolute;bottom:-14px;left:40px;width:24px;height:24px;background:inherit;border-right:2px solid var(--fl);border-bottom:2px solid var(--fl);transform:rotate(45deg) skew(12deg,12deg)}
+.bubble{position:relative;background:color-mix(in srgb,var(--fl,var(--co-orange)) 16%,#fff);border-radius:22px;padding:24px 24px 20px 150px;text-align:left;border:2px solid var(--fl,var(--co-orange))}
+.bubble::after{content:"";position:absolute;bottom:-14px;left:150px;width:24px;height:24px;background:inherit;border-right:2px solid var(--fl);border-bottom:2px solid var(--fl);transform:rotate(45deg) skew(12deg,12deg)}
 .bubble-mojito{--fl:var(--fl-mojito)}
 .bubble-paloma{--fl:var(--fl-paloma-dark)}
 .bubble-pornstar{--fl:var(--fl-pornstar)}
@@ -278,6 +316,27 @@ img.tk-logo-square{height:100px;width:auto;max-width:120px;object-fit:contain}
 .bubble p{font-size:16.5px;line-height:1.45;color:var(--co-black);font-weight:500}
 .bubble p em{color:var(--co-orange);font-style:italic}
 .bubble-name{display:block;margin-top:13px;font-size:13px;color:var(--co-grey-light);font-weight:600;letter-spacing:.04em}
+/* marble-bust cameo — a free-standing cutout pinned to the bubble's left,
+   vertically centred and slightly tilted, reading like a profile photo
+   beside the quote. The busts are transparent PNGs, so object-fit:contain
+   shows each one whole (no horizontal slicing — the old object-fit:cover
+   in a narrow strip sliced the wider heads). Faces are equalised by giving
+   each bust its own render height below: the face is a different fraction
+   of each source image (Napoleon fills his frame, Sisi carries a lot of
+   hair), so matching FACE size means slightly different bust heights. */
+.bubble-portrait{position:absolute;left:74px;top:50%;width:auto;height:auto;z-index:1;pointer-events:none;filter:drop-shadow(0 12px 18px rgba(43,25,6,.3))}
+.bubble-portrait img{width:auto;object-fit:contain;object-position:bottom center;display:block}
+.bubble-mojito .bubble-portrait{transform:translate(-50%,-50%) rotate(-4deg)}
+.bubble-paloma .bubble-portrait{transform:translate(-50%,-50%) rotate(3deg)}
+.bubble-pornstar .bubble-portrait{transform:translate(-50%,-50%) rotate(-5deg)}
+/* desktop-only per-bust heights, tuned so the three FACES read equal.
+   Scoped to min-width so they don't clash with the mobile block's single
+   fixed height (which equalises by height for the narrower cascade). */
+@media (min-width:1021px){
+  .bubble-mojito .bubble-portrait img{height:130px}
+  .bubble-paloma .bubble-portrait img{height:196px}
+  .bubble-pornstar .bubble-portrait img{height:160px}
+}
 
 /* =====================================================================
    8 · MAKERS — editorial split, giant arch photo
@@ -352,11 +411,49 @@ img.tk-logo-square{height:100px;width:auto;max-width:120px;object-fit:contain}
 }
 @media (max-width:1020px){
   .shop-grid{grid-template-columns:repeat(3,1fr)}
-  .bubble-row{grid-template-columns:1fr;max-width:480px;margin-left:auto;margin-right:auto}
+  /* cascade left/right instead of a dead-centre stack — each bubble
+     narrower than the row and alternating sides reads as a loose
+     conversation instead of three identical tiles glued together */
+  .bubble-row{grid-template-columns:1fr;gap:40px;max-width:480px;margin-left:auto;margin-right:auto}
   .bubble-mid{margin-top:0}
+  .bubble{max-width:82%;transform:rotate(-1.5deg)}
+  .bubble:nth-child(2){margin-left:auto;transform:rotate(1.5deg)}
+  .bubble:nth-child(3){transform:rotate(-1deg)}
+  /* mirror the speech-tail for the right-cascaded bubble so it still
+     points down from the body it belongs to, not floating mid-air */
+  .bubble:nth-child(2)::after{left:auto;right:40px;border-right:none;border-bottom:2px solid var(--fl);border-left:2px solid var(--fl);transform:rotate(-45deg) skew(-12deg,-12deg)}
+  /* Single-column cascade: drop the desktop tall-strip cameo treatment.
+     A strip + object-fit:cover slices the busts horizontally (worst on the
+     wider Sisi/Marilyn heads), and the taller mobile bubbles make the
+     strip even narrower in aspect, so the crop gets uglier — that's the
+     "clipped face" bug. Instead the busts render as free-standing cutouts:
+     sized by a FIXED height so all three read as equal, object-fit:contain
+     so nothing is cropped, overflow visible so a wide head can bleed past
+     the bubble's left edge rather than being cut. The gutter (padding-left)
+     is wide enough to keep every head clear of the quote text. */
+  .bubble{padding-left:116px}
+  .bubble::after{left:128px}
+  .bubble-portrait{
+    width:auto;height:auto;top:50%;bottom:auto;left:44px;right:auto;
+    overflow:visible;border-radius:0;
+    filter:drop-shadow(0 10px 16px rgba(43,25,6,.28));
+  }
+  /* per-bust tilt off on mobile (the whole bubble already has a slight
+     rotate); translate keeps the head centred on the gutter */
+  .bubble-mojito .bubble-portrait,
+  .bubble-paloma .bubble-portrait,
+  .bubble-pornstar .bubble-portrait{transform:translate(-50%,-50%)}
+  .bubble-portrait img{width:auto;height:172px;object-fit:contain;object-position:bottom center;display:block;transform:none}
+  /* drop Napoleon's desktop zoom-out — that only existed to fight the
+     cover-crop, which no longer applies here */
+  .bubble-mojito .bubble-portrait img{transform:none}
 }
 @media (max-width:860px){
   .wrap{padding:0 24px}
+  /* one clean "CO" per screen on mobile instead of two per screen
+     (which was cropping a partial extra letter at the edge — the
+     "COC" bug). --pat-h derives from this automatically. */
+  .hero-pattern{--pat-unit:100cqw}
   .nav{padding:18px 20px}
   .nav-links{display:none}
   .hero-inner{grid-template-columns:1fr;text-align:center;padding-top:40px}
@@ -365,14 +462,40 @@ img.tk-logo-square{height:100px;width:auto;max-width:120px;object-fit:contain}
   .hero-garnish{max-width:540px}
   .how-steps{grid-template-columns:1fr;max-width:340px;margin:48px auto 0}
   .how-step-mid,.how-step-last{margin-top:24px}
-  /* polaroids run edge-to-edge as a horizontal scroll strip on mobile */
-  .pol-row{flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;margin-left:-24px;margin-right:-24px;padding:6px 24px 20px}
-  .pol{flex:0 0 auto;width:200px;scroll-snap-align:center}
-  .pol-row::-webkit-scrollbar{display:none}
+  /* "Take it anywhere" = a pinned, scroll-stepped reveal on mobile.
+     The section is made TALL to create scroll room; the cork card (.wrap)
+     is sticky, so it locks into the viewport ("viewfinder") while that
+     room is consumed. Each slice of scroll drops one whole polaroid onto
+     the pile (bottom→top) via polStack() in home.js — driven off scroll
+     POSITION, so it's momentum-proof and replays on the way back up. When
+     the last photo lands, the card scrolls away and normal flow resumes.
+     The cork background/rounding/shadow move onto the sticky .wrap so the
+     pinned board sits on a steady texture; .occasions is just the track. */
+  .occasions{min-height:0;height:320vh;display:block;padding:0;margin:24px 0 0;
+    background:none;box-shadow:none;border-radius:0}
+  .occasions .wrap{position:sticky;top:80px;height:calc(100svh - 96px);
+    margin:0 16px;padding:24px 24px 28px;border-radius:48px;
+    display:flex;flex-direction:column;justify-content:center;
+    background-color:#bd9455;
+    background-image:
+      linear-gradient(160deg,rgba(195,156,92,.55),rgba(120,78,32,.6)),
+      url("assets/cork-texture.jpg");
+    background-size:cover;background-position:center;
+    box-shadow:inset 0 0 100px rgba(64,38,12,.4)}
+  .pol-stage{position:relative;height:min(52vh,420px);margin-top:20px}
+  .pol-row{position:relative;height:100%;display:flex;align-items:center;justify-content:center;overflow:visible}
+  .pol{position:absolute;top:50%;left:50%;width:240px;max-width:70vw;margin:0;will-change:transform,opacity}
+  /* no push-pins in the thrown/stacked mobile layout — the photos land
+     on top of one another, so a pin per photo makes no sense here */
+  .pol::before{display:none}
   .makers-grid{grid-template-columns:1fr;gap:44px}
   .taste-grid{grid-template-columns:1fr;gap:40px}
   .taste-btns{flex-direction:column;align-items:flex-start}
-  .b2b-strip-inner{flex-direction:column;align-items:flex-start;text-align:left}
+  /* padding-top/bottom explicitly re-asserted: the mobile .wrap{padding:0 24px}
+     rule above is same-specificity and comes later in the cascade, so without
+     this it silently zeroes the 32px top/bottom padding .b2b-strip-inner sets
+     at desktop width, leaving the copy flush against the rounded corners */
+  .b2b-strip-inner{flex-direction:column;align-items:flex-start;text-align:left;padding-top:32px;padding-bottom:32px}
   .shop-grid{grid-template-columns:repeat(2,1fr)}
   .cta-form input{width:100%}
   .cta-form-row{flex-direction:column}
