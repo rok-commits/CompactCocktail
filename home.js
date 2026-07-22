@@ -371,10 +371,21 @@ document.querySelectorAll(
 (function polStack() {
   const occ   = document.querySelector('.occasions');
   const stage = document.querySelector('.pol-stage');
+  const wrap  = occ && occ.querySelector('.wrap');
   const cards = [...document.querySelectorAll('.pol')];
-  if (!occ || !stage || !cards.length) return;
+  if (!occ || !stage || !wrap || !cards.length) return;
   const mq = matchMedia('(max-width:860px)');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
   const n = cards.length;
+
+  // subtle scroll-progress line (styled in home.css). Built here so the
+  // markup stays out of the two index.html files; its fill tracks reveal
+  // progress so the pin reads as short and finite.
+  const progress = document.createElement('div');
+  progress.className = 'pol-progress';
+  const progressFill = document.createElement('i');
+  progress.appendChild(progressFill);
+  wrap.appendChild(progress);
   const REST = [ // small scatter per card once landed (x/y/r), plus which side it slides in from
     { x: -16, y: 10, r: -6, side: -1 }, { x: 14, y: -6, r: 5, side: 1 }, { x: -10, y: 4, r: -4, side: -1 },
     { x: 12, y: 8, r: 5, side: 1 }, { x: -14, y: -4, r: -5, side: -1 },
@@ -382,6 +393,7 @@ document.querySelectorAll(
   const DURATION = 520; // ms — one card's landing animation
   const EASE = 'cubic-bezier(.16,1,.3,1)'; // fast start, long slow tail — the "drop, then slide to a stop" feel
   const state = new Array(n).fill(false); // is card i currently landed?
+  let pin = '';       // '', 'pinned' or 'past' — current pin phase
   let ticking = false;
 
   function paint(i, atRest) {
@@ -408,33 +420,54 @@ document.querySelectorAll(
   }
 
   function clear() {
-    // above the breakpoint .pol-row is the static fanned row (own CSS
-    // transforms per nth-child) — leftover inline styles would override it
+    // above the breakpoint (and under reduced-motion) .pol-row is a static
+    // layout — leftover inline styles would override it, so strip them
     cards.forEach((card, i) => { card.style.transition = ''; card.style.transform = ''; card.style.opacity = ''; card.style.zIndex = ''; state[i] = false; });
+    setPin('');                       // drop the fixed-pin classes
+    progress.classList.remove('on');  // hide the progress line
   }
 
-  // How many photos should be landed for the current scroll position.
-  // 0 while the card is still sliding up to pin (lead-in), n once the last
-  // slice is reached (lead-out) — n+1 even zones across the pinned range,
-  // so photo i lands as scroll crosses i/(n+1) of the way through.
-  function targetLanded() {
-    const navH = document.querySelector('.nav')?.offsetHeight || 0;
-    const docTop = occ.getBoundingClientRect().top + window.scrollY;
-    const start = docTop - navH;                          // scrollY where the card pins
-    const end = docTop + occ.offsetHeight - innerHeight;  // scrollY where it unpins
-    const p = end > start ? (window.scrollY - start) / (end - start) : 0;
-    const cp = Math.max(0, Math.min(1, p));
-    return Math.max(0, Math.min(n, Math.floor(cp * (n + 1))));
+  // Drive the pin via position:fixed rather than position:sticky — sticky
+  // was unreliable against mobile viewport dynamics; toggling these classes
+  // guarantees the board fills the viewport for the whole pinned range.
+  function setPin(phase) {
+    if (phase === pin) return;
+    wrap.classList.toggle('is-pinned', phase === 'pinned');
+    wrap.classList.toggle('is-past',   phase === 'past');
+    pin = phase;
+  }
+
+  // The scroll window over which the board is pinned. secTop is where the
+  // card's top reaches the viewport top (pin begins); once the remaining
+  // track (section height − one card height) is consumed the card parks at
+  // the section bottom (pin ends). Progress across that window drives how
+  // many photos have landed: n+1 even zones, so photo i lands at i/(n+1).
+  function geom() {
+    const secTop = occ.getBoundingClientRect().top + window.scrollY;
+    const pinStart = secTop;
+    const pinEnd = secTop + occ.offsetHeight - wrap.offsetHeight;
+    return { pinStart, pinEnd };
   }
 
   function update() {
     ticking = false;
     if (!mq.matches) return;
-    const target = targetLanded();
+    const { pinStart, pinEnd } = geom();
+    const y = window.scrollY;
+    let p;
+    if (y < pinStart)      { setPin('');       p = 0; }
+    else if (y < pinEnd)   { setPin('pinned'); p = (y - pinStart) / (pinEnd - pinStart); }
+    else                   { setPin('past');   p = 1; }
+    const cp = Math.max(0, Math.min(1, p));
+    const target = Math.max(0, Math.min(n, Math.floor(cp * (n + 1))));
     for (let i = 0; i < n; i++) {
       const shouldRest = i < target;
       if (shouldRest !== state[i]) { paint(i, shouldRest); state[i] = shouldRest; }
     }
+    // progress line: visible only while the board is engaged (pinned / just
+    // past), fill tracks how far through the reveal we are
+    progress.classList.toggle('on', pin !== '');
+    progressFill.style.width = (cp * 100) + '%';
   }
 
   function onScroll() {
@@ -444,12 +477,14 @@ document.querySelectorAll(
   }
 
   function setup() {
-    if (mq.matches) { arm(); update(); }
+    // reduced-motion or desktop → static layout (see home.css), no pinning
+    if (mq.matches && !reduce.matches) { arm(); update(); }
     else clear();
   }
 
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', setup, { passive: true });
   mq.addEventListener('change', setup);
+  reduce.addEventListener('change', setup);
   setup();
 })();
