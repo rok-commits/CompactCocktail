@@ -13,6 +13,10 @@ body.cc-noscroll{overflow:hidden}
 .nav-links a:focus-visible{outline:2px solid var(--co-orange);outline-offset:2px}
 .nav-links a.active{color:var(--co-orange);background:rgba(229,100,56,.14)}
 
+/* B2B/B2C switcher: bare acronym in the tight desktop bar, spelled out
+   once there's room in the mobile dropdown */
+.nav-b2b-full{display:none}
+
 /* ---------- language toggle ----------
    Both languages shown, active one highlighted — marked notranslate/
    translate="no" so browser/Google Translate leaves it alone (otherwise
@@ -40,6 +44,12 @@ body.cc-noscroll{overflow:hidden}
   .nav{flex-wrap:wrap}
   .nav-burger{display:flex}
   .nav-cta{display:none}
+  .nav-b2b-acr{display:none}
+  .nav-b2b-full{display:inline}
+  /* space-between would otherwise float nav-lang dead-center between the
+     logo and burger (only 3 flex children left on mobile); pin it to the
+     burger at the row's normal gap instead. */
+  .nav-lang{margin-left:auto}
   .nav.nav-open .nav-links{display:flex;flex-direction:column;align-items:stretch;order:10;flex-basis:100%;width:100%;gap:4px;padding:16px 2px 8px;font-size:18px;animation:cc-menu-in .25s ease}
   .nav.nav-open .nav-links a{padding:13px 14px}
   .nav.nav-open .nav-links .nav-divider{display:block;height:1px;background:rgba(43,43,43,.10);margin:8px 14px 12px}
