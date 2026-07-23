@@ -19,6 +19,9 @@ const T = LANG === 'hu' ? {
   shopH: 'Hogyan szeretnéd?',
   shopP: 'Ne ijedj meg — a hordóinkat a partner sörfőzdénk árulja. Online a <b>Fehér Nyúl webshopjában</b> fejezed be a vásárlást, vagy személyesen átveheted a <b>Mr. Alkoholban</b>, Budapesten.',
   shopGo: 'Online vásárlás&nbsp;&rarr;', shopPickup: 'Személyes átvétel&nbsp;&rarr;', shopStay: 'Maradok',
+  leaveH: 'Most elhagyod az oldalunkat',
+  leaveP: 'A vásárlásod a <b>Fehér Nyúl</b> webshopjában fejeződik be — megbízható gyártó- és szállító partnerünknél.',
+  leaveGo: 'Folytatom a vásárlást&nbsp;&rarr;',
   ing: {
     spritz: 'Aperol, pezsgő, szóda · 8%',
     mojito: 'Planteray rum, lime, friss menta, szóda · 9.5%',
@@ -34,6 +37,9 @@ const T = LANG === 'hu' ? {
   shopH: 'How would you like it?',
   shopP: 'Don’t be alarmed — our kegs are sold through our partner brewery. Finish online on the <b>Fehér Nyúl webshop</b>, or pick one up in person at <b>Mr. Alkohol</b> in Budapest.',
   shopGo: 'Shop online&nbsp;&rarr;', shopPickup: 'Pick up in person&nbsp;&rarr;', shopStay: 'Stay here',
+  leaveH: 'You’re now leaving our site',
+  leaveP: 'Your order finishes on <b>Fehér Nyúl</b>’s webshop — our trusted brewing &amp; delivery partner.',
+  leaveGo: 'Continue shopping&nbsp;&rarr;',
   ing: {
     spritz: 'Aperol, sparkling wine, soda · 8%',
     mojito: 'Planteray rum, lime, fresh mint, soda · 9.5%',
@@ -206,17 +212,20 @@ grid.innerHTML = FLAVOURS.map((f, i) => `
     <span class="shop-more">${T.story}&nbsp;&rarr;</span>
   </div>`).join('');
 
-/* ---------- webshop redirect popup (all purchases finish at Fehér Nyúl) ---------- */
-function shopRedirect(f) {
+/* ---------- webshop redirect popup (all purchases finish at Fehér Nyúl) ----------
+   `simple: true` = just a "leaving our site" notice with no pickup button —
+   used from the delivery/pickup section, which already shows the pickup
+   option as its own button right next to this one. */
+function shopRedirect(f, { simple } = {}) {
   const url = (f && f.shop) || WEBSHOP_URL;
   ccModal({
     html:
       '<button class="cc-modal-x" data-close aria-label="Close">&times;</button>' +
-      `<h3>${T.shopH}</h3>` +
-      `<p class="cc-modal-sub">${T.shopP}</p>` +
+      `<h3>${simple ? T.leaveH : T.shopH}</h3>` +
+      `<p class="cc-modal-sub">${simple ? T.leaveP : T.shopP}</p>` +
       '<div class="cc-modal-btns">' +
-        `<a class="btn btn-primary" href="${url}" target="_blank" rel="noopener" data-close>${T.shopGo}</a>` +
-        `<a class="btn cc-btn-outline" href="${PICKUP_URL}" target="_blank" rel="noopener" data-close>${T.shopPickup}</a>` +
+        `<a class="btn btn-primary" href="${url}" target="_blank" rel="noopener" data-close>${simple ? T.leaveGo : T.shopGo}</a>` +
+        (simple ? '' : `<a class="btn cc-btn-outline" href="${PICKUP_URL}" target="_blank" rel="noopener" data-close>${T.shopPickup}</a>`) +
       '</div>' +
       `<button class="cc-modal-plain" data-close>${T.shopStay}</button>`
   });
@@ -265,6 +274,13 @@ grid.addEventListener('click', e => {
   }
   const card = e.target.closest('.shop-card');
   if (card) openStory(FLAVOURS[+card.dataset.i]);
+});
+
+/* ---------- "Shop online" CTA outside the shop grid (delivery/pickup
+   section) — same leaving-site popup as the per-flavour buy buttons,
+   no specific flavour so shopRedirect() falls back to WEBSHOP_URL. ---------- */
+document.querySelectorAll('[data-shop-cta]').forEach(btn => {
+  btn.addEventListener('click', () => shopRedirect(null, { simple: true }));
 });
 grid.addEventListener('keydown', e => {
   if (e.key !== 'Enter') return;
